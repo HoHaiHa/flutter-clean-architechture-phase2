@@ -110,6 +110,10 @@ class _AppFormFieldState extends State<AppFormField> {
               hintText: widget.hintText ?? _decoration.hintText,
               hintStyle: _decoration.hintStyle,
               fillColor: fillColor,
+              prefixIcon: _buildPrefixIcon(_decoration),
+              prefixStyle: _decoration.prefixStyle,
+              prefixIconConstraints:
+                const BoxConstraints(minWidth: 0, minHeight: 0),
             ),
             onTap: widget.onTap,
             onChanged: widget.onChanged,
@@ -119,7 +123,7 @@ class _AppFormFieldState extends State<AppFormField> {
         ),
         if (errorText != null)
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8,left: 8),
             child: Text(errorText, style: _decoration.errorStyle),
           ),
       ],
@@ -140,4 +144,22 @@ class _AppFormFieldState extends State<AppFormField> {
           : _decoration.suffixIcon,
     );
   }
+
+  Widget _buildPrefixIcon(InputDecoration _decoration) {
+    return UnconstrainedBox(
+      alignment: Alignment.centerLeft,
+      child: _decoration.prefixText != null
+          ? Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                _decoration.prefixText ?? '',
+                style: _decoration.prefixStyle,
+              ),
+            )
+          : _decoration.prefixIcon,
+    );
+  }
 }
+
+
+
