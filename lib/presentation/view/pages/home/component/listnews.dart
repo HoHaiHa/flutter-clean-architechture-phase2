@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../domain/entities/news.dart';
@@ -14,11 +15,8 @@ class ListNews extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: NeverScrollableScrollPhysics(),
       itemCount: listNews.length,
-      itemBuilder: (context,index){
+      itemBuilder: (context, index) {
         return NewsWidget(
           imagePath: listNews[index].imagePath,
           topic: listNews[index].topic,
@@ -27,9 +25,9 @@ class ListNews extends StatelessWidget{
           brandName: listNews[index].brandName,
           timePost: listNews[index].timePost,
         );
-
       },
-    );
+    )
+    ;
   }
 
 }
@@ -53,6 +51,8 @@ class NewsWidget extends StatelessWidget{
   });
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.themeOwn().textTheme;
+    final colorSchema = context.themeOwn().colorSchema;
     return Column(
       children: [
         Container(
@@ -89,9 +89,9 @@ class NewsWidget extends StatelessWidget{
                 Gap(4),
                 Expanded(
                   child: Container(
-
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           height:22,
@@ -101,19 +101,23 @@ class NewsWidget extends StatelessWidget{
                             softWrap: true,
                             textAlign: TextAlign.left,
                             topic,
+                            style: textTheme?.textXSmall?.copyWith(
+                              color: colorSchema?.grayscaleBodyText
+                            ),
 
                           ),
                         ),
-                        Expanded(
-                            child: Text(
-                              title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-
-                            )
+                        Text(
+                          title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: textTheme?.textMedium?.copyWith(
+                              color: colorSchema?.darkBlack
+                          ),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
                               width: 20,
@@ -142,19 +146,21 @@ class NewsWidget extends StatelessWidget{
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: true,
                                 brandName,
-
+                                style: textTheme?.textXSmallLink?.copyWith(
+                                    color: colorSchema?.grayscaleBodyText
+                                ),
                               ),
                             ),
-                            SizedBox(width: 6),
-                            Icon(Icons.schedule, size: 18),
+                            SizedBox(width: 12),
+                            Icon(Icons.schedule, size: 14),
                             SizedBox(width: 4),
                             Text(
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               timeAgo(timePost),
-                              style: TextStyle(
-
+                              style: textTheme?.textXSmall?.copyWith(
+                                  color: colorSchema?.grayscaleBodyText
                               ),
                             ),
                             Spacer(),
