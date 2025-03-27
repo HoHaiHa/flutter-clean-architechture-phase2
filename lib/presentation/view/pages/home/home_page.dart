@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/pages/fakeNews.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -105,10 +106,8 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                       ),
                                       child: Assets.icons.search.svg(),
                                     ),
-                                    prefixStyle: TextStyle(
-                                      color: colorSchema?.grayscaleBodyText,
-                                    ),
                                   ),
+                                  onTap: ()=> context.pushRoute(SearchRoute()),
                                 ),
                                 Gap(16),
                                 Row(
