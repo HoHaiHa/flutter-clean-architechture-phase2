@@ -84,6 +84,8 @@ dev_dependencies:
   # Network
   retrofit_generator: ^9.1.9
 
+  intl: ^0.19.0
+
 flutter_gen:
   line_length: 80
   integrations:

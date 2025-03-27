@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
-import '../../../../../domain/entities/news.dart';
+import '../../../domain/entities/news.dart';
 
 
 class ListNews extends StatelessWidget{
@@ -15,7 +15,6 @@ class ListNews extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: listNews.length,
       itemBuilder: (context, index) {
         return NewsWidget(
           imagePath: listNews[index].imagePath,

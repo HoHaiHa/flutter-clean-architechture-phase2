@@ -9,7 +9,7 @@ import 'package:gap/gap.dart';
 import '../../../../domain/entities/news.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../base/base_page.dart';
-import 'component/listnews.dart';
+import '../../widgets/list_news.dart';
 import 'home_bloc.dart';
 
 @RoutePage()
@@ -63,24 +63,27 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                       height: 30,
                       child: Assets.images.logo.svg(),
                     ),
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                      child: Assets.icons.notify.svg(
-                        fit: BoxFit.scaleDown,
-                        width: 18,
-                        height: 25,
+                    InkWell(
+                      onTap: ()=> context.pushRoute(NotificationRoute()),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
+                        child: Assets.icons.notify.svg(
+                          fit: BoxFit.scaleDown,
+                          width: 18,
+                          height: 25,
+                        ),
                       ),
                     ),
                   ],
@@ -260,17 +263,15 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                           ),
                         ),
                       ],
-                  body: Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 24, left: 24),
-                      child: TabBarView(
-                        children:
-                            actions.map((actions) {
-                              return Center(
-                                child: ListNews(listNews: listNews),
-                              );
-                            }).toList(),
-                      ),
+                  body: Padding(
+                    padding: EdgeInsets.only(right: 24, left: 24),
+                    child: TabBarView(
+                      children:
+                          actions.map((actions) {
+                            return Center(
+                              child: ListNews(listNews: listNews),
+                            );
+                          }).toList(),
                     ),
                   ),
                 ),
