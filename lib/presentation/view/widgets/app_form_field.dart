@@ -131,6 +131,8 @@ class _AppFormFieldState extends State<AppFormField> {
   }
 
   Widget _buildSuffixIcon(InputDecoration _decoration) {
+
+    return _decoration.suffixIcon ?? SizedBox();
     return UnconstrainedBox(
       alignment: Alignment.centerRight,
       child: _decoration.suffixText != null

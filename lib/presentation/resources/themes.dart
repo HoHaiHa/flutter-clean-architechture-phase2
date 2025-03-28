@@ -14,6 +14,11 @@ abstract class AppTheme {
     borderRadius: BorderRadius.circular(6),
   );
 
+  static final InputBorder _errorOutlineInputBorder = OutlineInputBorder(
+    borderSide: const BorderSide(color: AppColors.errorDark, width: 1),
+    borderRadius: BorderRadius.circular(6),
+  );
+
   static const _dividerTheme = DividerThemeData(
     space: 0,
     thickness: 1,
@@ -43,7 +48,7 @@ abstract class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         border: _defaultOutlineInputBorder,
         focusedErrorBorder: _defaultOutlineInputBorder,
-        errorBorder: _defaultOutlineInputBorder,
+        errorBorder: _errorOutlineInputBorder,
         disabledBorder: _defaultOutlineInputBorder,
         enabledBorder: _defaultOutlineInputBorder,
         focusedBorder: _defaultOutlineInputBorder,
@@ -56,8 +61,7 @@ abstract class AppTheme {
         prefixIconColor: AppColors.atlantis,
         contentPadding:
             const EdgeInsets.only(right: 34,left: 34, top: 13.5,  bottom: 13.5),
-        isDense: true,
-        filled: true,
+
       ),
       scaffoldBackgroundColor: AppColors.background,
       iconTheme: const IconThemeData(color: AppColors.atlantis),
