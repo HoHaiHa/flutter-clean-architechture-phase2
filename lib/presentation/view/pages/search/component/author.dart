@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/author.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../gen/assets.gen.dart';
+import '../search_bloc.dart';
 
 class AuthorList extends StatefulWidget{
   final List<Author> listAuthor;
@@ -70,7 +72,19 @@ class _AuthorListState extends State<AuthorList> {
                     ),
                   ),
                   Gap(8),
-                  widget.listAuthor[index].isFollow ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
+                  BlocBuilder<SearchBloc, SearchState>(
+                    buildWhen:(preStatus, status) {
+                      return preStatus.followAuthor != status.followAuthor;
+                    },
+                    builder: (context, state) {
+                      return InkWell(
+                        child: widget.listAuthor[index].isFollow ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
+                        onTap: (){
+                          context.read<SearchBloc>().add(SearchEvent.changeFollowAuthor(widget.listAuthor[index].brandName));
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

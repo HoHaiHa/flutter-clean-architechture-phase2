@@ -1,0 +1,9 @@
+
+import 'package:flutter_clean_architecture/shared/common/result.dart';
+
+import '../entities/topic.dart';
+
+abstract class TopicRepository {
+  Future<Result<List<Topic>>> getListTopic(String key);
+  Future<Result<void>> changeSaveTopic(String topicName);
+}

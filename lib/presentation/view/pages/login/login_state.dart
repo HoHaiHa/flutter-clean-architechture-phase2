@@ -11,8 +11,7 @@ class LoginState extends BaseState with _$LoginState {
     this.usernameError,
     this.passwordError,
     this.isRemember = false,
-    this.hidePassword= true,
-    this.isLoginPress = false,
+    this.isLoading = false,
     this.isGoogleLoginPress= false,
     this.isAuthen ,
   });
@@ -28,9 +27,7 @@ class LoginState extends BaseState with _$LoginState {
   @override
   final bool isRemember;
   @override
-  final bool hidePassword;
-  @override
-  final bool isLoginPress;
+  final bool isLoading;
   @override
   final bool isGoogleLoginPress;
   @override

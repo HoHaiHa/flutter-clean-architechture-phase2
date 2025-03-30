@@ -15,6 +15,7 @@ class ListNews extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      itemCount: listNews.length,
       itemBuilder: (context, index) {
         return NewsWidget(
           imagePath: listNews[index].imagePath,
@@ -55,7 +56,7 @@ class NewsWidget extends StatelessWidget{
     return Column(
       children: [
         Container(
-            padding: EdgeInsets.only(top: 8,left: 8,right: 8,bottom: 8),
+            padding: EdgeInsets.only(left: 8,right: 8,bottom: 8),
             width: 380,
             height: 112,
             child: Row(

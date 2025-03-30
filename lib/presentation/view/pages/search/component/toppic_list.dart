@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
+import 'package:flutter_clean_architecture/presentation/view/pages/search/search_bloc.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
@@ -61,17 +63,28 @@ class _TopicListState extends State<TopicList> {
                           style: textTheme?.textSmall?.copyWith(
                             color: colorSchema?.grayscaleBodyText,
                           ),
-            
                         ),
                       ],
                     ),
                   ),
-                Gap(8),
-                widget.listTopic[index].isSaved ? Assets.icons.saved.svg() : Assets.icons.save.svg(),
+                  Gap(8),
+                  BlocBuilder<SearchBloc, SearchState>(
+                    buildWhen:(preStatus, status) {
+                      return preStatus.saveTopic != status.saveTopic;
+                    },
+                    builder: (context, state) {
+                      return InkWell(
+                        child: widget.listTopic[index].isSaved ? Assets.icons.saved.svg() : Assets.icons.save.svg(),
+                        onTap: (){
+                          context.read<SearchBloc>().add(SearchEvent.changeSaveTopic(widget.listTopic[index].topicName));
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-            Gap(16)
+            Gap(16),
           ],
         );
       },

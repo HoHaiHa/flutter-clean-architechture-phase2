@@ -7,7 +7,7 @@ class Topic {
   final String imagePath;
   final String topicName;
   final String description;
-  final bool isSaved;
+  bool isSaved;
 
   Topic(this.imagePath, this.topicName, this.description, this.isSaved);
 }

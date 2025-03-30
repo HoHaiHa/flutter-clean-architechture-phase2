@@ -27,259 +27,301 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
 
-    final List<String> actions = [
-      "All",
-      'Sport',
-      'Politics',
-      'Bussiness',
-      'Health',
-      'Travel',
-      'Science',
-      'Fashion',
-    ];
-
     final List<News> listNews = FakeApi.LIST_NEWS;
 
-    return DefaultTabController(
-      length: actions.length,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 57),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 24,
-                  right: 24,
-                  left: 24,
-                  bottom: 26,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 99,
-                      height: 30,
-                      child: Assets.images.logo.svg(),
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen:
+          (previousState, state) =>
+              previousState.listTopics != state.listTopics,
+      builder: (context, state) {
+        return DefaultTabController(
+          length: state.listTopics.length,
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: Padding(
+              padding: const EdgeInsets.only(bottom: 57),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      right: 24,
+                      left: 24,
+                      bottom: 26,
                     ),
-                    InkWell(
-                      onTap: ()=> context.pushRoute(NotificationRoute()),
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              spreadRadius: 2,
-                              blurRadius: 4,
-                            ),
-                          ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 99,
+                          height: 30,
+                          child: Assets.images.logo.svg(),
                         ),
-                        child: Assets.icons.notify.svg(
-                          fit: BoxFit.scaleDown,
-                          width: 18,
-                          height: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Expanded(
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (context, innerBoxIsScrolled) => [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 24, left: 24),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 16),
-                                AppFormField(
-                                  decoration: InputDecoration(
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                      ),
-                                      child: Assets.icons.search.svg(),
-                                    ),
-                                  ),
-                                  onTap: ()=> context.pushRoute(SearchRoute()),
+                        InkWell(
+                          onTap: () => context.pushRoute(NotificationRoute()),
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
                                 ),
-                                Gap(16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Trending',
-                                      style: textTheme?.textMediumLink
-                                          ?.copyWith(
-                                            color: colorSchema?.darkBlack,
-                                          ),
-                                    ),
-                                    Text(
-                                      'See all',
-                                      style: textTheme?.textSmall?.copyWith(
-                                        color: colorSchema?.grayscaleBodyText,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Gap(16),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/ship.png',
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        'Europe',
-                                        style: textTheme?.textXSmall?.copyWith(
-                                          color: colorSchema?.grayscaleBodyText,
-                                        ),
-                                      ),
-                                      const Gap(4),
-                                      Text(
-                                        'Russian warship: Moskva sinks in Black Sea',
-                                        style: textTheme?.textMedium?.copyWith(
-                                          color: colorSchema?.darkBlack,
-                                        ),
-                                      ),
-                                      const Gap(4),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              ClipOval(
-                                                child: Image.asset(
-                                                  'assets/images/bbc.png',
-                                                  height: 20,
-                                                  width: 20,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                              const Gap(4),
-                                              Text(
-                                                'BBC News',
-                                                style: textTheme?.textXSmallLink
-                                                    ?.copyWith(
-                                                      color:
-                                                          colorSchema
-                                                              ?.grayscaleBodyText,
-                                                    ),
-                                              ),
-                                              const Gap(8),
-                                              Assets.icons.clock.svg(),
-                                              const Gap(6),
-                                              Text(
-                                                '4h ago',
-                                                style: textTheme?.textXSmall
-                                                    ?.copyWith(
-                                                      color:
-                                                          colorSchema
-                                                              ?.grayscaleBodyText,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                          Assets.icons.threedot.svg(),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Gap(4),
                               ],
                             ),
-                          ),
-                        ),
-
-                        SliverAppBar(
-                          pinned: true,
-                          toolbarHeight: 0,
-                          elevation: 0,
-                          bottom: PreferredSize(
-                            preferredSize: Size.fromHeight(90),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 24, left: 24),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Latest',
-                                        style: textTheme?.textMediumLink
-                                            ?.copyWith(
-                                              color: colorSchema?.darkBlack,
-                                            ),
-                                      ),
-                                      Text(
-                                        'See all',
-                                        style: textTheme?.textSmall?.copyWith(
-                                          color: colorSchema?.grayscaleBodyText,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Gap(16),
-                                TabBar(
-                                  padding: EdgeInsets.only(left: 24),
-                                  labelPadding: EdgeInsets.only(right: 10),
-                                  indicatorSize: TabBarIndicatorSize.label,
-                                  isScrollable: true,
-                                  indicatorColor: colorSchema?.primaryDefault,
-                                  labelStyle: textTheme?.textMedium,
-                                  labelColor: colorSchema?.darkBlack,
-                                  unselectedLabelStyle: textTheme?.textMedium
-                                      ?.copyWith(
-                                        color: colorSchema?.grayscaleBodyText,
-                                      ),
-
-                                  tabs:
-                                      actions.map((action) {
-                                        return Tab(child: Text(action));
-                                      }).toList(),
-                                ),
-                              ],
+                            child: Assets.icons.notify.svg(
+                              fit: BoxFit.scaleDown,
+                              width: 18,
+                              height: 25,
                             ),
                           ),
                         ),
                       ],
-                  body: Padding(
-                    padding: EdgeInsets.only(right: 24, left: 24),
-                    child: TabBarView(
-                      children:
-                          actions.map((actions) {
-                            return Center(
-                              child: ListNews(listNews: listNews),
-                            );
-                          }).toList(),
                     ),
                   ),
-                ),
+
+                  Expanded(
+                    child: NestedScrollView(
+                      headerSliverBuilder:
+                          (context, innerBoxIsScrolled) => [
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 24, left: 24),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 16),
+                                    AppFormField(
+                                      decoration: InputDecoration(
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                          ),
+                                          child: Assets.icons.search.svg(),
+                                        ),
+                                      ),
+                                      onTap:
+                                          () =>
+                                              context.pushRoute(SearchRoute()),
+                                    ),
+                                    Gap(16),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Trending',
+                                          style: textTheme?.textMediumLink
+                                              ?.copyWith(
+                                                color: colorSchema?.darkBlack,
+                                              ),
+                                        ),
+                                        Text(
+                                          'See all',
+                                          style: textTheme?.textSmall?.copyWith(
+                                            color:
+                                                colorSchema?.grayscaleBodyText,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Gap(16),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/ship.png',
+                                            fit: BoxFit.fitHeight,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            'Europe',
+                                            style: textTheme?.textXSmall
+                                                ?.copyWith(
+                                                  color:
+                                                      colorSchema
+                                                          ?.grayscaleBodyText,
+                                                ),
+                                          ),
+                                          const Gap(4),
+                                          Text(
+                                            'Russian warship: Moskva sinks in Black Sea',
+                                            style: textTheme?.textMedium
+                                                ?.copyWith(
+                                                  color: colorSchema?.darkBlack,
+                                                ),
+                                          ),
+                                          const Gap(4),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  ClipOval(
+                                                    child: Image.asset(
+                                                      'assets/images/bbc.png',
+                                                      height: 20,
+                                                      width: 20,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  ),
+                                                  const Gap(4),
+                                                  Text(
+                                                    'BBC News',
+                                                    style: textTheme
+                                                        ?.textXSmallLink
+                                                        ?.copyWith(
+                                                          color:
+                                                              colorSchema
+                                                                  ?.grayscaleBodyText,
+                                                        ),
+                                                  ),
+                                                  const Gap(8),
+                                                  Assets.icons.clock.svg(),
+                                                  const Gap(6),
+                                                  Text(
+                                                    '4h ago',
+                                                    style: textTheme?.textXSmall
+                                                        ?.copyWith(
+                                                          color:
+                                                              colorSchema
+                                                                  ?.grayscaleBodyText,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Assets.icons.threedot.svg(),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Gap(4),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            SliverAppBar(
+                              pinned: true,
+                              toolbarHeight: 0,
+                              elevation: 0,
+                              bottom: PreferredSize(
+                                preferredSize: const Size.fromHeight(90),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 24,
+                                        left: 24,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Latest',
+                                            style: textTheme?.textMediumLink
+                                                ?.copyWith(
+                                                  color: colorSchema?.darkBlack,
+                                                ),
+                                          ),
+                                          Text(
+                                            'See all',
+                                            style: textTheme?.textSmall
+                                                ?.copyWith(
+                                                  color:
+                                                      colorSchema
+                                                          ?.grayscaleBodyText,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Gap(16),
+                                    BlocBuilder<HomeBloc, HomeState>(
+                                      buildWhen: (previousState, state) {
+                                        return previousState.listTopics !=
+                                            state.listTopics;
+                                      },
+                                      builder: (context, state) {
+                                        return TabBar(
+                                          padding: const EdgeInsets.only(
+                                            left: 24,
+                                          ),
+                                          labelPadding: const EdgeInsets.only(
+                                            right: 10,
+                                          ),
+                                          indicatorSize:
+                                              TabBarIndicatorSize.label,
+                                          isScrollable: true,
+                                          indicatorColor:
+                                              colorSchema?.primaryDefault,
+                                          labelStyle: textTheme?.textMedium,
+                                          labelColor: colorSchema?.darkBlack,
+                                          unselectedLabelStyle: textTheme
+                                              ?.textMedium
+                                              ?.copyWith(
+                                                color:
+                                                    colorSchema
+                                                        ?.grayscaleBodyText,
+                                              ),
+
+                                          tabs:
+                                              state.listTopics.map((topics) {
+                                                return Tab(
+                                                  child: Text(topics.topicName),
+                                                );
+                                              }).toList(),
+                                          onTap: (index){
+                                            context.read<HomeBloc>().add(HomeEvent.changeTab(state.listTopics[index].topicName));
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                      body: BlocBuilder<HomeBloc, HomeState>(
+                        buildWhen: (previousState, state) {
+                          return previousState.listNews != state.listNews;
+                        },
+                        builder: (context, state) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 24, left: 24),
+                            child: TabBarView(
+                              children:
+                                  state.listTopics.map((topics) {
+                                    return Center(
+                                      child: ListNews(
+                                        //listNews: listNews,
+                                        listNews: state.listNews ?? [News(imagePath: '', topic: '', title: '', brandImagePath: '', brandName: '', timePost: DateTime(2022))],
+                                      ),
+                                    );
+                                  }).toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

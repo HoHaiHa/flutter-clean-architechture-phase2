@@ -65,6 +65,8 @@ abstract class BasePage<B extends BaseBloc<E, S>, E, S extends BaseState>
 
   void onBuilderComplete(BuildContext context) {}
 
+  void didChangeDependencies(BuildContext context){}
+
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<B>(

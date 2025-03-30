@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/gen/assets.gen.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_button.dart';
+import 'package:flutter_clean_architecture/presentation/view/widgets/app_checkbox.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
+import 'package:flutter_clean_architecture/presentation/view/widgets/app_secure_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 
 import '../../../base/base_page.dart';
@@ -55,7 +57,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                   color: colorSchema?.grayscaleBodyText,
                 ),
               ),
-              const SizedBox(height: 52),
+              const SizedBox(height: 48),
               Row(
                 children: [
                   Text(
@@ -74,32 +76,32 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
               ),
               const SizedBox(height: 4),
 
-              BlocSelector<LoginBloc, LoginState, (String, String?, bool?)>(
-                selector: (state) => (state.username, state.usernameError, state.isAuthen),
+              BlocSelector<LoginBloc, LoginState, (String, String?)>(
+                selector: (state) => (state.username, state.usernameError),
                 builder: (context, state) {
                   return Column(
                     children: [
                       AppFormField(
                         value: state.$1,
-                        errorText: state.$2,
                         onChanged: (value) {
                           context.read<LoginBloc>().add(
                             LoginEvent.changeUsername(value),
                           );
                         },
-                        // decoration: InputDecoration(
-                        //   suffixIcon: InkWell(
-                        //     onTap: () {
-                        //       context.read<LoginBloc>().add(
-                        //         LoginEvent.changeUsername(''),
-                        //       );
-                        //     },
-                        //     child:
-                        //         state.$1 != ''
-                        //             ? Assets.icons.closeSearch.svg()
-                        //             : null,
-                        //   ),
-                        // ),
+                        decoration: InputDecoration(
+                          errorText: state.$2,
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              context.read<LoginBloc>().add(
+                                LoginEvent.changeUsername(''),
+                              );
+                            },
+                            child:
+                                state.$1 != ''
+                                    ? Assets.icons.closeSearch.svg()
+                                    : SizedBox(),
+                          ),
+                        ),
                       ),
                     ],
                   );
@@ -125,33 +127,12 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
               const SizedBox(height: 4),
               BlocBuilder<LoginBloc, LoginState>(
                 buildWhen: (previousState, state) {
-                  return previousState.password != state.password ||
-                      previousState.hidePassword != state.hidePassword;
+                  return previousState.password != state.password;
                 },
                 builder: (context, state) {
-                  return AppFormField(
+                  return AppSecureFormField(
                     value: state.password,
-                    errorText: state.passwordError,
-                    obscureText: state.hidePassword,
-                    decoration: InputDecoration(
-                      suffixIcon: Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: InkWell(
-                          onTap: () {
-                            context.read<LoginBloc>().add(
-                              LoginEvent.toggleHidePassword(),
-                            );
-                          },
-                          child:
-                              state.hidePassword
-                                  ? Assets.icons.hind.svg()
-                                  : Icon(
-                                    Icons.visibility_outlined,
-                                    color: colorSchema?.grayscaleBodyText,
-                                  ),
-                        ),
-                      ),
-                    ),
+                    decoration: InputDecoration(errorText: state.passwordError),
                     onChanged: (value) {
                       context.read<LoginBloc>().add(
                         LoginEvent.changePassword(value),
@@ -175,9 +156,11 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                         child: BlocSelector<LoginBloc, LoginState, bool>(
                           selector: (state) => state.isRemember,
                           builder: (context, isRemember) {
-                            return Checkbox(
+                            return AppCheckBox(
+                              borderColor: colorSchema?.grayscaleBodyText,
+                              size: CheckBoxSize.normal,
                               value: isRemember,
-                              activeColor: colorSchema?.primaryDefault,
+                              checkedColor: colorSchema?.primaryDefault,
                               onChanged: (value) {
                                 context.read<LoginBloc>().add(
                                   LoginEvent.toggleRemember(),
@@ -208,27 +191,42 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
               ),
               SizedBox(height: 16),
               BlocListener<LoginBloc, LoginState>(
-                listenWhen:(previousState, state) {
-                  return previousState != state.isAuthen;
+                listenWhen: (previousState, state) {
+                  return previousState.isAuthen != state.isAuthen &&
+                      state.isAuthen == true;
                 },
                 listener: (context, state) {
-                  context.pushRoute(HomeRoute());
+                  context.replaceRoute(HomeRoute());
                 },
-               child:
-                AppButton.primary(
+                child: AppButton.primary(
                   height: 50,
                   backgroundColor: colorSchema?.primaryDefault,
                   title: 'Login',
-                  titleStyle: textTheme?.textMedium,
+                  titleStyle: textTheme?.textMediumLink,
                   onPressed:
                       () => {
-                        context.read<LoginBloc>().add(
-                          LoginEvent.login()
-                        ),
+                        context.read<LoginBloc>().add(const LoginEvent.login()),
                       },
                 ),
               ),
-              SizedBox(height: 16),
+              BlocListener<LoginBloc, LoginState>(
+                listenWhen: (previousState, state) {
+                  return previousState.isLoading != state.isLoading;
+                },
+                listener: (context, state) {
+                  if (state.isLoading) showLoadingDialog(context);
+                  if (!state.isLoading)
+                    Navigator.of(context, rootNavigator: true).pop();
+                  if (state.isAuthen == false) {
+                    showWrongPasswordDialog(context);
+                    context.read<LoginBloc>().add(
+                      const LoginEvent.changeAuth(null),
+                    );
+                  }
+                },
+                child: const SizedBox.shrink(),
+              ),
+              const SizedBox(height: 16),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -248,7 +246,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                       backgroundColor: colorSchema?.grayscaleSecondaryButton,
                       title: 'Facebook',
                       titleStyle: textTheme?.textMediumLink?.copyWith(
-                        color: colorSchema?.grayscaleBodyText,
+                        color: colorSchema?.grayscaleButtonText,
                       ),
                       onPressed: () {},
                       icon: Assets.icons.facebook.svg(),
@@ -260,7 +258,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                       backgroundColor: colorSchema?.grayscaleSecondaryButton,
                       title: 'Google',
                       titleStyle: textTheme?.textMediumLink?.copyWith(
-                        color: colorSchema?.grayscaleBodyText,
+                        color: colorSchema?.grayscaleButtonText,
                       ),
                       onPressed: () {},
                       icon: Assets.icons.google.svg(),
@@ -292,4 +290,39 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
       ),
     );
   }
+}
+
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return const Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    },
+  );
+}
+
+void showWrongPasswordDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Đã có lỗi xảy ra"),
+        content: Text("Sai tên đăng nhập hoặc mật khẩu!"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Quay lại"),
+          ),
+        ],
+      );
+    },
+  );
 }

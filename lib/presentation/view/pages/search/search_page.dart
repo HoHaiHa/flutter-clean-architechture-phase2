@@ -31,7 +31,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
 
-    final List<News> listNews= FakeApi.LIST_NEWS;
+    final List<News> listNews = FakeApi.LIST_NEWS;
 
     final List<Topic> listTopic = FakeApi.topics;
 
@@ -46,20 +46,31 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
             padding: EdgeInsets.only(right: 24, left: 24, top: 24),
             child: Column(
               children: [
-                AppFormField(
-                  decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Assets.icons.search.svg(),
-                    ),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: InkWell(
-                        onTap: () => context.pop(),
-                        child: Assets.icons.closeSearch.svg(),
+                BlocBuilder<SearchBloc, SearchState>(
+                  buildWhen: (preState,state){
+                    return preState != state;
+                  },
+                  builder: (context, state) {
+                    return AppFormField(
+                      value: state.searchKey,
+                      decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Assets.icons.search.svg(),
+                        ),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: InkWell(
+                            onTap: () => context.pop(),
+                            child: Assets.icons.closeSearch.svg(),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                      onChanged: (value){
+                        context.read<SearchBloc>().add(SearchEvent.changeSearchKey(value));
+                      },
+                    );
+                  },
                 ),
               ],
             ),
@@ -72,7 +83,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
               labelStyle: textTheme?.textMedium,
               labelColor: colorSchema?.darkBlack,
               indicatorSize: TabBarIndicatorSize.label,
-              unselectedLabelStyle:textTheme?.textMedium,
+              unselectedLabelStyle: textTheme?.textMedium,
               unselectedLabelColor: colorSchema?.grayscaleBodyText,
               labelPadding: EdgeInsets.zero,
               tabs: <Widget>[
@@ -83,22 +94,21 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
             ),
           ),
           Expanded(
-            child: TabBarView(children: [
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ListNews(listNews: listNews),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: BlocBuilder<SearchBloc, SearchState>(
+                builder: (context, state) {
+                  return TabBarView(
+                    children: [
+                      ListNews(listNews: state.listNews ?? []),
+                      TopicList(state.listTopics ?? []),
+                      AuthorList(state.listAuthors ?? []),
+                    ],
+                  );
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: TopicList( listTopic),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: AuthorList( listAuthor),
-              )
-            ],),
-          )
+            ),
+          ),
         ],
       ),
     );

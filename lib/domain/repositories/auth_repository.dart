@@ -1,7 +1,10 @@
 
 
+import '../../shared/common/result.dart';
+import '../entities/user_info.dart';
+
 abstract interface class AuthRepository {
-  Future<bool> login(
+  Future<Result<UserInfo>> login(
       {required String username, required String password});
 
   // Future<Result<String?>> getUsername();

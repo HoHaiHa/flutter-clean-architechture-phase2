@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -19,6 +20,9 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
             case _LoadData():
               emit(state.copyWith(pageStatus: PageStatus.Loaded));
               break;
+            case _ChangeFollowed():
+              // TODO: Handle this case.
+              throw UnimplementedError();
           }
         } catch(e,s) {
             handleError(emit, ErrorConverter.convert(e, s));

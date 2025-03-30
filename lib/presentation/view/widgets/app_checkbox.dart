@@ -4,7 +4,7 @@ import 'package:flutter_clean_architecture/presentation/resources/colors.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 
 enum CheckBoxSize {
-  normal(22.0),
+  normal(20.0),
   small(18.0);
 
   const CheckBoxSize(this.value);
