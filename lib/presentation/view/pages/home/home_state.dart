@@ -6,11 +6,14 @@ class HomeState extends BaseState with _$HomeState {
     super.pageStatus = PageStatus.Loaded,
     super.pageErrorMessage,
     this.listNews,
-    required this.listTopics,
+    this.listTopics,
+
   });
 
   @override
   final List<News>? listNews;
   @override
-  final List<Topic> listTopics;
+  final List<Topic>? listTopics;
+
+
 }

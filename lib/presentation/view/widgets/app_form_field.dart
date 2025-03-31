@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -36,6 +35,7 @@ class AppFormField extends StatefulWidget {
     this.validator,
     this.decoration,
     this.isRequire = false,
+    this.onSuffixIconTap,
   });
 
   final String? label;
@@ -63,6 +63,7 @@ class AppFormField extends StatefulWidget {
   final Color? disableBackgroundColor;
   final InputDecoration? decoration;
   final bool isRequire;
+  final VoidCallback? onSuffixIconTap;
 
   @override
   State<AppFormField> createState() => _AppFormFieldState();
@@ -132,13 +133,13 @@ class _AppFormFieldState extends State<AppFormField> {
                     color: colorSchema?.grayscaleBodyText,
                   ),
                 ),
-                if(widget.isRequire)
-                TextSpan(
-                  text: '*',
-                  style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.errorDark,
+                if (widget.isRequire)
+                  TextSpan(
+                    text: '*',
+                    style: textTheme?.textSmall?.copyWith(
+                      color: colorSchema?.errorDark,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -157,7 +158,7 @@ class _AppFormFieldState extends State<AppFormField> {
             keyboardType: widget.keyboardType,
             textDirection: widget.textDirection,
             onTap: () {
-              widget.onTap?.call() ;
+              widget.onTap?.call();
               setState(() {
                 hideClearWordBtn = false;
               });
@@ -183,7 +184,8 @@ class _AppFormFieldState extends State<AppFormField> {
               counterText: '',
               suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
               suffixIcon:
-                  !hideClearWordBtn
+                  widget.decoration?.suffixIcon ??
+                  (!hideClearWordBtn
                       ? InkWell(
                         onTap: () {
                           _controller.text = '';
@@ -194,7 +196,7 @@ class _AppFormFieldState extends State<AppFormField> {
                           child: Assets.icons.closeSearch.svg(),
                         ),
                       )
-                      : null,
+                      : null),
               prefixIcon:
                   (widget.decoration?.prefixIcon != null)
                       ? Padding(

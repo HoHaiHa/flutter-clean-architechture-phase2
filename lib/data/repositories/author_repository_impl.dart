@@ -8,8 +8,10 @@ class AuthorRepositoryImpl extends AuthorRepository {
   AuthorRepositoryImpl();
 
   @override
-  Future<Result<List<Author>>> getListAuthors(String key) async {
-    return Result.completed(_authors.where((author)=> author.brandName.trim().toLowerCase().contains(key.trim().toLowerCase())).toList());
+  Future<List<Author>> getListAuthors(String key) async {
+    List<Author> listAuthors = _authors.where((author)=> author.brandName.trim().toLowerCase().contains(key.trim().toLowerCase())).toList();
+    //if(listAuthors.isEmpty)  throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+    return listAuthors;
   }
 
   @override

@@ -1,36 +1,42 @@
 import 'package:flutter_clean_architecture/domain/entities/news.dart';
-import 'package:flutter_clean_architecture/presentation/view/widgets/list_news.dart';
-import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/news_repository.dart';
-import '../../shared/common/result.dart';
 
 @Injectable(as: NewsRepository)
 class NewsRepositoryImpl implements NewsRepository {
   @override
-  Future<List<News>> getListNewByTopic({ topic}) async {
-    if (topic=='')
-      List<News> ListNews = _listNews;
-      if(ListNews.is)
+  Future<List<News>> getListNewByTopic({topic}) async {
+    if (topic == '')
+      // if(_listNews.isEmpty){
+      //   throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+      // }
       return _listNews;
     else {
-      return
-        _listNews.where((news) => news.topic == topic).toList();
+      // if(_listNews.isEmpty){
+      //   throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+      // }
+      return _listNews.where((news) => news.topic == topic).toList();
     }
   }
 
   @override
-  Future<Result<List<News>>> searchNewByTopic({required key}) async {
-    return Result.completed(
-      _listNews
-          .where(
-            (news) =>
-                news.topic.trim().toLowerCase().contains(key.trim().toLowerCase()) ||
-                news.title.trim().toLowerCase().contains(key.trim().toLowerCase()) ||
-                news.brandName.trim().toLowerCase().contains(key.trim().toLowerCase()),
-          )
-          .toList(),
-    );
+  Future<List<News>> searchNewByTopic({required key}) async {
+    List<News> searchResult = _listNews
+        .where(
+          (news) =>
+      news.topic.trim().toLowerCase().contains(
+        key.trim().toLowerCase(),
+      ) ||
+          news.title.trim().toLowerCase().contains(
+            key.trim().toLowerCase(),
+          ) ||
+          news.brandName.trim().toLowerCase().contains(
+            key.trim().toLowerCase(),
+          ),
+    )
+        .toList();
+    //if(searchResult.isEmpty) throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+    return searchResult;
   }
 
   static List<News> _listNews = [

@@ -1,5 +1,4 @@
 import 'package:flutter_clean_architecture/domain/repositories/news_repository.dart';
-import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/news.dart';
@@ -12,7 +11,7 @@ class SearchNewsUseCase extends UseCase<void, SearchNewsParam> {
   final NewsRepository _newsRepository;
 
   @override
-  Future<Result<List<News>>> call({required SearchNewsParam params}) async {
+  Future<List<News>> call({required SearchNewsParam params}) async {
     return _newsRepository.searchNewByTopic(key: params.key);
   }
 }

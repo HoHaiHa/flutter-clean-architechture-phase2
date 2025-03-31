@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
-import 'package:flutter_clean_architecture/presentation/view/pages/fakeNews.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
@@ -27,15 +26,13 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
 
-    final List<News> listNews = FakeApi.LIST_NEWS;
-
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen:
           (previousState, state) =>
               previousState.listTopics != state.listTopics,
       builder: (context, state) {
         return DefaultTabController(
-          length: state.listTopics.length + 1,
+          length: state.listTopics!.length + 1,
           child: Scaffold(
             resizeToAvoidBottomInset: true,
             body: Padding(
@@ -103,6 +100,8 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                           ),
                                           child: Assets.icons.search.svg(),
                                         ),
+
+                                        suffixIcon: SizedBox.shrink(),
                                       ),
                                       onTap:
                                           () =>
@@ -278,7 +277,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
 
                                           tabs: [
                                             const Tab(child: Text('All')),
-                                            ...state.listTopics.map((topics) {
+                                            ...?state.listTopics?.map((topics) {
                                               return Tab(
                                                 child: Text(topics.topicName),
                                               );
@@ -289,7 +288,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                               index != 0
                                                   ? HomeEvent.changeTab(
                                                     state
-                                                        .listTopics[index - 1]
+                                                        .listTopics![index - 1]
                                                         .topicName,
                                                   )
                                                   : const HomeEvent.changeTab(
@@ -328,7 +327,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                         ),
                                       ],
                                 ),
-                                ...state.listTopics.map((topics) {
+                                ...?state.listTopics?.map((topics) {
                                   return Center(
                                     child: ListNews(
                                       listNews:

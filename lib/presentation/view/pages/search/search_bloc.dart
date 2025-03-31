@@ -1,8 +1,8 @@
 import 'package:flutter_clean_architecture/domain/entities/author.dart';
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
 import 'package:flutter_clean_architecture/domain/usecases/change_save_topic_use_case.dart';
-import 'package:flutter_clean_architecture/domain/usecases/get_list_author_use_case.dart';
-import 'package:flutter_clean_architecture/domain/usecases/get_list_topic_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/get_all_author_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/get_all_topic_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/search_news_use_case.dart';
 import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -24,8 +24,8 @@ part 'search_state.dart';
 class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
   SearchBloc(
     this._searchNewsUseCase,
-    this._getListTopicUseCase,
-    this._getListAuthorUseCase,
+    this._getAllTopicUseCase,
+    this._getAllAuthorUseCase,
     this._changeSaveTopicUseCase,
     this._changeFollowAuthorUseCase,
   ) : super(const SearchState()) {
@@ -34,66 +34,32 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
         switch (event) {
           case _LoadData():
             emit(state.copyWith(pageStatus: PageStatus.Loaded));
-            final Result<List<News>> listNewsResult = await _searchNewsUseCase
-                .call(params: SearchNewsParam(''));
-            if (listNewsResult.success) {
-              emit(state.copyWith(listNews: listNewsResult.data));
-            } else {
-              logger.d('có lỗi khi lấy listnews ${listNewsResult.failure}');
-            }
-
-            final Result<List<Topic>> listTopicResult =
-                await _getListTopicUseCase.call(params: GetListTopicParam(''));
-            if (listTopicResult.success) {
-              emit(state.copyWith(listTopics: listTopicResult.data));
-            } else {
-              logger.d('có lỗi khi lấy listTopics ${listTopicResult.failure}');
-            }
-
-            final Result<List<Author>> listAuthorsResult =
-                await _getListAuthorUseCase.call(
-                  params: GetListAuthorParam(''),
-                );
-            if (listAuthorsResult.success) {
-              emit(state.copyWith(listAuthors: listAuthorsResult.data));
-            } else {
-              logger.d(
-                'có lỗi khi lấy listAuthors ${listAuthorsResult.failure}',
-              );
-            }
+            final List<News> listNewsResult = await _searchNewsUseCase.call(
+              params: SearchNewsParam(''),
+            );
+            emit(state.copyWith(listNews: listNewsResult));
+            final List<Topic> listTopicsResult =await _getAllTopicUseCase.call(params: GetAllTopicParam(''));
+            emit(state.copyWith(listTopics: listTopicsResult));
+            final List<Author> listAuthorsResult = await _getAllAuthorUseCase
+                .call(params: GetAllAuthorParam(''));
+            emit(state.copyWith(listAuthors: listAuthorsResult));
             break;
           case _ChangeSearchKey(key: final key):
             emit(state.copyWith(searchKey: key));
 
-            final Result<List<News>> listNewsResult = await _searchNewsUseCase
-                .call(params: SearchNewsParam(state.searchKey ?? ''));
-            if (listNewsResult.success) {
-              emit(state.copyWith(listNews: listNewsResult.data));
-            } else {
-              logger.d('có lỗi khi lấy listnews ${listNewsResult.failure}');
-            }
+            final List<News> listNewsResult = await _searchNewsUseCase.call(
+              params: SearchNewsParam(state.searchKey ?? ''),
+            );
 
-            final Result<List<Topic>> listTopicResult =
-                await _getListTopicUseCase.call(
-                  params: GetListTopicParam(state.searchKey ?? ''),
-                );
-            if (listTopicResult.success) {
-              emit(state.copyWith(listTopics: listTopicResult.data));
-            } else {
-              logger.d('có lỗi khi lấy listTopics ${listTopicResult.failure}');
-            }
+            emit(state.copyWith(listNews: listNewsResult));
 
-            final Result<List<Author>> listAuthorsResult =
-                await _getListAuthorUseCase.call(
-                  params: GetListAuthorParam(state.searchKey ?? ''),
-                );
-            if (listAuthorsResult.success) {
-              emit(state.copyWith(listAuthors: listAuthorsResult.data));
-            } else {
-              logger.d(
-                'có lỗi khi lấy listAuthors ${listAuthorsResult.failure}',
-              );
-            }
+            final List<Topic> listTopicResult = await _getAllTopicUseCase.call(
+              params: GetAllTopicParam(state.searchKey ?? ''),
+            );
+            emit(state.copyWith(listTopics: listTopicResult));
+
+            final List<Author> listAuthorsResult = await _getAllAuthorUseCase
+                .call(params: GetAllAuthorParam(state.searchKey ?? ''));
 
             break;
           case _ChangeTab():
@@ -106,41 +72,19 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
                   params: ChangeSaveTopicParam(topicName),
                 );
             if (changeSaveTopicResult.success) {
-              final Result<List<Topic>> listTopicResult =
-                  await _getListTopicUseCase.call(
-                    params: GetListTopicParam(state.searchKey ?? ''),
-                  );
-              if (listTopicResult.success) {
-                emit(state.copyWith(listTopics: listTopicResult.data));
-              } else {
-                logger.d(
-                  'có lỗi khi lấy listTopics ${listTopicResult.failure}',
-                );
-              }
-            } else {
-              logger.d(
-                'có lỗi khi thay đổi save topic ${changeSaveTopicResult.failure}',
-              );
+              final List<Topic> listTopicResult = await _getAllTopicUseCase
+                  .call(params: GetAllTopicParam(state.searchKey ?? ''));
             }
             break;
           case _ChangeFollowAuthor(authorName: final authorName):
             emit(state.copyWith(followAuthor: !state.followAuthor));
             final Result<List<Author>> changeFollowResult =
-            await _changeFollowAuthorUseCase.call(
-              params: ChangeFollowAuthorParam(authorName),
-            );
-            if (changeFollowResult.success) {
-              final Result<List<Author>> listAuthorsResult =
-              await _getListAuthorUseCase.call(
-                params: GetListAuthorParam(state.searchKey ?? ''),
-              );
-              if (listAuthorsResult.success) {
-                emit(state.copyWith(listAuthors: listAuthorsResult.data));
-              } else {
-                logger.d(
-                  'có lỗi khi lấy listAuthors ${listAuthorsResult.failure}',
+                await _changeFollowAuthorUseCase.call(
+                  params: ChangeFollowAuthorParam(authorName),
                 );
-              }
+            if (changeFollowResult.success) {
+              final List<Author> listAuthorsResult = await _getAllAuthorUseCase
+                  .call(params: GetAllAuthorParam(state.searchKey ?? ''));
             } else {
               logger.d(
                 'có lỗi khi thay đổi save topic ${changeFollowResult.failure}',
@@ -155,8 +99,8 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
   }
 
   final SearchNewsUseCase _searchNewsUseCase;
-  final GetListTopicUseCase _getListTopicUseCase;
-  final GetListAuthorUseCase _getListAuthorUseCase;
+  final GetAllTopicUseCase _getAllTopicUseCase;
+  final GetAllAuthorUseCase _getAllAuthorUseCase;
   final ChangeSaveTopicUseCase _changeSaveTopicUseCase;
   final ChangeFollowAuthorUseCase _changeFollowAuthorUseCase;
 }

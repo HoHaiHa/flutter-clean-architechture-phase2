@@ -1,5 +1,4 @@
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
-import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
 import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/topic_repository.dart';
@@ -7,13 +6,13 @@ import '../../domain/repositories/topic_repository.dart';
 @Injectable(as: TopicRepository)
 class TopicRepositoryImpl implements TopicRepository {
   @override
-  Future<Result<List<Topic>>> getListTopic(String key) async {
+  Future<List<Topic>> getListTopic(String key) async {
     List<Topic> filteredTopics = _topics
         .where((topic) =>
         topic.topicName.trim().toLowerCase().contains(key.trim().toLowerCase()))
         .toList();
-
-    return Result.completed(filteredTopics);
+    //if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+    return filteredTopics;
   }
 
   @override
@@ -26,8 +25,8 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Future<List<Topic>> getListTopicSaved() async {
     List<Topic> filteredTopics = _topics.where((topic) => topic.isSaved).toList();
-    if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'error get listTopic saved', message: 'error get listTopic saved');
-    else return filteredTopics;
+    //if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+    return filteredTopics;
   }
 
   static List<Topic> _topics  = [

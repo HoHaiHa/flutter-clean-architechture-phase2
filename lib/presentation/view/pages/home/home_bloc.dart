@@ -1,3 +1,4 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_list_news_by_topic_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_list_topic_saved_use_case.dart';
@@ -5,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../domain/entities/news.dart';
 import '../../../../shared/common/error_converter.dart';
+import '../../../../shared/common/error_entity/error_entity.dart';
+import '../../../../shared/common/error_entity/validation_error_entity.dart';
 import '../../../base/base_bloc.dart';
 import '../../../base/base_state.dart';
 import '../../../base/page_status.dart';
@@ -44,4 +47,15 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
 
   final GetListTopicSavedUseCase _getListTopicSavedUseCase;
   final GetListNewsByTopicUseCase _getListNewsByTopicUseCase;
+
+
+  @override
+  void handleError<S>(Emitter<S> emit, Object error) {
+    if (error is ValidationErrorEntity) {
+    } else {
+      final message = error is ErrorEntity ? error.message : 'Error something..';
+    }
+  }
+
 }
+

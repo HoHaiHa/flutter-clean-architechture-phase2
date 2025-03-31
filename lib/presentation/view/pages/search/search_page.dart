@@ -47,7 +47,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
             child: Column(
               children: [
                 BlocBuilder<SearchBloc, SearchState>(
-                  buildWhen: (preState,state){
+                  buildWhen: (preState, state) {
                     return preState != state;
                   },
                   builder: (context, state) {
@@ -58,16 +58,19 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Assets.icons.search.svg(),
                         ),
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: InkWell(
-                            onTap: () => context.pop(),
+                        suffixIcon: InkWell(
+                          onTap: () => context.pop(),
+                          child:Padding(
+                            padding: const EdgeInsets.only(right: 12),
                             child: Assets.icons.closeSearch.svg(),
                           ),
+
                         ),
                       ),
-                      onChanged: (value){
-                        context.read<SearchBloc>().add(SearchEvent.changeSearchKey(value));
+                      onChanged: (value) {
+                        context.read<SearchBloc>().add(
+                          SearchEvent.changeSearchKey(value),
+                        );
                       },
                     );
                   },
@@ -86,7 +89,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
               unselectedLabelStyle: textTheme?.textMedium,
               unselectedLabelColor: colorSchema?.grayscaleBodyText,
               labelPadding: EdgeInsets.zero,
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Tab(text: 'News'),
                 Tab(text: 'Topic'),
                 Tab(text: 'Author'),
