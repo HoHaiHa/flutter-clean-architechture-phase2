@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/presentation/base/page_status.dart';
 import 'package:flutter_clean_architecture/shared/extension/theme_data.dart';
+import 'package:flutter_clean_architecture/shared/utils/logger.dart';
 import 'package:focus_detector/focus_detector.dart';
 
 import '../../di/di.dart';
+import '../../shared/utils/alert.dart';
 import '../../shared/utils/keyboard.dart';
 import '../view/widgets/app_list_card_loading.dart';
 import '../view/widgets/error_widget.dart';
@@ -15,12 +17,10 @@ import 'base_bloc.dart';
 import 'base_state.dart';
 
 abstract class BasePage<B extends BaseBloc<E, S>, E, S extends BaseState>
-    extends StatefulWidget implements AutoRouteWrapper {
-  const BasePage({
-    Key? key,
-    this.screenName,
-    this.needRemoveSplash = false,
-  }) : super(key: key);
+    extends StatefulWidget
+    implements AutoRouteWrapper {
+  const BasePage({Key? key, this.screenName, this.needRemoveSplash = false})
+    : super(key: key);
 
   final String? screenName;
   final bool needRemoveSplash;
@@ -65,18 +65,40 @@ abstract class BasePage<B extends BaseBloc<E, S>, E, S extends BaseState>
 
   void onBuilderComplete(BuildContext context) {}
 
-  void didChangeDependencies(BuildContext context){}
+  void didChangeDependencies(BuildContext context) {}
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<B>(
-      create: (_) => createBloc(),
-      child: this,
-    );
+    return BlocProvider<B>(create: (_) => createBloc(), child: this);
   }
 
   B createBloc() {
     return getIt<B>();
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+            ),
+            child: const CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    if (Navigator.of(context, rootNavigator: true).canPop()) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 
   @override
@@ -107,7 +129,8 @@ class _BasePageState<B extends BaseBloc<E, S>, E, S extends BaseState>
 
   @override
   Widget build(BuildContext context) {
-    final primaryTextStyle = Theme.of(context).own().textTheme?.primary ??
+    final primaryTextStyle =
+        Theme.of(context).own().textTheme?.primary ??
         const TextStyle(fontSize: 13);
     final defaultTextStyle = primaryTextStyle.copyWith(
       color: Theme.of(context).own().colorSchema?.primary,
@@ -131,7 +154,26 @@ class _BasePageState<B extends BaseBloc<E, S>, E, S extends BaseState>
                   case PageStatus.Loaded:
                     final builder = widget.builder(context);
                     onBuilderComplete.call();
-                    return builder;
+                    return BlocListener<B, S>(
+                      listenWhen: (preState, state) {
+                        return state.pageErrorMessage !=
+                                preState.pageErrorMessage;
+                      },
+                      listener: (context, state) {
+                        logger.d('duc.trandinh show error');
+
+                        AppAlertDialog.show(
+                          context: context,
+                          title: 'error.message'.tr(),
+                          message: state.pageErrorMessage,
+                          type: AppAlertType.error,
+                          onConfirmBtnTap: () {},
+                          barrierDismissible: false,
+                        );
+                      },
+                      child: builder,
+                    );
+
                   case PageStatus.Error:
                     return widget.pageErrorBuilder(
                       context,
@@ -163,10 +205,7 @@ class _LoadingView extends StatelessWidget {
 }
 
 class _ErrorView extends StatelessWidget {
-  const _ErrorView({
-    this.errorMessage,
-    this.onRetry,
-  });
+  const _ErrorView({this.errorMessage, this.onRetry});
 
   final String? errorMessage;
   final Function? onRetry;

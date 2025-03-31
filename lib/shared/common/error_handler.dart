@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../utils/alert.dart';
 import 'error_entity/business_error_entity.dart';
@@ -39,12 +38,12 @@ abstract class ErrorHandler {
   }
 
   static void _showErrorDialog(String message, {VoidCallback? onPressed}) {
-    AppAlertDialog.show(
-      title: 'error.message'.tr(),
-      message: message,
-      type: AppAlertType.error,
-      onConfirmBtnTap: onPressed,
-      barrierDismissible: false,
-    );
+    // AppAlertDialog.show(
+    //   title: 'error.message'.tr(),
+    //   message: message,
+    //   type: AppAlertType.error,
+    //   onConfirmBtnTap: onPressed,
+    //   barrierDismissible: false,
+    // );
   }
 }

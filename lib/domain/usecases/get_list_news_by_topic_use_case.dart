@@ -1,7 +1,5 @@
 import 'package:flutter_clean_architecture/domain/repositories/news_repository.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../shared/common/result.dart';
 import '../entities/news.dart';
 import 'use_case.dart';
 
@@ -13,12 +11,12 @@ class GetListNewsByTopicUseCase extends UseCase<void, GetListNewsByTopicParam> {
 
 
   @override
-  Future<Result<List<News>>> call({required GetListNewsByTopicParam params}) async {
+  Future<List<News>> call({required GetListNewsByTopicParam params}) async {
     return _newsRepository.getListNewByTopic(topic: params.topic);
   }
 }
 
 class GetListNewsByTopicParam {
   GetListNewsByTopicParam(this.topic);
-  final String topic;
+  final String? topic;
 }

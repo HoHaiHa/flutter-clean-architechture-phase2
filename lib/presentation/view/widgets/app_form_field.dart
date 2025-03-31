@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -34,6 +35,7 @@ class AppFormField extends StatefulWidget {
     this.obscureText = false,
     this.validator,
     this.decoration,
+    this.isRequire = false,
   });
 
   final String? label;
@@ -60,6 +62,7 @@ class AppFormField extends StatefulWidget {
   final Color? disableTextColor;
   final Color? disableBackgroundColor;
   final InputDecoration? decoration;
+  final bool isRequire;
 
   @override
   State<AppFormField> createState() => _AppFormFieldState();
@@ -67,6 +70,7 @@ class AppFormField extends StatefulWidget {
 
 class _AppFormFieldState extends State<AppFormField> {
   late TextEditingController _controller;
+  bool hideClearWordBtn = true;
 
   @override
   void initState() {
@@ -116,10 +120,34 @@ class _AppFormFieldState extends State<AppFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (widget.label != null)
+          Text.rich(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: widget.label ?? '',
+                  style: textTheme?.textSmall?.copyWith(
+                    color: colorSchema?.grayscaleBodyText,
+                  ),
+                ),
+                if(widget.isRequire)
+                TextSpan(
+                  text: '*',
+                  style: textTheme?.textSmall?.copyWith(
+                    color: colorSchema?.errorDark,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        Gap(4),
+
         Container(
           child: TextFormField(
             obscuringCharacter: '*',
-            obscureText: widget.obscureText ?? false,
+            obscureText: widget.obscureText,
             readOnly: widget.readOnly,
             onChanged: widget.onChanged,
             inputFormatters: widget.inputFormatters,
@@ -128,9 +156,17 @@ class _AppFormFieldState extends State<AppFormField> {
             maxLines: widget.maxLines ?? 1,
             keyboardType: widget.keyboardType,
             textDirection: widget.textDirection,
-            onTap: widget.onTap,
+            onTap: () {
+              widget.onTap?.call() ;
+              setState(() {
+                hideClearWordBtn = false;
+              });
+            },
             onTapOutside: (event) {
               hideKeyboard();
+              setState(() {
+                hideClearWordBtn = true;
+              });
             },
             onFieldSubmitted: widget.onFieldSubmitted,
             focusNode: widget.focusNode,
@@ -145,16 +181,20 @@ class _AppFormFieldState extends State<AppFormField> {
             ),
             decoration: InputDecoration(
               counterText: '',
-              //suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
+              suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
               suffixIcon:
-                  (widget.decoration?.suffixIcon != null)
-                      ? Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 12, 12, 12),
-                        child: widget.decoration?.suffixIcon,
+                  !hideClearWordBtn
+                      ? InkWell(
+                        onTap: () {
+                          _controller.text = '';
+                          widget.onChanged?.call('');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: Assets.icons.closeSearch.svg(),
+                        ),
                       )
                       : null,
-
-              //prefixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
               prefixIcon:
                   (widget.decoration?.prefixIcon != null)
                       ? Padding(
@@ -203,7 +243,7 @@ class _AppFormFieldState extends State<AppFormField> {
             child: Row(
               children: [
                 Assets.icons.warningIcon.svg(),
-                Gap(3.83),
+                const Gap(4),
                 Text(
                   maxLines: 1,
                   widget.decoration?.errorText ?? '',
@@ -213,7 +253,7 @@ class _AppFormFieldState extends State<AppFormField> {
                   ),
                 ),
               ],
-            )
+            ),
           ),
       ],
     );

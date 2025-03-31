@@ -1,4 +1,5 @@
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
+import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
 import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/topic_repository.dart';
@@ -20,6 +21,13 @@ class TopicRepositoryImpl implements TopicRepository {
     Topic topic = _topics.firstWhere((topic)=> topic.topicName == topicName);
     topic.isSaved = !topic.isSaved;
     return Result.completed(topic.isSaved);
+  }
+
+  @override
+  Future<List<Topic>> getListTopicSaved() async {
+    List<Topic> filteredTopics = _topics.where((topic) => topic.isSaved).toList();
+    if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'error get listTopic saved', message: 'error get listTopic saved');
+    else return filteredTopics;
   }
 
   static List<Topic> _topics  = [
@@ -84,8 +92,4 @@ class TopicRepositoryImpl implements TopicRepository {
       true,
     ),
   ];
-
-
-
-
 }

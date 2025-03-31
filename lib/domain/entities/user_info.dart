@@ -4,8 +4,8 @@ part 'user_info.g.dart';
 
 @JsonSerializable()
  class UserInfo  {
+    UserInfo(this.id, this.fullName);
+
     final int id;
     final String fullName;
-
-    UserInfo(this.id, this.fullName);
 }

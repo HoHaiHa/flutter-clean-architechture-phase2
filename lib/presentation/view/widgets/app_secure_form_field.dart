@@ -11,7 +11,7 @@ class AppSecureFormField extends StatefulWidget {
   const AppSecureFormField({
     super.key,
     this.label,
-    this.required = false,
+    this.isRequired = false,
     this.value,
     this.enabled = true,
     this.textInputAction = TextInputAction.done,
@@ -36,7 +36,7 @@ class AppSecureFormField extends StatefulWidget {
   });
 
   final String? label;
-  final bool required;
+  final bool isRequired;
   final String? value;
   final bool readOnly;
   final int? minLines;
@@ -114,92 +114,111 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          child: TextFormField(
-            obscuringCharacter: '*',
-            obscureText: hidePassword,
-            readOnly: widget.readOnly,
-            onChanged: widget.onChanged,
-            inputFormatters: widget.inputFormatters,
-            maxLength: widget.maxLength,
-            minLines: widget.minLines,
-            maxLines: widget.maxLines ?? 1,
-            keyboardType: widget.keyboardType,
-            textDirection: widget.textDirection,
-            onTap: widget.onTap,
-            onTapOutside: (event) {
-              hideKeyboard();
-            },
-            onFieldSubmitted: widget.onFieldSubmitted,
-            focusNode: widget.focusNode,
-            textInputAction: widget.textInputAction,
-            controller: _controller,
-            enabled: widget.enabled,
-            style: textTheme?.textSmall?.copyWith(
-              color:
-                  widget.enabled
-                      ? colorSchema?.grayscaleTitleactive
-                      : widget.disableTextColor,
-            ),
-            decoration: InputDecoration(
-              counterText: '',
-              //suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
-              suffixIcon: InkWell(
-                onTap: () {
-                  setState(() {
-                    hidePassword = !hidePassword;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 12, 12, 12),
-                  child:
-                      hidePassword
-                          ? Assets.icons.hind.svg()
-                          : Icon(Icons.visibility_outlined),
+        if (widget.label != null)
+          Text.rich(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: widget.label ?? '',
+                  style: textTheme?.textSmall?.copyWith(
+                    color: colorSchema?.grayscaleBodyText,
+                  ),
                 ),
-              ),
-
-              //prefixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
-              prefixIcon:
-                  (widget.decoration?.prefixIcon != null)
-                      ? Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
-                        child: widget.decoration?.prefixIcon,
-                      )
-                      : null,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 13.5,
-              ),
-              filled: true,
-              fillColor:
-                  widget.enabled
-                      ? fillColor
-                      : (widget.disableBackgroundColor ?? AppColors.white),
-              hintText: widget.decoration?.hintText,
-              hintStyle: textTheme?.textSmall?.copyWith(
-                color: colorSchema?.grayscalePlaceholder,
-              ),
-              enabledBorder: defaultBorder,
-              disabledBorder: defaultBorder,
-              focusedBorder:
-                  widget.readOnly
-                      ? defaultBorder
-                      : OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                        borderSide: BorderSide(
-                          color:
-                              colorSchema?.grayscaleBodyText ??
-                              AppColors.grayscaleBodyText, //lor
-                        ),
-                      ),
-              errorBorder: errorBorder,
-              focusedErrorBorder: errorBorder,
-              error:
-                  widget.decoration?.errorText != null
-                      ? const SizedBox()
-                      : null,
+                if(widget.isRequired)
+                TextSpan(
+                  text: '*',
+                  style: textTheme?.textSmall?.copyWith(
+                    color: colorSchema?.errorDark,
+                  ),
+                ),
+              ],
             ),
+          ),
+        Gap(4),
+        TextFormField(
+          obscuringCharacter: '*',
+          obscureText: hidePassword,
+          readOnly: widget.readOnly,
+          onChanged: widget.onChanged,
+          inputFormatters: widget.inputFormatters,
+          maxLength: widget.maxLength,
+          minLines: widget.minLines,
+          maxLines: widget.maxLines ?? 1,
+          keyboardType: widget.keyboardType,
+          textDirection: widget.textDirection,
+          onTap: widget.onTap,
+          onTapOutside: (event) {
+            hideKeyboard();
+          },
+          onFieldSubmitted: widget.onFieldSubmitted,
+          focusNode: widget.focusNode,
+          textInputAction: widget.textInputAction,
+          controller: _controller,
+          enabled: widget.enabled,
+          style: textTheme?.textSmall?.copyWith(
+            color:
+                widget.enabled
+                    ? colorSchema?.grayscaleTitleactive
+                    : widget.disableTextColor,
+          ),
+          decoration: InputDecoration(
+            counterText: '',
+            //suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
+            suffixIcon: InkWell(
+              onTap: () {
+                setState(() {
+                  hidePassword = !hidePassword;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 12, 12, 12),
+                child:
+                    hidePassword
+                        ? Assets.icons.hind.svg()
+                        : Icon(Icons.visibility_outlined),
+              ),
+            ),
+
+            //prefixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
+            prefixIcon:
+                (widget.decoration?.prefixIcon != null)
+                    ? Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+                      child: widget.decoration?.prefixIcon,
+                    )
+                    : null,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 13.5,
+            ),
+            filled: true,
+            fillColor:
+                widget.enabled
+                    ? fillColor
+                    : (widget.disableBackgroundColor ?? AppColors.white),
+            hintText: widget.decoration?.hintText,
+            hintStyle: textTheme?.textSmall?.copyWith(
+              color: colorSchema?.grayscalePlaceholder,
+            ),
+            enabledBorder: defaultBorder,
+            disabledBorder: defaultBorder,
+            focusedBorder:
+                widget.readOnly
+                    ? defaultBorder
+                    : OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                      borderSide: BorderSide(
+                        color:
+                            colorSchema?.grayscaleBodyText ??
+                            AppColors.grayscaleBodyText, //lor
+                      ),
+                    ),
+            errorBorder: errorBorder,
+            focusedErrorBorder: errorBorder,
+            error:
+                widget.decoration?.errorText != null ? const SizedBox() : null,
           ),
         ),
         if (widget.decoration?.errorText != null)

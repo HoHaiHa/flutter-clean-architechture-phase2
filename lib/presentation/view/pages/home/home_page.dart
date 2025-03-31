@@ -35,7 +35,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
               previousState.listTopics != state.listTopics,
       builder: (context, state) {
         return DefaultTabController(
-          length: state.listTopics.length,
+          length: state.listTopics.length + 1,
           child: Scaffold(
             resizeToAvoidBottomInset: true,
             body: Padding(
@@ -276,14 +276,26 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                         ?.grayscaleBodyText,
                                               ),
 
-                                          tabs:
-                                              state.listTopics.map((topics) {
-                                                return Tab(
-                                                  child: Text(topics.topicName),
-                                                );
-                                              }).toList(),
-                                          onTap: (index){
-                                            context.read<HomeBloc>().add(HomeEvent.changeTab(state.listTopics[index].topicName));
+                                          tabs: [
+                                            const Tab(child: Text('All')),
+                                            ...state.listTopics.map((topics) {
+                                              return Tab(
+                                                child: Text(topics.topicName),
+                                              );
+                                            }).toList(),
+                                          ],
+                                          onTap: (index) {
+                                            context.read<HomeBloc>().add(
+                                              index != 0
+                                                  ? HomeEvent.changeTab(
+                                                    state
+                                                        .listTopics[index - 1]
+                                                        .topicName,
+                                                  )
+                                                  : const HomeEvent.changeTab(
+                                                    '',
+                                                  ),
+                                            );
                                           },
                                         );
                                       },
@@ -301,15 +313,40 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                           return Padding(
                             padding: const EdgeInsets.only(right: 24, left: 24),
                             child: TabBarView(
-                              children:
-                                  state.listTopics.map((topics) {
-                                    return Center(
-                                      child: ListNews(
-                                        //listNews: listNews,
-                                        listNews: state.listNews ?? [News(imagePath: '', topic: '', title: '', brandImagePath: '', brandName: '', timePost: DateTime(2022))],
-                                      ),
-                                    );
-                                  }).toList(),
+                              children: [
+                                ListNews(
+                                  listNews:
+                                      state.listNews ??
+                                      [
+                                        News(
+                                          imagePath: '',
+                                          topic: '',
+                                          title: '',
+                                          brandImagePath: '',
+                                          brandName: '',
+                                          timePost: DateTime(2022),
+                                        ),
+                                      ],
+                                ),
+                                ...state.listTopics.map((topics) {
+                                  return Center(
+                                    child: ListNews(
+                                      listNews:
+                                          state.listNews ??
+                                          [
+                                            News(
+                                              imagePath: '',
+                                              topic: '',
+                                              title: '',
+                                              brandImagePath: '',
+                                              brandName: '',
+                                              timePost: DateTime(2022),
+                                            ),
+                                          ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ],
                             ),
                           );
                         },

@@ -9,7 +9,7 @@ class AppAlertDialog {
   static int countShow = 0;
 
   static Future show({
-    BuildContext? context,
+    required BuildContext context,
     String? title,
     String? message,
     AppAlertType type = AppAlertType.info,
@@ -18,14 +18,13 @@ class AppAlertDialog {
     VoidCallback? onConfirmBtnTap,
     VoidCallback? onCancelBtnTap,
   }) async {
-    context = OneContext().context;
-    if (context == null) {
-      return;
-    }
     increaseDialogCount();
     FocusScope.of(context).unfocus();
     CoolAlertType coolAlertType;
     switch (type) {
+      case AppAlertType.loading:
+        coolAlertType = CoolAlertType.loading;
+        break;
       case AppAlertType.success:
         coolAlertType = CoolAlertType.success;
         break;
@@ -41,25 +40,39 @@ class AppAlertDialog {
       case AppAlertType.info:
         coolAlertType = CoolAlertType.info;
         break;
-      case AppAlertType.loading:
-        if (OneContext.hasContext) {
-          OneContext().showProgressIndicator(
-            backgroundColor: const Color(0x6D000000),
-            builder: (context) {
-            return Center(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                child: const CircularProgressIndicator(),
-              ),
-            );
-            },
-          );
-        }
-        return;
+
+
+        // showDialog(context: context, builder: (context) {
+        //   return Center(
+        //     child: Container(
+        //       padding: const EdgeInsets.all(10),
+        //       decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(12),
+        //         color: Colors.white,
+        //       ),
+        //       child: const CircularProgressIndicator(),
+        //     ),
+        //   );
+        // },
+        // );
+        // })
+        // if (OneContext.hasContext) {
+        //   OneContext().showProgressIndicator(
+        //     backgroundColor: const Color(0x6D000000),
+        //     builder: (context) {
+        //     return Center(
+        //       child: Container(
+        //         padding: const EdgeInsets.all(10),
+        //         decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(12),
+        //           color: Colors.white,
+        //         ),
+        //         child: const CircularProgressIndicator(),
+        //       ),
+        //     );
+        //     },
+        //   );
+        // }
     }
     final dialog = await CoolAlert.show(
       context: context,
@@ -90,10 +103,11 @@ class AppAlertDialog {
   }
 
   static void hide() {
-    if (OneContext.hasContext) {
-      decreaseDialogCount();
-      OneContext().hideProgressIndicator();
-    }
+
+    // if (OneContext.hasContext) {
+    //   decreaseDialogCount();
+    //   OneContext().hideProgressIndicator();
+    // }
   }
 
   static Future hideAll() async {

@@ -43,9 +43,6 @@ class BusinessErrorEntityData extends ErrorEntity {
   factory BusinessErrorEntityData.fromJson(Map<String, dynamic> json) =>
       _$BusinessErrorEntityDataFromJson(json);
 
-  @override
-  String get message => arguments?.firstOrNull?.toString() ?? 'Server error';
-
   final String name;
   final List? arguments;
   @JsonKey(name: 'exception_type')

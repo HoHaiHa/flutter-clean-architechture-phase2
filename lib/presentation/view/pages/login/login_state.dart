@@ -1,25 +1,28 @@
 part of 'login_bloc.dart';
 
+const LOGIN_USERNAME = 'username';
+const LOGIN_PASSWORD = 'password';
+
 @freezed
 class LoginState extends BaseState with _$LoginState {
 
   const LoginState({
     super.pageStatus = PageStatus.Loaded,
     super.pageErrorMessage,
-    this.username = '',
-    this.password = '',
+    this.username = const ValidationModel(LOGIN_USERNAME),
+    this.password = const ValidationModel(LOGIN_PASSWORD),
     this.usernameError,
     this.passwordError,
     this.isRemember = false,
     this.isLoading = false,
-    this.isGoogleLoginPress= false,
-    this.isAuthen ,
+    this.isLoginSuccess ,
+    this.error ,
   });
 
   @override
-  final String username;
+  final ValidationModel<String> username;
   @override
-  final String password;
+  final ValidationModel<String> password;
   @override
   final String? usernameError;
   @override
@@ -29,7 +32,7 @@ class LoginState extends BaseState with _$LoginState {
   @override
   final bool isLoading;
   @override
-  final bool isGoogleLoginPress;
+  final bool? isLoginSuccess;
   @override
-  final bool? isAuthen;
+  final String? error;
 }
