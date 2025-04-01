@@ -20,6 +20,15 @@ class DetailBloc extends BaseBloc<DetailEvent, DetailState> {
             case _LoadData():
               emit(state.copyWith(pageStatus: PageStatus.Loaded));
               break;
+            case _ChangeFollow():
+              // TODO: Handle this case.
+              throw UnimplementedError();
+            case _ChangeSave():
+              // TODO: Handle this case.
+              throw UnimplementedError();
+            case _ChangeLike():
+              // TODO: Handle this case.
+              throw UnimplementedError();
           }
         } catch(e,s) {
             handleError(emit, ErrorConverter.convert(e, s));

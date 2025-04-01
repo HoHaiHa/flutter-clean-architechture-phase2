@@ -11,8 +11,12 @@ class DetailState extends BaseState with _$DetailState {
     this.saveState,
   });
 
-  final News NewsDetail;
-  final bool followState;
-  final bool likeState;
-  final bool saveState;
+  @override
+  final News? NewsDetail;
+  @override
+  final bool? followState;
+  @override
+  final bool? likeState;
+  @override
+  final bool? saveState;
 }

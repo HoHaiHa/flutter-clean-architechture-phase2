@@ -83,7 +83,6 @@ class NotificationPage
                             Column(
                               children:
                                   subList.map((notification) {
-                                    print(subList);
                                     return Column(
                                       children: [
                                         Container(
