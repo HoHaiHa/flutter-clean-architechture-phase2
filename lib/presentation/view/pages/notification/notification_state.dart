@@ -5,12 +5,12 @@ class NotificationState extends BaseState with _$NotificationState {
   const NotificationState({
     super.pageStatus = PageStatus.Loaded,
     super.pageErrorMessage,
-    this.listNotifications,
-    this.isFollowed = false,
+    this.listNotificatioFollowDay,
+    this.followState = false,
   });
 
   @override
-  final  List<Notification>? listNotifications;
+  final LinkedHashMap<String, List<AppNotification>>? listNotificatioFollowDay;
   @override
-  final bool isFollowed;
+  final bool followState;
 }

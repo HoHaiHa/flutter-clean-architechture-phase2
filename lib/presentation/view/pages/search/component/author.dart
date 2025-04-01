@@ -21,7 +21,7 @@ class _AuthorListState extends State<AuthorList> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return ListView.builder(
-      padding: EdgeInsets.only(top: 16),
+      padding: EdgeInsets.only(top: 16,right: 24,left: 24),
       itemCount: widget.listAuthor.length,
       itemBuilder: (context, index) {
         return Column(

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/domain/entities/author.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -35,6 +36,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
           length: state.listTopics!.length + 1,
           child: Scaffold(
             resizeToAvoidBottomInset: true,
+            appBar: AppBar(shadowColor: Colors.transparent, toolbarHeight: 0),
             body: Padding(
               padding: const EdgeInsets.only(bottom: 57),
               child: Column(
@@ -80,7 +82,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                       ],
                     ),
                   ),
-
+                  Gap(16),
                   Expanded(
                     child: NestedScrollView(
                       headerSliverBuilder:
@@ -101,7 +103,12 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                           child: Assets.icons.search.svg(),
                                         ),
 
-                                        suffixIcon: SizedBox.shrink(),
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 12,
+                                          ),
+                                          child: Assets.icons.threeLine.svg(),
+                                        ),
                                       ),
                                       onTap:
                                           () =>
@@ -208,7 +215,6 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                 ),
                               ),
                             ),
-
                             SliverAppBar(
                               pinned: true,
                               toolbarHeight: 0,
@@ -310,7 +316,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                         },
                         builder: (context, state) {
                           return Padding(
-                            padding: const EdgeInsets.only(right: 24, left: 24),
+                            padding: const EdgeInsets.only(top: 16),
                             child: TabBarView(
                               children: [
                                 ListNews(
@@ -321,9 +327,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                           imagePath: '',
                                           topic: '',
                                           title: '',
-                                          brandImagePath: '',
-                                          brandName: '',
+                                          author: Author('', '', 0, false),
                                           timePost: DateTime(2022),
+                                          content: '', id: '', userLikeId: [],
                                         ),
                                       ],
                                 ),
@@ -337,9 +343,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                               imagePath: '',
                                               topic: '',
                                               title: '',
-                                              brandImagePath: '',
-                                              brandName: '',
+                                              author: Author('', '', 0, false),
                                               timePost: DateTime(2022),
+                                              content: '', id: '', userLikeId: [],
                                             ),
                                           ],
                                     ),

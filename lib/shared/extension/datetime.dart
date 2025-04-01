@@ -158,3 +158,20 @@ extension DateTimeRangeExtensions on DateTimeRange {
         return day;
       }();
 }
+
+extension DayAGo on DateTime{
+  String getDayAgo(){
+    {
+      final duration = DateTime.now().difference(this);
+      if (duration.inDays >= 1) {
+        return '${duration.inDays}d ago';
+      } else if (duration.inHours >= 1) {
+        return '${duration.inHours}h ago';
+      } else if (duration.inMinutes >= 1) {
+        return '${duration.inMinutes}m ago';
+      } else {
+        return 'Just now';
+      }
+    }
+  }
+}

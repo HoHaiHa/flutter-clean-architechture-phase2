@@ -1,62 +1,48 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_notification.g.dart';
 
 @JsonSerializable()
 class AppNotification {
-   String imagePath;
-   String actor;
-   bool isFollowed;
-   String message;
-   DateTime timeNotify;
+  String notificationId;
+  String imagePath;
+  User user;
+  String message;
+  DateTime timeNotify;
+  String typeNotification;
 
   AppNotification(
+    this.notificationId,
     this.imagePath,
-    this.actor,
-    this.isFollowed,
+    this.user,
     this.message,
     this.timeNotify,
+    this.typeNotification,
   );
 
-  factory AppNotification.fromJson(Map<String, dynamic> json) => _$AppNotificationFromJson(json);
+  factory AppNotification.fromJson(Map<String, dynamic> json) =>
+      _$AppNotificationFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppNotificationToJson(this);
 
-  String timeAgo(){
-    final duration  = DateTime.now().difference(this.timeNotify);
-    if (duration.inDays >= 1) {
-      return '${duration.inDays}d ago';
-    } else if (duration.inHours >= 1) {
-      return '${duration.inHours}h ago';
-    } else if (duration.inMinutes >= 1) {
-      return '${duration.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
+  String _getMonthName() {
+    return DateFormat.MMMM("en").format(timeNotify);
   }
 
-  int dayAgo(){
-    return DateTime.now().difference(timeNotify).inDays;
-  }
-
-   String _getMonthName() {
-     return DateFormat.MMMM("en").format(timeNotify);
-   }
-
-  String notifyDay(){
+  String notifyDay() {
     final duration = DateTime.now().difference(timeNotify);
     final durationForYear = DateTime.now();
-    if(duration.inDays == 0){
+    if (duration.inDays == 0) {
       return 'Today, ${_getMonthName()} ${timeNotify.day}';
     }
-    if(duration.inDays == 1 ){
+    if (duration.inDays == 1) {
       return 'Yesterday, ${_getMonthName()} ${timeNotify.day}';
     }
-    if(durationForYear.year ==  timeNotify.year ){
+    if (durationForYear.year == timeNotify.year) {
       return '${_getMonthName()} ${timeNotify.day}';
-    }
-    else{
+    } else {
       return '${_getMonthName()} ${timeNotify.day} ${timeNotify.year}';
     }
   }

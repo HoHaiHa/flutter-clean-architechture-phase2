@@ -57,6 +57,10 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          shadowColor: Colors.transparent,
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(

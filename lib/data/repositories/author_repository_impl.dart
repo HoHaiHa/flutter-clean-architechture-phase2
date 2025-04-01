@@ -1,5 +1,4 @@
 import 'package:flutter_clean_architecture/domain/entities/author.dart';
-import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/author_repository.dart';
 
@@ -9,20 +8,19 @@ class AuthorRepositoryImpl extends AuthorRepository {
 
   @override
   Future<List<Author>> getListAuthors(String key) async {
-    List<Author> listAuthors = _authors.where((author)=> author.brandName.trim().toLowerCase().contains(key.trim().toLowerCase())).toList();
-    //if(listAuthors.isEmpty)  throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
+    List<Author> listAuthors = authors.where((author)=> author.brandName.trim().toLowerCase().contains(key.trim().toLowerCase())).toList();
     return listAuthors;
   }
 
   @override
-  Future<Result<List<Author>>> changeFollowAuthor(String authorName) async {
-    Author author = _authors.firstWhere((author)=> author.brandName
+  Future<bool> changeFollowAuthor(String authorName) async {
+    Author author = authors.firstWhere((author)=> author.brandName
         == authorName);
     author.isFollow = !author.isFollow;
-    return Result.completed(_authors);
+    return true;
   }
 
-  static List<Author> _authors = [
+  static List<Author> authors = [
     Author("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI9geBuUIxBMywN0xsF2fXoHfyRyB7laeuOQ&s", "Tech Guru", 10000, true),
     Author("https://play-lh.googleusercontent.com/375NW5yL8owK_hW9igW9sh-YJbda9ZcygpDXuVvK_R7l-yJp-fuhb4qvUw_FE4XW4ms=w240-h480-rw", "Health Insights", 1200, false),
     Author("https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/logo-dep-12.jpg", "Daily News", 100, true),

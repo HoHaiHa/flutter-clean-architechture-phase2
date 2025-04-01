@@ -1,37 +1,28 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'author.dart';
+
 part 'news.g.dart';
 
 @JsonSerializable()
 class News {
+  final String id;
   final String imagePath;
   final String topic;
   final String title;
-  final String brandImagePath;
-  final String brandName;
+  final Author author;
   final DateTime timePost;
+  final String content;
+  final List<String> userLikeId;
 
   const News({
+    required this.id,
     required this.imagePath,
     required this.topic,
     required this.title,
-    required this.brandImagePath,
-    required this.brandName,
+    required this.author,
     required this.timePost,
+    required this.content,
+    required this.userLikeId,
   });
-
-  String timeAgo(){
-    final duration  = DateTime.now().difference(this.timePost);
-    if (duration.inDays >= 1) {
-      return '${duration.inDays}d ago';
-    } else if (duration.inHours >= 1) {
-      return '${duration.inHours}h ago';
-    } else if (duration.inMinutes >= 1) {
-      return '${duration.inMinutes}m ago';
-    } else {
-      return 'Just now';
-    }
-  }
-
-
 }

@@ -18,4 +18,9 @@ class Author{
     else
       return '${followersDouble}k Followers';
   }
+
+  factory Author.fromJson(Map<String, dynamic> json) =>
+      _$AuthorFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthorToJson(this);
 }

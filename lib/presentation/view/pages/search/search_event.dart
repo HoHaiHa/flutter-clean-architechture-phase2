@@ -4,7 +4,6 @@ part of 'search_bloc.dart';
 sealed class SearchEvent with _$SearchEvent {
   const factory SearchEvent.loadData() = _LoadData;
   const factory SearchEvent.changeSearchKey(String key) = _ChangeSearchKey;
-  const factory SearchEvent.changeTab(String tab) = _ChangeTab;
   const factory SearchEvent.changeSaveTopic(String topicName) = _ChangeSaveTopic;
   const factory SearchEvent.changeFollowAuthor(String authorName) = _ChangeFollowAuthor;
 }

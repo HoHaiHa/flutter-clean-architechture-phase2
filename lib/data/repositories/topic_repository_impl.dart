@@ -1,5 +1,4 @@
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
-import 'package:flutter_clean_architecture/shared/common/result.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/topic_repository.dart';
 
@@ -11,21 +10,19 @@ class TopicRepositoryImpl implements TopicRepository {
         .where((topic) =>
         topic.topicName.trim().toLowerCase().contains(key.trim().toLowerCase()))
         .toList();
-    //if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
     return filteredTopics;
   }
 
   @override
-  Future<Result<void>> changeSaveTopic(String topicName) async {
+  Future<bool> changeSaveTopic(String topicName) async {
     Topic topic = _topics.firstWhere((topic)=> topic.topicName == topicName);
     topic.isSaved = !topic.isSaved;
-    return Result.completed(topic.isSaved);
+    return true;
   }
 
   @override
   Future<List<Topic>> getListTopicSaved() async {
     List<Topic> filteredTopics = _topics.where((topic) => topic.isSaved).toList();
-    //if(filteredTopics.isEmpty) throw BusinessErrorEntityData(name: 'danh sách rỗng', message: 'danh sách rỗng');
     return filteredTopics;
   }
 

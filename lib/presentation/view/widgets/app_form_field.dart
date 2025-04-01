@@ -193,7 +193,7 @@ class _AppFormFieldState extends State<AppFormField> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 12),
-                          child: Assets.icons.closeSearch.svg(),
+                          child:widget.decoration?.errorText == null ? Assets.icons.closeSearch.svg() :Assets.icons.closeSearchIconError.svg() ,
                         ),
                       )
                       : null),
