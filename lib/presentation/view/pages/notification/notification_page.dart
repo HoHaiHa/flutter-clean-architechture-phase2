@@ -30,7 +30,6 @@ class NotificationPage
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 48,
             centerTitle: true,
             shadowColor: Colors.transparent,
             leading: IconButton(

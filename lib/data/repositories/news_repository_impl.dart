@@ -35,6 +35,16 @@ class NewsRepositoryImpl implements NewsRepository {
     return searchResult;
   }
 
+
+  @override
+  Future<News> getNewsById(String newsId) {
+    // TODO: implement getNewsById
+    throw UnimplementedError();
+  }
+
+
+
+
   static Author getRandomAuthor() {
     Random random = Random();
     List<Author> _authors= AuthorRepositoryImpl.authors;
@@ -147,4 +157,7 @@ class NewsRepositoryImpl implements NewsRepository {
     ),
 
   ];
+
+
+
 }

@@ -24,7 +24,6 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
     final colorSchema = context.themeOwn().colorSchema;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 48,
         shadowColor: Colors.transparent,
         leading: IconButton(
           onPressed: context.pop,
@@ -140,27 +139,40 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
               color: Colors.black.withOpacity(0.05),
               blurRadius: 10,
               spreadRadius: 2,
-            )
-          ]
+            ),
+          ],
         ),
         child: Row(
           children: [
             Assets.icons.iconHeartTypeFilled.svg(color: Colors.red),
             Gap(4),
-            Text('24.5K',style: textTheme?.textMedium?.copyWith(
-              color: colorSchema?.grayscaleTitleactive,
-            ),),
+            Text(
+              '24.5K',
+              style: textTheme?.textMedium?.copyWith(
+                color: colorSchema?.grayscaleTitleactive,
+              ),
+            ),
             Gap(30),
-            Expanded(child: Row(
-              children: [
-                Assets.icons.iconCommentTypeOutline.svg(),
-                Gap(4),
-                Text('1K',style: textTheme?.textMedium?.copyWith(
-                  color: colorSchema?.grayscaleTitleactive,
-                ),),
-              ],
-            )),
-            Assets.icons.iconBookmarkTypeFilled.svg(color: colorSchema?.primaryDefault),
+            Expanded(
+              child: Row(
+                children: [
+                  Assets.icons.iconCommentTypeOutline.svg(),
+                  Gap(4),
+                  Text(
+                    '1K',
+                    style: textTheme?.textMedium?.copyWith(
+                      color: colorSchema?.grayscaleTitleactive,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 70,
+              child: Assets.icons.iconBookmarkTypeFilled.svg(
+                color: colorSchema?.primaryDefault,
+              ),
+            ),
           ],
         ),
       ),

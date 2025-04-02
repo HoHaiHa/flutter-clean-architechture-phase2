@@ -28,83 +28,81 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
 
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          shadowColor: Colors.transparent,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(right: 24, left: 24, top: 24),
-              child: Column(
-                children: [
-                  BlocBuilder<SearchBloc, SearchState>(
-                    buildWhen: (preState, state) {
-                      return preState != state;
-                    },
-                    builder: (context, state) {
-                      return AppFormField(
-                        value: state.searchKey,
-                        decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Assets.icons.search.svg(),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: () => context.pop(),
-                            child:Padding(
-                              padding: const EdgeInsets.only(right: 12),
-                              child: Assets.icons.closeSearch.svg(),
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                child: Column(
+                  children: [
+                    BlocBuilder<SearchBloc, SearchState>(
+                      buildWhen: (preState, state) {
+                        return preState != state;
+                      },
+                      builder: (context, state) {
+                        return AppFormField(
+                          value: state.searchKey,
+                          decoration: InputDecoration(
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              child: Assets.icons.search.svg(),
                             ),
-        
+                            suffixIcon: InkWell(
+                              onTap: () => context.pop(),
+                              child:Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: Assets.icons.closeSearch.svg(),
+                              ),
+          
+                            ),
                           ),
-                        ),
-                        onChanged: (value) {
-                          context.read<SearchBloc>().add(
-                            SearchEvent.changeSearchKey(value),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
+                          onChanged: (value) {
+                            context.read<SearchBloc>().add(
+                              SearchEvent.changeSearchKey(value),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Gap(16),
-            SizedBox(
-              width: 178,
-              height: 34,
-              child: TabBar(
-                labelStyle: textTheme?.textMedium,
-                labelColor: colorSchema?.darkBlack,
-                indicatorSize: TabBarIndicatorSize.label,
-                unselectedLabelStyle: textTheme?.textMedium,
-                unselectedLabelColor: colorSchema?.grayscaleBodyText,
-                labelPadding: EdgeInsets.zero,
-                tabs: const <Widget>[
-                  Tab(text: 'News'),
-                  Tab(text: 'Topic'),
-                  Tab(text: 'Author'),
-                ],
+              Gap(16),
+              SizedBox(
+                width: 178,
+                height: 34,
+                child: TabBar(
+                  labelStyle: textTheme?.textMedium,
+                  labelColor: colorSchema?.darkBlack,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  unselectedLabelStyle: textTheme?.textMedium,
+                  unselectedLabelColor: colorSchema?.grayscaleBodyText,
+                  labelPadding: EdgeInsets.zero,
+                  tabs: const <Widget>[
+                    Tab(text: 'News'),
+                    Tab(text: 'Topic'),
+                    Tab(text: 'Author'),
+                  ],
+                ),
               ),
-            ),
-            Gap(16),
-            Expanded(
-              child: BlocBuilder<SearchBloc, SearchState>(
-                builder: (context, state) {
-                  return TabBarView(
-                    children: [
-                      ListNews(listNews: state.listNews ?? []),
-                      TopicList(state.listTopics ?? []),
-                      AuthorList(state.listAuthors ?? []),
-                    ],
-                  );
-                },
+              Gap(16),
+              Expanded(
+                child: BlocBuilder<SearchBloc, SearchState>(
+                  builder: (context, state) {
+                    return TabBarView(
+                      children: [
+                        ListNews(listNews: state.listNews ?? []),
+                        TopicList(state.listTopics ?? []),
+                        AuthorList(state.listAuthors ?? []),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

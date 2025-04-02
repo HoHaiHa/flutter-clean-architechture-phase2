@@ -56,208 +56,206 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
           hideLoadingDialog(context);
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          shadowColor: Colors.transparent,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 24,
-              left: 24,
-              right: 24,
-              bottom: 8,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hello',
-                  style: textTheme?.textDisplayLargeBold?.copyWith(
-                    color: colorSchema?.grayscaleTitleactive,
-                  ),
-                ),
-                Text(
-                  'Again!',
-                  style: textTheme?.textDisplayLargeBold?.copyWith(
-                    color: colorSchema?.primaryDefault,
-                  ),
-                ),
-                Text(
-                  'Welcome back you’ve \nbeen missed',
-                  style: textTheme?.textLarge?.copyWith(
-                    color: colorSchema?.grayscaleBodyText,
-                  ),
-                ),
-                const SizedBox(height: 48),
-
-                BlocSelector<LoginBloc, LoginState, ValidationModel<String>>(
-                  selector: (state) => state.username,
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        AppFormField(
-                          label: 'Username',
-                          isRequire: true,
-                          value: state.value,
-                          onChanged: (value) {
-                            context.read<LoginBloc>().add(
-                              LoginEvent.changeUsername(value),
-                            );
-                          },
-                          decoration: InputDecoration(errorText: state.error),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                BlocSelector<LoginBloc, LoginState, ValidationModel<String>>(
-                  selector: (state) => state.password,
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        AppSecureFormField(
-                          label: 'Password',
-                          isRequired: true,
-                          value: state.value,
-                          onChanged: (value) {
-                            context.read<LoginBloc>().add(
-                              LoginEvent.changePassword(value),
-                            );
-                          },
-                          decoration: InputDecoration(errorText: state.error),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        BlocSelector<LoginBloc, LoginState, bool>(
-                          selector: (state) => state.isRemember,
-                          builder: (context, isRemember) {
-                            return AppCheckBox(
-                              borderColor: colorSchema?.grayscaleBodyText,
-                              size: CheckBoxSize.normal,
-                              value: isRemember,
-                              checkedColor: colorSchema?.primaryDefault,
-                              onChanged: (value) {
-                                context.read<LoginBloc>().add(
-                                  const LoginEvent.toggleRemember(),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 1.5),
-                        Text(
-                          'Remember me',
-                          style: textTheme?.textSmall?.copyWith(
-                            color: colorSchema?.grayscaleBodyText,
-                          ),
-                        ),
-                      ],
+      child: SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 24,
+                left: 24,
+                right: 24,
+                bottom: 8,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello',
+                    style: textTheme?.textDisplayLargeBold?.copyWith(
+                      color: colorSchema?.grayscaleTitleactive,
                     ),
-                    const Text(
-                      'Forgot the password ?',
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 21 / 14,
-                        color: Color(0xFF5890FF),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                BlocListener<LoginBloc, LoginState>(
-                  listenWhen: (previousState, state) {
-                    return previousState.isLoginSuccess !=
-                            state.isLoginSuccess &&
-                        state.isLoginSuccess == true;
-                  },
-                  listener: (context, state) {
-                    context.replaceRoute(const HomeRoute());
-                  },
-                  child: AppButton.primary(
-                    height: 50,
-                    backgroundColor: colorSchema?.primaryDefault,
-                    title: 'Login',
-                    titleStyle: textTheme?.textMediumLink,
-                    onPressed:
-                        () => {
-                          context.read<LoginBloc>().add(
-                            const LoginEvent.login(),
-                          ),
-                        },
                   ),
-                ),
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'or continue with',
-                    style: textTheme?.textSmall?.copyWith(
+                  Text(
+                    'Again!',
+                    style: textTheme?.textDisplayLargeBold?.copyWith(
+                      color: colorSchema?.primaryDefault,
+                    ),
+                  ),
+                  Text(
+                    'Welcome back you’ve \nbeen missed',
+                    style: textTheme?.textLarge?.copyWith(
                       color: colorSchema?.grayscaleBodyText,
                     ),
                   ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: AppButton.primary(
-                        height: 48,
-                        backgroundColor: colorSchema?.grayscaleSecondaryButton,
-                        title: 'Facebook',
-                        titleStyle: textTheme?.textMediumLink?.copyWith(
-                          color: colorSchema?.grayscaleButtonText,
-                        ),
-                        onPressed: () {},
-                        icon: Assets.icons.facebook.svg(),
+                  const SizedBox(height: 48),
+        
+                  BlocSelector<LoginBloc, LoginState, ValidationModel<String>>(
+                    selector: (state) => state.username,
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          AppFormField(
+                            label: 'Username',
+                            isRequire: true,
+                            value: state.value,
+                            onChanged: (value) {
+                              context.read<LoginBloc>().add(
+                                LoginEvent.changeUsername(value),
+                              );
+                            },
+                            decoration: InputDecoration(errorText: state.error),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  BlocSelector<LoginBloc, LoginState, ValidationModel<String>>(
+                    selector: (state) => state.password,
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          AppSecureFormField(
+                            label: 'Password',
+                            isRequired: true,
+                            value: state.value,
+                            onChanged: (value) {
+                              context.read<LoginBloc>().add(
+                                LoginEvent.changePassword(value),
+                              );
+                            },
+                            decoration: InputDecoration(errorText: state.error),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+        
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          BlocSelector<LoginBloc, LoginState, bool>(
+                            selector: (state) => state.isRemember,
+                            builder: (context, isRemember) {
+                              return AppCheckBox(
+                                borderColor: colorSchema?.grayscaleBodyText,
+                                size: CheckBoxSize.normal,
+                                value: isRemember,
+                                checkedColor: colorSchema?.primaryDefault,
+                                onChanged: (value) {
+                                  context.read<LoginBloc>().add(
+                                    const LoginEvent.toggleRemember(),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 1.5),
+                          Text(
+                            'Remember me',
+                            style: textTheme?.textSmall?.copyWith(
+                              color: colorSchema?.grayscaleBodyText,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 31),
-                    Expanded(
-                      child: AppButton.primary(
-                        backgroundColor: colorSchema?.grayscaleSecondaryButton,
-                        title: 'Google',
-                        titleStyle: textTheme?.textMediumLink?.copyWith(
-                          color: colorSchema?.grayscaleButtonText,
+                      const Text(
+                        'Forgot the password ?',
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 21 / 14,
+                          color: Color(0xFF5890FF),
                         ),
-                        onPressed: () {},
-                        icon: Assets.icons.google.svg(),
                       ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  BlocListener<LoginBloc, LoginState>(
+                    listenWhen: (previousState, state) {
+                      return previousState.isLoginSuccess !=
+                              state.isLoginSuccess &&
+                          state.isLoginSuccess == true;
+                    },
+                    listener: (context, state) {
+                      context.replaceRoute(const HomeRoute());
+                    },
+                    child: AppButton.primary(
+                      height: 50,
+                      backgroundColor: colorSchema?.primaryDefault,
+                      title: 'Login',
+                      titleStyle: textTheme?.textMediumLink,
+                      onPressed:
+                          () => {
+                            context.read<LoginBloc>().add(
+                              const LoginEvent.login(),
+                            ),
+                          },
                     ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'don\'t have an account ? ',
+                  ),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'or continue with',
                       style: textTheme?.textSmall?.copyWith(
                         color: colorSchema?.grayscaleBodyText,
                       ),
                     ),
-                    Text(
-                      'Sign Up',
-                      style: textTheme?.textSmallLink?.copyWith(
-                        color: colorSchema?.primaryDefault,
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: AppButton.primary(
+                          height: 48,
+                          backgroundColor: colorSchema?.grayscaleSecondaryButton,
+                          title: 'Facebook',
+                          titleStyle: textTheme?.textMediumLink?.copyWith(
+                            color: colorSchema?.grayscaleButtonText,
+                          ),
+                          onPressed: () {},
+                          icon: Assets.icons.facebook.svg(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 31),
+                      Expanded(
+                        child: AppButton.primary(
+                          backgroundColor: colorSchema?.grayscaleSecondaryButton,
+                          title: 'Google',
+                          titleStyle: textTheme?.textMediumLink?.copyWith(
+                            color: colorSchema?.grayscaleButtonText,
+                          ),
+                          onPressed: () {},
+                          icon: Assets.icons.google.svg(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'don\'t have an account ? ',
+                        style: textTheme?.textSmall?.copyWith(
+                          color: colorSchema?.grayscaleBodyText,
+                        ),
+                      ),
+                      Text(
+                        'Sign Up',
+                        style: textTheme?.textSmallLink?.copyWith(
+                          color: colorSchema?.primaryDefault,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

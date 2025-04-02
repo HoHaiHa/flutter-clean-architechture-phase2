@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
+import '../view/pages/comment/comment_page.dart';
+
 import '../view/pages/detail/detail_page.dart';
 
 import '../view/pages/notification/notification_page.dart';
@@ -28,6 +30,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: HelloRoute.page),
     AutoRoute(page: SearchRoute.page),
     AutoRoute(page: NotificationRoute.page),
-    AutoRoute(page: DetailRoute.page, initial: true),
+    AutoRoute(page: DetailRoute.page),
+    AutoRoute(page: CommentRoute.page, initial: true),
   ];
 }
