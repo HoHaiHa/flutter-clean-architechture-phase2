@@ -43,16 +43,19 @@ class NotificationPage
               ),
             ),
             actions: [
-              PopupMenuButton<String>(
-                icon: Assets.icons.threedotVertical.svg(), // Icon dấu "..."
-                onSelected: (value) {
-                  print("Selected: $value");
-                },
-                itemBuilder:
-                    (context) => [
-                      PopupMenuItem(value: "Settings", child: Text("Settings")),
-                      PopupMenuItem(value: "Logout", child: Text("Logout")),
-                    ],
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: PopupMenuButton<String>(
+                  icon: Assets.icons.threedotVertical.svg(),
+                  onSelected: (value) {
+                    print("Selected: $value");
+                  },
+                  itemBuilder:
+                      (context) => [
+                        PopupMenuItem(value: "Settings", child: Text("Settings")),
+                        PopupMenuItem(value: "Logout", child: Text("Logout")),
+                      ],
+                ),
               ),
             ],
           ),
@@ -133,8 +136,8 @@ class NotificationPage
                                                             TextSpan(
                                                               text:
                                                                   notification
-                                                                      .user
-                                                                      .userName,
+                                                                      .author
+                                                                      .brandName,
                                                               style: textTheme
                                                                   ?.textMediumLink
                                                                   ?.copyWith(
@@ -186,13 +189,13 @@ class NotificationPage
                                                           .add(
                                                             NotificationEvent.changeFollowed(
                                                               notification
-                                                                  .user
-                                                                  .userId,
+                                                                  .author
+                                                                  .authorId,
                                                             ),
                                                           );
                                                     },
                                                     child:
-                                                      notification.user.isFollowed
+                                                      notification.author.isFollow
                                                       ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
                                                   ),
                                                 ) else const SizedBox.shrink(),

@@ -5,11 +5,12 @@ import 'package:flutter_clean_architecture/shared/extension/datetime.dart';
 import 'package:gap/gap.dart';
 
 import '../../../domain/entities/news.dart';
+import '../../router/router.dart';
 
 class ListNews extends StatelessWidget {
-  final List<News> listNews;
 
   const ListNews({super.key, required this.listNews});
+  final List<News> listNews;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -24,26 +25,26 @@ class ListNews extends StatelessWidget {
 }
 
 class NewsWidget extends StatelessWidget {
-  final News news;
 
   const NewsWidget({
     super.key,
     required this.news,
   });
+  final News news;
   @override
   Widget build(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return InkWell(
       onTap: (){
-        context.router.push(NamedRoute('DetailRoute', params: {'newsId': news.id}));
+        context.router.push(DetailRoute(newsId: news.id));
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 24, left: 24),
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               width: 380,
               height: 112,
               child: Row(

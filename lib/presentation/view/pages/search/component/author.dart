@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/author.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
+import 'package:flutter_clean_architecture/shared/extension/number.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../gen/assets.gen.dart';
@@ -62,7 +63,7 @@ class _AuthorListState extends State<AuthorList> {
                           softWrap: true,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          widget.listAuthor[index].followersNumber(),
+                          widget.listAuthor[index].followers.getFollows(),
                           style: textTheme?.textSmall?.copyWith(
                             color: colorSchema?.grayscaleBodyText,
                           ),

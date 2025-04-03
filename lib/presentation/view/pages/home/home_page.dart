@@ -46,7 +46,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                         top: 24,
                         right: 24,
                         left: 24,
-                        bottom: 26,
+                        bottom: 15,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,8 +92,8 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                   padding: EdgeInsets.only(right: 24, left: 24),
                                   child: Column(
                                     children: [
-                                      SizedBox(height: 16),
                                       AppFormField(
+                                        readOnly: true,
                                         decoration: InputDecoration(
                                           prefixIcon: Padding(
                                             padding: const EdgeInsets.only(
@@ -207,6 +207,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                 Assets.icons.threedot.svg(),
                                               ],
                                             ),
+                                            Gap(16),
                                           ],
                                         ),
                                       ),
@@ -327,7 +328,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                             imagePath: '',
                                             topic: '',
                                             title: '',
-                                            author: Author('', '', 0, false),
+                                            author: Author('','', '', 0, false),
                                             timePost: DateTime(2022),
                                             content: '', id: '', userLikeId: [],
                                           ),
@@ -343,7 +344,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                 imagePath: '',
                                                 topic: '',
                                                 title: '',
-                                                author: Author('', '', 0, false),
+                                                author: Author('', '','', 0, false),
                                                 timePost: DateTime(2022),
                                                 content: '', id: '', userLikeId: [],
                                               ),

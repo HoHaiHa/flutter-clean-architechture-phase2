@@ -43,6 +43,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                       },
                       builder: (context, state) {
                         return AppFormField(
+                          autofocus: true,
                           value: state.searchKey,
                           decoration: InputDecoration(
                             prefixIcon: Padding(

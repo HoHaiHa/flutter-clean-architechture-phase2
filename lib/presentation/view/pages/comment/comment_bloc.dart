@@ -17,6 +17,7 @@ class CommentBloc extends BaseBloc<CommentEvent, CommentState> {
         try {
           switch(event) {
             case _LoadData():
+
               emit(state.copyWith(pageStatus: PageStatus.Loaded));
               break;
           }

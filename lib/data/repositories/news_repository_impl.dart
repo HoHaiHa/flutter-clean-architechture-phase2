@@ -1,13 +1,16 @@
 import 'dart:math';
-
 import 'package:flutter_clean_architecture/data/repositories/author_repository_impl.dart';
 import 'package:flutter_clean_architecture/domain/entities/news.dart';
+import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
+import 'package:flutter_clean_architecture/shared/utils/logger.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/author.dart';
 import '../../domain/repositories/news_repository.dart';
 
 @Injectable(as: NewsRepository)
 class NewsRepositoryImpl implements NewsRepository {
+
   @override
   Future<List<News>> getListNewByTopic({topic}) async {
     if (topic == '')
@@ -35,15 +38,10 @@ class NewsRepositoryImpl implements NewsRepository {
     return searchResult;
   }
 
-
   @override
-  Future<News> getNewsById(String newsId) {
-    // TODO: implement getNewsById
-    throw UnimplementedError();
+  Future<News> getNewsById(String newsId) async {
+    return _listNews.firstWhere((news)=> news.id == newsId);
   }
-
-
-
 
   static Author getRandomAuthor() {
     Random random = Random();
@@ -51,7 +49,45 @@ class NewsRepositoryImpl implements NewsRepository {
     return _authors[random.nextInt(_authors.length)];
   }
 
-  static String content = "Ẩm thực Việt Nam là một bức tranh đa sắc màu, phản ánh rõ nét văn hóa và lịch sử lâu đời của đất nước. Mỗi vùng miền đều có những món ăn đặc trưng, mang hương vị và cách chế biến riêng biệt, tạo nên một bản đồ ẩm thực phong phú và hấp dẫn. Hãy dành thời gian khám phá và thưởng thức những món ăn đặc trưng của từng vùng miền để cảm nhận trọn vẹn vẻ đẹp văn hóa Việt Nam.";
+  @override
+  Future<bool> checkLikeForCurrentUser(String newsId) async {
+    try{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      News news = _listNews.firstWhere((news)=> news.id == newsId);
+      String? currentUserId = prefs.getString('currentUserId');
+      return news.userLikeId.any((id)=> id == currentUserId);
+    }
+    catch(e){
+      logger.d('lỗi khi check like');
+      throw BusinessErrorEntityData(name: 'lỗi khi check like', message: 'lỗi khi check like');
+    }
+
+  }
+
+  @override
+  Future<bool> changeLikeForCurrentUser(String newsId) async {
+    try{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      News news = _listNews.firstWhere((news)=> news.id == newsId);
+      String? currentUserId = prefs.getString('currentUserId');
+      String? userIdLiked = news.userLikeId.firstWhere((userId)=> userId == currentUserId,orElse: () => '');
+      if(userIdLiked != ''){
+        news.userLikeId.remove(userIdLiked);
+        return false;
+      }
+      else{
+        news.userLikeId.add(currentUserId ?? '');
+        return true;
+      }
+    }
+    catch(e){
+      throw BusinessErrorEntityData(name: 'có lỗi trong lúc thay đổi like', message: 'có lỗi trong lúc thay đổi like');
+    }
+  }
+
+  static String content = "Ẩm thực Việt Nam là một bức tranh đa sắc màu, phản ánh rõ nét văn hóa và lịch sử lâu đời của đất nước. Mỗi vùng miền đều có những món ăn đặc trưng, mang hương vị và cách chế biến riêng biệt, tạo nên một bản đồ ẩm thực phong phú và hấp dẫn. Hãy dành thời gian "
+      "khám phá và thưởng thức những món ăn đặc trưng của từng vùng miền để cảm nhận trọn vẹn vẻ đẹp văn hóa Việt Nam.\n\nẨm thực Việt Nam là một bức tranh đa sắc màu, phản ánh rõ nét văn hóa và lịch sử lâu đời của đất nước. Mỗi vùng miền đều có những món ăn đặc trưng, mang hương vị và "
+      "cách chế biến riêng biệt, tạo nên một bản đồ ẩm thực phong phú và hấp dẫn. Hãy dành thời gian khám phá và thưởng thức những món ăn đặc trưng của từng vùng miền để cảm nhận trọn vẹn vẻ đẹp văn hóa Việt Nam.";
 
   static List<News> _listNews = [
     // All
@@ -157,7 +193,6 @@ class NewsRepositoryImpl implements NewsRepository {
     ),
 
   ];
-
 
 
 }

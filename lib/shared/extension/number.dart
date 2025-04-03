@@ -87,3 +87,25 @@ extension IntExtension on int {
     return '$prefix.one'.tr(args: [number]);
   }
 }
+
+extension getNumberFollow on int{
+  String getFollows (){
+    double followersDouble = this/1000;
+    if(this < 1000)
+      return '${this} Followers';
+    else
+      return '${followersDouble}k Followers';
+  }
+
+
+}
+
+extension getNumberK on int{
+  String getNumberk (){
+    double followersDouble = this/1000;
+    if(this < 1000)
+      return '${this}';
+    else
+      return '${followersDouble}k';
+  }
+}

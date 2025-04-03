@@ -37,6 +37,7 @@ class AppFormField extends StatefulWidget {
     this.isRequire = false,
     this.onSuffixIconTap,
     this.centerVertical = false,
+    this.autofocus = false,
   });
 
   final String? label;
@@ -66,6 +67,7 @@ class AppFormField extends StatefulWidget {
   final bool isRequire;
   final VoidCallback? onSuffixIconTap;
   final bool centerVertical;
+  final bool autofocus;
 
   @override
   State<AppFormField> createState() => _AppFormFieldState();
@@ -151,6 +153,7 @@ class _AppFormFieldState extends State<AppFormField> {
 
         Container(
           child: TextFormField(
+            autofocus: widget.autofocus,
             obscuringCharacter: '*',
             obscureText: widget.obscureText,
             readOnly: widget.readOnly,

@@ -5,18 +5,21 @@ class DetailState extends BaseState with _$DetailState {
   const DetailState({
     super.pageStatus = PageStatus.Loaded,
     super.pageErrorMessage,
-    this.followState,
-    this.likeState,
-    this.NewsDetail,
-    this.saveState,
+    this.followState= false,
+    this.likeState = false,
+    this.newsDetail,
+    this.saveState = false,
+    this.numberComment = 0,
   });
 
   @override
-  final News? NewsDetail;
+  final News? newsDetail;
   @override
-  final bool? followState;
+  final bool followState;
   @override
-  final bool? likeState;
+  final bool likeState;
   @override
-  final bool? saveState;
+  final bool saveState;
+  @override
+  final int numberComment;
 }
