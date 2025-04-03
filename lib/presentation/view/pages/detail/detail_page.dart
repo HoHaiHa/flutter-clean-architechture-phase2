@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
-
 import '../../../../gen/assets.gen.dart';
 import '../../../base/base_page.dart';
 import 'detail_bloc.dart';
 
 @RoutePage()
 class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
-  const DetailPage({Key? key}) : super(key: key);
+  const DetailPage( {Key? key,required this.newsId}) : super(key: key);
+  final String newsId;
 
   @override
   void onInitState(BuildContext context) {

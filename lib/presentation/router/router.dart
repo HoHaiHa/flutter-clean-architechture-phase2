@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../view/pages/comment/comment_page.dart';
 
@@ -23,14 +24,12 @@ class AppRouter extends RootStackRouter {
 
   @override
   final List<AutoRoute> routes = [
-    AutoRoute(page: HomeRoute.page),
-    //AutoRoute(page: NewTaskRoute.page),
-    //AutoRoute(page: TaskDetailRoute.page),
+    AutoRoute(page: HomeRoute.page, initial: true),
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: HelloRoute.page),
     AutoRoute(page: SearchRoute.page),
     AutoRoute(page: NotificationRoute.page),
     AutoRoute(page: DetailRoute.page),
-    AutoRoute(page: CommentRoute.page, initial: true),
+    AutoRoute(page: CommentRoute.page),
   ];
 }

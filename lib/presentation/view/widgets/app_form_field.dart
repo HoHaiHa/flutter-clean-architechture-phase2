@@ -36,6 +36,7 @@ class AppFormField extends StatefulWidget {
     this.decoration,
     this.isRequire = false,
     this.onSuffixIconTap,
+    this.centerVertical = false,
   });
 
   final String? label;
@@ -64,6 +65,7 @@ class AppFormField extends StatefulWidget {
   final InputDecoration? decoration;
   final bool isRequire;
   final VoidCallback? onSuffixIconTap;
+  final bool centerVertical;
 
   @override
   State<AppFormField> createState() => _AppFormFieldState();
@@ -120,6 +122,7 @@ class _AppFormFieldState extends State<AppFormField> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: widget.centerVertical ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         if (widget.label != null)
           Text.rich(
@@ -143,6 +146,7 @@ class _AppFormFieldState extends State<AppFormField> {
               ],
             ),
           ),
+        if (widget.label != null)
         Gap(4),
 
         Container(

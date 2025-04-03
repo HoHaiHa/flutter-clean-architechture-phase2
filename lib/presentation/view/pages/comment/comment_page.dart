@@ -23,55 +23,60 @@ class CommentPage extends BasePage<CommentBloc, CommentEvent, CommentState> {
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        centerTitle: true,
-        shadowColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: context.pop,
-          icon: Assets.icons.backIcon.svg(),
-        ),
-        title: Text(
-          "Comment",
-          style: textTheme?.textMedium?.copyWith(color: colorSchema?.darkBlack),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              itemCount: 9,
-              itemBuilder: (_, int index) {
-                return Comment();
-              },
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          centerTitle: true,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: context.pop,
+            icon: Assets.icons.backIcon.svg(),
+          ),
+          title: Text(
+            "Comment",
+            style: textTheme?.textMedium?.copyWith(
+              color: colorSchema?.darkBlack,
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            height: 78,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: SafeArea(
-              bottom: true,
-              child: Row(
-                children: [
-                  Expanded(child: AppFormField()),
-                  Assets.icons.iconSendComment.svg(),
-                ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                itemCount: 9,
+                itemBuilder: (_, int index) {
+                  return Comment();
+                },
               ),
             ),
-          ),
-        ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              height: 78,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(child: AppFormField(centerVertical: true,),),
+                    Gap(5),
+                    Assets.icons.iconSendComment.svg(),
+                  ],
+                ),
+              ),
+
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:flutter_clean_architecture/shared/extension/datetime.dart';
@@ -5,61 +6,44 @@ import 'package:gap/gap.dart';
 
 import '../../../domain/entities/news.dart';
 
-
-class ListNews extends StatelessWidget{
+class ListNews extends StatelessWidget {
   final List<News> listNews;
 
-  const ListNews({
-    super.key,
-    required this.listNews,
-  });
+  const ListNews({super.key, required this.listNews});
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: listNews.length,
       itemBuilder: (context, index) {
         return NewsWidget(
-          imagePath: listNews[index].imagePath,
-          topic: listNews[index].topic,
-          title: listNews[index].title,
-          brandImagePath: listNews[index].author.imagePath,
-          brandName: listNews[index].author.brandName,
-          timePost: listNews[index].timePost,
+          news:listNews[index],
         );
       },
-    )
-    ;
+    );
   }
-
 }
 
-class NewsWidget extends StatelessWidget{
-  final String imagePath;
-  final String topic;
-  final String title;
-  final String brandImagePath;
-  final String brandName;
-  final DateTime timePost;
+class NewsWidget extends StatelessWidget {
+  final News news;
 
   const NewsWidget({
     super.key,
-    required this.imagePath,
-    required this.topic,
-    required this.title,
-    required this.brandImagePath,
-    required this.brandName,
-    required this.timePost,
+    required this.news,
   });
   @override
   Widget build(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
-    return Padding(
-      padding: const EdgeInsets.only(right: 24, left: 24),
-      child: Column(
-        children: [
-          Container(
-              padding: EdgeInsets.only(left: 8,right: 8,bottom: 8),
+    return InkWell(
+      onTap: (){
+        context.router.push(NamedRoute('DetailRoute', params: {'newsId': news.id}));
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 24, left: 24),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
               width: 380,
               height: 112,
               child: Row(
@@ -76,7 +60,7 @@ class NewsWidget extends StatelessWidget{
                             width: 96,
                             height: 96,
                             fit: BoxFit.fitHeight,
-                            imagePath,
+                            news.imagePath,
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) return child;
                               return CircularProgressIndicator();
@@ -97,26 +81,25 @@ class NewsWidget extends StatelessWidget{
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            height:22,
+                            height: 22,
                             child: Text(
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               textAlign: TextAlign.left,
-                              topic,
+                              news.topic,
                               style: textTheme?.textXSmall?.copyWith(
-                                color: colorSchema?.grayscaleBodyText
+                                color: colorSchema?.grayscaleBodyText,
                               ),
-
                             ),
                           ),
                           Text(
-                            title,
+                            news.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             style: textTheme?.textMedium?.copyWith(
-                                color: colorSchema?.darkBlack
+                              color: colorSchema?.darkBlack,
                             ),
                           ),
                           Row(
@@ -128,7 +111,7 @@ class NewsWidget extends StatelessWidget{
                                 child: ClipOval(
                                   child: Image.network(
                                     fit: BoxFit.fill,
-                                    brandImagePath,
+                                    news.author.imagePath,
                                     loadingBuilder: (context, child, progress) {
                                       if (progress == null) return child;
                                       return CircularProgressIndicator();
@@ -141,16 +124,14 @@ class NewsWidget extends StatelessWidget{
                               ),
                               SizedBox(width: 4),
                               ConstrainedBox(
-                                constraints:BoxConstraints(
-                                  maxWidth: 100,
-                                ),
+                                constraints: BoxConstraints(maxWidth: 100),
                                 child: Text(
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
-                                  brandName,
+                                  news.author.brandName,
                                   style: textTheme?.textXSmallLink?.copyWith(
-                                      color: colorSchema?.grayscaleBodyText
+                                    color: colorSchema?.grayscaleBodyText,
                                   ),
                                 ),
                               ),
@@ -161,9 +142,9 @@ class NewsWidget extends StatelessWidget{
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: true,
-                                timePost.getDayAgo(),
+                                news.timePost.getDayAgo(),
                                 style: textTheme?.textXSmall?.copyWith(
-                                    color: colorSchema?.grayscaleBodyText
+                                  color: colorSchema?.grayscaleBodyText,
                                 ),
                               ),
                               Spacer(),
@@ -171,24 +152,22 @@ class NewsWidget extends StatelessWidget{
                                 offset: Offset(0, -3),
                                 child: Text(
                                   '...',
-                                  style: TextStyle(
-                                    letterSpacing: 1.5,
-                                  ),
+                                  style: TextStyle(letterSpacing: 1.5),
                                 ),
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
-          ),
-          Gap(16),
-        ],
+              ),
+            ),
+            Gap(16),
+          ],
+        ),
       ),
     );
   }
 }
-
