@@ -4,13 +4,12 @@ part 'newsComment.g.dart';
 
 @JsonSerializable()
 class NewsComment {
-  NewsComment(this.commentId, this.userCommentId, this.content, this.newsId,
-      this.relyForCommentId, this.userLike, this.commentForNewsId,);
-  final String commentId;
+  NewsComment( this.userCommentId, this.content, this.newsId,
+      this.replies, this.userLike, this.commentForNewsId,);
   final String userCommentId;
   final String content;
   final String newsId;
-  final String relyForCommentId;
-  final List<String> userLike;
+  final List<NewsComment> replies;
+  final List<NewsComment> userLike;
   final String commentForNewsId;
 }

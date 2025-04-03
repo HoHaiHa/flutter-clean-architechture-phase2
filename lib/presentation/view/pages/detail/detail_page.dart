@@ -177,11 +177,14 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                   onTap: () {
                     context.read<DetailBloc>().add(const DetailEvent.changeLike());
                   },
-                  child: Assets.icons.iconHeartTypeFilled.svg(
-                    color:
-                        state.likeState
-                            ? Colors.red
-                            : colorSchema?.grayscaleBodyText,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 43),
+                    child: Assets.icons.iconHeartTypeFilled.svg(
+                      color:
+                          state.likeState
+                              ? Colors.red
+                              : colorSchema?.grayscaleBodyText,
+                    ),
                   ),
                 ),
                 const Gap(4),
