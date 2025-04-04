@@ -95,6 +95,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                       AppFormField(
                                         readOnly: true,
                                         decoration: InputDecoration(
+                                          hintText: 'Search',
                                           prefixIcon: Padding(
                                             padding: const EdgeInsets.only(
                                               left: 10,

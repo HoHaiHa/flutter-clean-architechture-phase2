@@ -46,6 +46,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                           autofocus: true,
                           value: state.searchKey,
                           decoration: InputDecoration(
+                            hintText: 'Search',
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 10, right: 10),
                               child: Assets.icons.search.svg(),

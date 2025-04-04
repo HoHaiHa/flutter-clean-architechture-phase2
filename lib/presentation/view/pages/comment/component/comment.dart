@@ -1,30 +1,57 @@
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/domain/entities/newsComment.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../../gen/assets.gen.dart';
 
-class Comment2 extends StatelessWidget {
-  const Comment2({super.key});
+class ListViewComment extends StatelessWidget {
+  const ListViewComment({super.key, required this.listComments});
+  final List<NewsComment> listComments;
+  @override
+  Widget build(BuildContext context) {
 
+    return Column(
+      children:
+          listComments.map((comment) {
+            return Comment(newsComment: comment);
+          }).toList(),
+    );
+  }
+}
+
+class Comment extends StatefulWidget {
+  const Comment({super.key, required this.newsComment});
+  final NewsComment newsComment;
+
+  @override
+  State<Comment> createState() => _CommentState();
+}
+
+class _CommentState extends State<Comment> {
+  bool showReply = false;
   @override
   Widget build(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipOval(
-                child: Image.network(
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                  'https://cdn-media.sforum.vn/storage/app/media/anh-dep-116.jpg',
+              if(widget.newsComment.replyToId != '')
+                SizedBox(width: 51,),
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: ClipOval(
+                  child: Image.network(
+                    fit: BoxFit.cover,
+                    widget.newsComment.authorComment.imagePath,
+                  ),
                 ),
               ),
               Gap(8),
@@ -36,7 +63,7 @@ class Comment2 extends StatelessWidget {
                       softWrap: true,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      'Wilson Franci',
+                      widget.newsComment.authorComment.brandName,
                       style: textTheme?.textMediumLink?.copyWith(
                         color: colorSchema?.darkBlack,
                       ),
@@ -44,9 +71,7 @@ class Comment2 extends StatelessWidget {
                     const Gap(2),
                     Text(
                       softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                      widget.newsComment.content,
                       style: textTheme?.textMedium?.copyWith(
                         color: colorSchema?.darkBlack,
                       ),
@@ -70,7 +95,7 @@ class Comment2 extends StatelessWidget {
                           softWrap: true,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          '125 likes',
+                          '${widget.newsComment.userLikeId.length} likes',
                           style: textTheme?.textXSmall?.copyWith(
                             color: colorSchema?.grayscaleBodyText,
                           ),
@@ -89,11 +114,35 @@ class Comment2 extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Gap(8),
                   ],
                 ),
               ),
             ],
           ),
+          if (widget.newsComment.replies.isNotEmpty && showReply)
+            ListViewComment(
+              listComments: widget.newsComment.replies,
+            ),
+          if (widget.newsComment.replies.isNotEmpty && !showReply)
+            Gap(8),
+          if (widget.newsComment.replies.isNotEmpty && !showReply)
+            Padding(
+              padding: const EdgeInsets.only(left: 51),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    showReply = true;
+                  });
+                },
+                child: Text(
+                  'See more (${widget.newsComment.totalDescendants})',
+                  style: textTheme?.textMedium?.copyWith(
+                    color: colorSchema?.grayscaleBodyText,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
