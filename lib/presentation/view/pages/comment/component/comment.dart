@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/newsComment.dart';
+import 'package:flutter_clean_architecture/presentation/view/pages/comment/comment_bloc.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 
@@ -101,15 +103,25 @@ class _CommentState extends State<Comment> {
                           ),
                         ),
                         Gap(12),
-                        Assets.icons.iconsReplyMini.svg(),
-                        Gap(3),
-                        Text(
-                          softWrap: true,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          'reply',
-                          style: textTheme?.textXSmall?.copyWith(
-                            color: colorSchema?.grayscaleBodyText,
+                        InkWell(
+                          onTap: (){
+                            context.read<CommentBloc>().add(CommentEvent.setReplyTo(widget.newsComment.id));
+
+                          },
+                          child: Row(
+                            children: [
+                              Assets.icons.iconsReplyMini.svg(),
+                              Gap(3),
+                              Text(
+                                softWrap: true,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                'reply',
+                                style: textTheme?.textXSmall?.copyWith(
+                                  color: colorSchema?.grayscaleBodyText,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

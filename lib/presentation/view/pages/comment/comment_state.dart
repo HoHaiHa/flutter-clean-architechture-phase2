@@ -7,11 +7,18 @@ class CommentState extends BaseState with _$CommentState {
     super.pageErrorMessage,
     this.likeCommentState = false,
     this.enableSendComment = false,
-    this.relyForCommentId = '',
+    this.relyToCommentId = '',
     this.listComments ,
+    this.commentInput,
   });
+  @override
   final bool likeCommentState;
+  @override
   final bool enableSendComment;
-  final String relyForCommentId;
+  @override
+  final String relyToCommentId;
+  @override
   final List<NewsComment>? listComments;
+  @override
+  final String? commentInput;
 }

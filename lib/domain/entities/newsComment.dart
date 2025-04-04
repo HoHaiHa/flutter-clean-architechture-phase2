@@ -1,14 +1,16 @@
 import 'package:flutter_clean_architecture/domain/entities/author.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'newsComment.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class NewsComment {
   NewsComment(this.authorComment, this.replyToId, this.content, this.replies, this.userLikeId, this.commentForNewsId );
 
   factory NewsComment.fromJson(Map<String, dynamic> json) =>
       _$NewsCommentFromJson(json);
+  String id = const Uuid().v4();
   final Author authorComment;
   final String replyToId;
   final String content;

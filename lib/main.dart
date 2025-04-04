@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/shared/utils/bloc_observer.dart';
 import 'package:flutter_clean_architecture/shared/utils/logger.dart';
-
 import 'app.dart';
 import 'di/di.dart';
 import 'firebase_options.dart';
