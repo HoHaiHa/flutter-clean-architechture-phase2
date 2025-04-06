@@ -3,7 +3,7 @@ import 'package:flutter_clean_architecture/domain/entities/newsComment.dart';
 import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../domain/entities/author.dart';
+import '../../domain/entities/user.dart';
 import '../../domain/repositories/news_comment_repository.dart';
 import '../../shared/utils/logger.dart';
 
@@ -22,15 +22,15 @@ class NewsCommentRepositoryImpl extends NewsCommentRepository {
       final querySnapshot =
           await _firestore
               .collection('newsComments')
-              .where('replyToId', isEqualTo: '')
-              .where('commentForNewsId', isEqualTo: '1')
+              .where('replyToCommentId', isEqualTo: '')
+              .where('commentForNewsId', isEqualTo: newsId)
               .get();
 
       final List<NewsComment> comments =
           querySnapshot.docs
               .map((doc) => NewsComment.fromJson(doc.data()))
               .toList();
-      logger.d('lấy thành công NewsComment firestore');
+      logger.d('lấy thành công NewsComment firestore $comments---$newsId fds');
       return comments;
     } catch (e) {
       logger.d('Có lỗi khi lấy dữ liệu NewsComment firestore: $e');
@@ -43,16 +43,17 @@ class NewsCommentRepositoryImpl extends NewsCommentRepository {
 
   @override
   Future<bool> sendComment(
-      String replyToId,
-      String content,
-      String commentForNewsId,
-      ) async {
+    String replyToId,
+    String content,
+    String commentForNewsId,
+    String replyToUsername,
+  ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? authorId = prefs.getString('currentUserId');
+    final String? userId = prefs.getString('currentUserId');
     final String? imagePath = prefs.getString('currentImagePath');
     final String? brandName = prefs.getString('currentFullName');
-    final Author author = Author(
-      authorId ?? '',
+    final User user = User(
+      userId ?? '',
       imagePath ?? '',
       brandName ?? '',
       0,
@@ -60,36 +61,23 @@ class NewsCommentRepositoryImpl extends NewsCommentRepository {
     );
 
     final NewsComment newsComment = NewsComment(
-      author,
+      user,
       replyToId,
       content,
+      replyToUsername,
       [],
       [],
       commentForNewsId,
     );
 
     try {
-      if (replyToId == '') {
+      if (replyToId.trim().isEmpty) {
         await _firestore.collection('newsComments').add(newsComment.toJson());
+        print('Đã thêm comment top-level');
       } else {
-        final querySnapshot = await _firestore
-            .collection('newsComments')
-            .where('commentForNewsId', isEqualTo: commentForNewsId)
-            .get();
-        if (querySnapshot.docs.isNotEmpty) {
-          final List<NewsComment> comments = querySnapshot.docs
-              .map((doc) => NewsComment.fromJson(doc.data()))
-              .toList();
-          logger.d(1);
-          final String? updated = await _findComment(
-              comments, replyToId, newsComment);
-          logger.d(updated);
-
-
-
-        } else {
-          logger.e("Không tìm thấy bình luận nào cho bài viết này.");
-          return false;
+        bool result = await _findAndChangeComment(newsComment, replyToId);
+        if (!result) {
+          print('Không tìm thấy comment có id $replyToId để thêm reply');
         }
       }
       return true;
@@ -98,220 +86,165 @@ class NewsCommentRepositoryImpl extends NewsCommentRepository {
       return false;
     }
   }
-  Future<String?> _findComment(
-      List<NewsComment> comments,
-      String replyToId,
-      NewsComment newsComment,
-      ) async {
-    for (final comment in comments) {
-      if (comment.id == replyToId) {
-        logger.d('Tìm thấy comment: ${comment.id}');
 
-        final querySnapshot = await _firestore
-            .collection('newsComments')
-            .where('id', isEqualTo: comment.id)
+  Future<bool> _findAndChangeComment(
+    NewsComment newComment,
+    String replyToId,
+  ) async {
+    final commentsCollection = _firestore.collection('newsComments');
+
+    final QuerySnapshot topLevelSnapshot =
+        await commentsCollection
+            .where('id', isEqualTo: replyToId)
             .limit(1)
             .get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          final docRef = querySnapshot.docs.first.reference;
-          return docRef.id;
-        } else {
-          logger.e('Không tìm thấy comment trong Firestore.');
-          return null;
-        }
-      }
-      if (comment.replies.isNotEmpty) {
-        final String? foundId = await _findComment(
-          comment.replies,
-          replyToId,
-          newsComment,
-        );
-        if (foundId != null) {
-          return foundId;
+    if (topLevelSnapshot.docs.isNotEmpty) {
+      final docRef = topLevelSnapshot.docs.first.reference;
+      await docRef.update({
+        'replies': FieldValue.arrayUnion([newComment.toJson()]),
+      });
+      print('Đã thêm reply vào comment top-level');
+      return true;
+    } else {
+      final QuerySnapshot allDocs = await commentsCollection.get();
+      for (var doc in allDocs.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        List<dynamic> replies = data['replies'] ?? [];
+        if (_updateNestedReplies(replies, newComment.toJson(), replyToId)) {
+          await doc.reference.update({'replies': replies});
+          print('Đã thêm reply vào comment nested');
+          return true;
         }
       }
     }
+    return false;
+  }
 
-    return null;
+  bool _updateNestedReplies(
+    List<dynamic> repliesList,
+    Map<String, dynamic> newReply,
+    String replyToId,
+  ) {
+    for (var reply in repliesList) {
+      if (reply is Map<String, dynamic>) {
+        if (reply['id'] == replyToId) {
+          if (reply.containsKey('replies')) {
+            (reply['replies'] as List).add(newReply);
+          } else {
+            reply['replies'] = [newReply];
+          }
+          return true;
+        }
+        if (reply.containsKey('replies')) {
+          final bool found = _updateNestedReplies(
+            reply['replies'] as List,
+            newReply,
+            replyToId,
+          );
+          if (found) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> changeLikeComment(String commentId) async {
+    final commentsCollection = _firestore.collection('newsComments');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userId = prefs.getString('currentUserId');
+    final QuerySnapshot topLevelSnapshot =
+    await commentsCollection.where('id', isEqualTo: commentId).limit(1).get();
+    if (topLevelSnapshot.docs.isNotEmpty) {
+      final docRef = topLevelSnapshot.docs.first.reference;
+      final data = topLevelSnapshot.docs.first.data() as Map<String, dynamic>;
+      List<dynamic> userLikeIds = data['userLikeId'] ?? [];
+
+      if (userLikeIds.contains(userId)) {
+        userLikeIds.remove(userId);
+      } else {
+        userLikeIds.add(userId);
+      }
+      await docRef.update({'userLikeId': userLikeIds});
+      print('Đã cập nhật like cho comment ');
+      return true;
+    } else {
+      final QuerySnapshot allDocs = await commentsCollection.get();
+      for (var doc in allDocs.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        List<dynamic> replies = data['replies'] ?? [];
+
+        bool updated = _updateNestedLike(replies, commentId, userId ??'');
+        if (updated) {
+          await doc.reference.update({'replies': replies});
+          print('Đã cập nhật like cho comment nested');
+          return true;
+        }
+      }
+    }
+    print('Không tìm thấy comment để like/unlike');
+    return false;
+  }
+
+  bool _updateNestedLike(
+      List<dynamic> repliesList,
+      String commentId,
+      String userId,
+      ) {
+    for (var reply in repliesList) {
+      if (reply is Map<String, dynamic>) {
+        if (reply['id'] == commentId) {
+          List<dynamic> userLikeIds = reply['userLikeId'] ?? [];
+          if (userLikeIds.contains(userId)) {
+            userLikeIds.remove(userId);
+          } else {
+            userLikeIds.add(userId);
+          }
+          reply['userLikeId'] = userLikeIds;
+          return true;
+        }
+        if (reply.containsKey('replies')) {
+          final bool found = _updateNestedLike(
+            reply['replies'] as List,
+            commentId,
+            userId,
+          );
+          if (found) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  @override
+  Future<int> countAllCommentByNewsId(String newsId) async {
+    int count = 0;
+    final snapshot = await _firestore
+        .collection('newsComments')
+        .where('commentForNewsId', isEqualTo: newsId)
+        .get();
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      count++;
+      count += _countReplies(data['replies']);
+    }
+
+    return count;
+  }
+
+  int _countReplies(dynamic replies) {
+    if (replies == null || replies is! List) return 0;
+    int count = 0;
+    for (var reply in replies) {
+      if (reply is Map<String, dynamic>) {
+        count++;
+        count += _countReplies(reply['replies']);
+      }
+    }
+    return count;
   }
 
 
 
-  final List<NewsComment> sampleComments = [
-    NewsComment(
-      Author('1', 'assets/avatar1.png', 'Brand A', 1000, true),
-      '',
-      'Bài viết rất hay!',
-      [
-        NewsComment(
-          Author('2', 'assets/avatar2.png', 'Brand B', 500, false),
-          '1',
-          'Đồng ý luôn!',
-          [
-            NewsComment(
-              Author('3', 'assets/avatar3.png', 'Brand C', 300, true),
-              '1',
-              'Mình cũng nghĩ vậy.',
-              [
-                NewsComment(
-                  Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-                  '3',
-                  'Có thông tin gì thêm không nhỉ?',
-                  [
-                    NewsComment(
-                      Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-                      '4',
-                      'Mình nghĩ có thêm ở phần sau.',
-                      [],
-                      ['user555'],
-                      '1',
-                    ),
-                  ],
-                  ['user444'],
-                  '1',
-                ),
-              ],
-              [],
-              '1',
-            ),
-          ],
-          ['user222'],
-          '1',
-        ),
-        NewsComment(
-          Author('3', 'assets/avatar3.png', 'Brand C', 300, true),
-          '1',
-          'Mình cũng nghĩ vậy.',
-          [
-            NewsComment(
-              Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-              '3',
-              'Có thông tin gì thêm không nhỉ?',
-              [
-                NewsComment(
-                  Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-                  '4',
-                  'Mình nghĩ có thêm ở phần sau.',
-                  [],
-                  ['user555'],
-                  '1',
-                ),
-              ],
-              ['user444'],
-              '1',
-            ),
-          ],
-          [],
-          '1',
-        ),
-      ],
-      ['user123'],
-      '1',
-    ),
-    NewsComment(
-      Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-      '',
-      'Có thông tin gì thêm không nhỉ?',
-      [
-        NewsComment(
-          Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-          '4',
-          'Mình nghĩ có thêm ở phần sau.',
-          [],
-          ['user555'],
-          '1',
-        ),
-      ],
-      ['user444'],
-      '1',
-    ),
-    NewsComment(
-      Author('1', 'assets/avatar1.png', 'Brand A', 1000, true),
-      '',
-      'Bài viết rất hay!',
-      [
-        NewsComment(
-          Author('2', 'assets/avatar2.png', 'Brand B', 500, false),
-          '1',
-          'Đồng ý luôn!',
-          [
-            NewsComment(
-              Author('3', 'assets/avatar3.png', 'Brand C', 300, true),
-              '1',
-              'Mình cũng nghĩ vậy.',
-              [
-                NewsComment(
-                  Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-                  '3',
-                  'Có thông tin gì thêm không nhỉ?',
-                  [
-                    NewsComment(
-                      Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-                      '4',
-                      'Mình nghĩ có thêm ở phần sau.',
-                      [],
-                      ['user555'],
-                      '1',
-                    ),
-                  ],
-                  ['user444'],
-                  '1',
-                ),
-              ],
-              [],
-              '1',
-            ),
-          ],
-          ['user222'],
-          '1',
-        ),
-        NewsComment(
-          Author('3', 'assets/avatar3.png', 'Brand C', 300, true),
-          '1',
-          'Mình cũng nghĩ vậy.',
-          [
-            NewsComment(
-              Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-              '3',
-              'Có thông tin gì thêm không nhỉ?',
-              [
-                NewsComment(
-                  Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-                  '4',
-                  'Mình nghĩ có thêm ở phần sau.',
-                  [],
-                  ['user555'],
-                  '1',
-                ),
-              ],
-              ['user444'],
-              '1',
-            ),
-          ],
-          [],
-          '1',
-        ),
-      ],
-      ['user123'],
-      '1',
-    ),
-    NewsComment(
-      Author('4', 'assets/avatar4.png', 'Brand D', 250, false),
-      '',
-      'Có thông tin gì thêm không nhỉ?',
-      [
-        NewsComment(
-          Author('5', 'assets/avatar5.png', 'Brand E', 80, false),
-          '4',
-          'Mình nghĩ có thêm ở phần sau.',
-          [],
-          ['user555'],
-          '1',
-        ),
-      ],
-      ['user444'],
-      '1',
-    ),
-  ];
 }

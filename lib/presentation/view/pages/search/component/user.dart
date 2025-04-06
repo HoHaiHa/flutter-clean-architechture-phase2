@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/domain/entities/author.dart';
+import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:flutter_clean_architecture/shared/extension/number.dart';
 import 'package:gap/gap.dart';
@@ -8,22 +8,22 @@ import 'package:gap/gap.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../search_bloc.dart';
 
-class AuthorList extends StatefulWidget{
-  final List<Author> listAuthor;
+class UserList extends StatefulWidget{
+  final List<User> listUser;
 
-  AuthorList( this.listAuthor);
+  UserList( this.listUser);
   @override
-  State<AuthorList> createState() => _AuthorListState();
+  State<UserList> createState() => _UserListState();
 }
 
-class _AuthorListState extends State<AuthorList> {
+class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return ListView.builder(
       padding: EdgeInsets.only(top: 16,right: 24,left: 24),
-      itemCount: widget.listAuthor.length,
+      itemCount: widget.listUser.length,
       itemBuilder: (context, index) {
         return Column(
           children: [
@@ -38,7 +38,7 @@ class _AuthorListState extends State<AuthorList> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       image: DecorationImage(
-                        image: NetworkImage(widget.listAuthor[index].imagePath),
+                        image: NetworkImage(widget.listUser[index].imagePath),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -53,7 +53,7 @@ class _AuthorListState extends State<AuthorList> {
                           softWrap: true,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          widget.listAuthor[index].brandName,
+                          widget.listUser[index].brandName,
                           style: textTheme?.textMedium?.copyWith(
                             color: colorSchema?.darkBlack,
                           ),
@@ -63,7 +63,7 @@ class _AuthorListState extends State<AuthorList> {
                           softWrap: true,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          widget.listAuthor[index].followers.getFollows(),
+                          widget.listUser[index].followers.getFollows(),
                           style: textTheme?.textSmall?.copyWith(
                             color: colorSchema?.grayscaleBodyText,
                           ),
@@ -75,13 +75,13 @@ class _AuthorListState extends State<AuthorList> {
                   Gap(8),
                   BlocBuilder<SearchBloc, SearchState>(
                     buildWhen:(preStatus, status) {
-                      return preStatus.followAuthor != status.followAuthor;
+                      return preStatus.followUser != status.followUser;
                     },
                     builder: (context, state) {
                       return InkWell(
-                        child: widget.listAuthor[index].isFollow ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
+                        child: widget.listUser[index].isFollow ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
                         onTap: (){
-                          context.read<SearchBloc>().add(SearchEvent.changeFollowAuthor(widget.listAuthor[index].brandName));
+                          context.read<SearchBloc>().add(SearchEvent.changeFollowUser(widget.listUser[index].brandName));
                         },
                       );
                     },

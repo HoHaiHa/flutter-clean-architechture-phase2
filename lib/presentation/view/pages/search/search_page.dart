@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/presentation/view/pages/search/component/author.dart';
 import 'package:flutter_clean_architecture/presentation/view/pages/search/component/toppic_list.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/list_news.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../base/base_page.dart';
+import 'component/user.dart';
 import 'search_bloc.dart';
 
 @RoutePage()
@@ -97,7 +97,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                       children: [
                         ListNews(listNews: state.listNews ?? []),
                         TopicList(state.listTopics ?? []),
-                        AuthorList(state.listAuthors ?? []),
+                        UserList(state.listUsers ?? []),
                       ],
                     );
                   },

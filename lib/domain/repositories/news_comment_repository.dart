@@ -6,5 +6,8 @@ abstract class NewsCommentRepository {
     String replyToId,
     String content,
     String commentForNewsId,
+    String replyToUsername,
   );
+  Future<bool> changeLikeComment(String CommentId);
+  Future<int> countAllCommentByNewsId(String newsId);
 }

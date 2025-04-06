@@ -10,8 +10,7 @@ class ChangeFollowNotificationUserUseCase extends UseCase<void, ChangeFollowNoti
 
   @override
   Future<bool> call({required ChangeFollowNotificationUserParam params}) async {
-    _appNotificationRepository.changeFollowNotificationUser(params.userId);
-    return false;
+    return _appNotificationRepository.changeFollowNotificationUser(params.userId);
   }
 }
 

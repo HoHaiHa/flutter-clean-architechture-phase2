@@ -7,8 +7,8 @@ class SearchState extends BaseState with _$SearchState {
     super.pageErrorMessage,
     this.listTopics,
     this.listNews,
-    this.followAuthor = false,
-    this.listAuthors,
+    this.followUser = false,
+    this.listUsers,
     this.saveTopic = false,
     this.searchKey,
   });
@@ -18,11 +18,11 @@ class SearchState extends BaseState with _$SearchState {
   @override
   final List<Topic>? listTopics;
   @override
-  final List<Author>? listAuthors ;
+  final List<User>? listUsers ;
   @override
   final String? searchKey;
   @override
   final bool saveTopic;
   @override
-  final bool followAuthor;
+  final bool followUser;
 }

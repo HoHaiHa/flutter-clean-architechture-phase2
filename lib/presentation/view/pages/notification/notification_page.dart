@@ -136,7 +136,7 @@ class NotificationPage
                                                             TextSpan(
                                                               text:
                                                                   notification
-                                                                      .author
+                                                                      .user
                                                                       .brandName,
                                                               style: textTheme
                                                                   ?.textMediumLink
@@ -189,13 +189,13 @@ class NotificationPage
                                                           .add(
                                                             NotificationEvent.changeFollowed(
                                                               notification
-                                                                  .author
-                                                                  .authorId,
+                                                                  .user
+                                                                  .userId,
                                                             ),
                                                           );
                                                     },
                                                     child:
-                                                      notification.author.isFollow
+                                                      notification.user.isFollow
                                                       ? Assets.icons.following.svg() : Assets.icons.followIcon.svg(),
                                                   ),
                                                 ) else const SizedBox.shrink(),

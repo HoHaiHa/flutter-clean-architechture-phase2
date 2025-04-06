@@ -12,7 +12,6 @@ class ListViewComment extends StatelessWidget {
   final List<NewsComment> listComments;
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children:
           listComments.map((comment) {
@@ -32,6 +31,7 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool showReply = false;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
@@ -44,15 +44,15 @@ class _CommentState extends State<Comment> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if(widget.newsComment.replyToId != '')
-                SizedBox(width: 51,),
+              if (widget.newsComment.replyToCommentId != '')
+                SizedBox(width: 51),
               SizedBox(
                 width: 40,
                 height: 40,
                 child: ClipOval(
                   child: Image.network(
                     fit: BoxFit.cover,
-                    widget.newsComment.authorComment.imagePath,
+                    widget.newsComment.userComment.imagePath,
                   ),
                 ),
               ),
@@ -65,17 +65,29 @@ class _CommentState extends State<Comment> {
                       softWrap: true,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      widget.newsComment.authorComment.brandName,
+                      widget.newsComment.userComment.brandName,
                       style: textTheme?.textMediumLink?.copyWith(
                         color: colorSchema?.darkBlack,
                       ),
                     ),
                     const Gap(2),
-                    Text(
-                      softWrap: true,
-                      widget.newsComment.content,
-                      style: textTheme?.textMedium?.copyWith(
-                        color: colorSchema?.darkBlack,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: widget.newsComment.replyToUserName,
+                            style: textTheme?.textMediumLink?.copyWith(
+                              color: colorSchema?.darkBlack,
+                            ),
+                          ),
+                          const TextSpan(text: ' '),
+                          TextSpan(
+                            text: widget.newsComment.content,
+                            style: textTheme?.textMedium?.copyWith(
+                              color: colorSchema?.darkBlack,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Gap(4),
@@ -91,27 +103,49 @@ class _CommentState extends State<Comment> {
                           ),
                         ),
                         Gap(12),
-                        Assets.icons.heartMini.svg(),
-                        Gap(3),
-                        Text(
-                          softWrap: true,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          '${widget.newsComment.userLikeId.length} likes',
-                          style: textTheme?.textXSmall?.copyWith(
-                            color: colorSchema?.grayscaleBodyText,
-                          ),
+                        BlocBuilder<CommentBloc, CommentState>(
+                          buildWhen: (preState, state){
+                            return state.likeCommentState != preState.likeCommentState;
+                          },
+                          builder: (context, state) {
+                            return InkWell(
+                              onTap: (){
+                                context.read<CommentBloc>().add(CommentEvent.changeLike(widget.newsComment.id));
+                              },
+                              child: Row(
+                                children: [
+                                  Assets.icons.heartMini.svg(
+                                      color: widget.newsComment.checkUserLike(state.currentUserid) ? null : colorSchema?.grayscaleBodyText,
+                                  ),
+                                  const Gap(3),
+                                  Text(
+                                    softWrap: true,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    '${widget.newsComment.userLikeId.length} likes',
+                                    style: textTheme?.textXSmall?.copyWith(
+                                      color: colorSchema?.grayscaleBodyText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                         Gap(12),
                         InkWell(
-                          onTap: (){
-                            context.read<CommentBloc>().add(CommentEvent.setReplyTo(widget.newsComment.id));
-
+                          onTap: () {
+                            context.read<CommentBloc>().add(
+                              CommentEvent.setReplyTo(
+                                widget.newsComment.id,
+                                widget.newsComment.userComment.brandName,
+                              ),
+                            );
                           },
                           child: Row(
                             children: [
                               Assets.icons.iconsReplyMini.svg(),
-                              Gap(3),
+                              const Gap(3),
                               Text(
                                 softWrap: true,
                                 maxLines: 1,
@@ -133,11 +167,8 @@ class _CommentState extends State<Comment> {
             ],
           ),
           if (widget.newsComment.replies.isNotEmpty && showReply)
-            ListViewComment(
-              listComments: widget.newsComment.replies,
-            ),
-          if (widget.newsComment.replies.isNotEmpty && !showReply)
-            Gap(8),
+            ListViewComment(listComments: widget.newsComment.replies),
+          if (widget.newsComment.replies.isNotEmpty && !showReply) Gap(8),
           if (widget.newsComment.replies.isNotEmpty && !showReply)
             Padding(
               padding: const EdgeInsets.only(left: 51),

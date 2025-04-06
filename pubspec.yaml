@@ -73,7 +73,8 @@ dependencies:
   firebase_database: ^11.3.5
 
   easy_comment: ^0.0.7
-
+  firebase_auth: ^5.5.2
+  google_sign_in: ^6.3.0
 
 
 dev_dependencies:

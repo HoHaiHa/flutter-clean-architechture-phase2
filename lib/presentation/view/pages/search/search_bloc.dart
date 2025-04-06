@@ -1,13 +1,13 @@
-import 'package:flutter_clean_architecture/domain/entities/author.dart';
+import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:flutter_clean_architecture/domain/entities/topic.dart';
 import 'package:flutter_clean_architecture/domain/usecases/change_save_topic_use_case.dart';
-import 'package:flutter_clean_architecture/domain/usecases/get_all_author_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/get_all_user_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_all_topic_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/search_news_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../domain/entities/news.dart';
-import '../../../../domain/usecases/change_follow_author_use_case.dart';
+import '../../../../domain/usecases/change_follow_user_use_case.dart';
 import '../../../../shared/common/error_converter.dart';
 import '../../../base/base_bloc.dart';
 import '../../../base/base_state.dart';
@@ -21,9 +21,9 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
   SearchBloc(
     this._searchNewsUseCase,
     this._getAllTopicUseCase,
-    this._getAllAuthorUseCase,
+    this._getAllUserUseCase,
     this._changeSaveTopicUseCase,
-    this._changeFollowAuthorUseCase,
+    this._changeFollowUserUseCase,
   ) : super(const SearchState()) {
     on<SearchEvent>((event, emit) async {
       try {
@@ -38,9 +38,9 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
               params: GetAllTopicParam(''),
             );
             emit(state.copyWith(listTopics: listTopicsResult));
-            final List<Author> listAuthorsResult = await _getAllAuthorUseCase
-                .call(params: GetAllAuthorParam(''));
-            emit(state.copyWith(listAuthors: listAuthorsResult));
+            final List<User> listUsersResult = await _getAllUserUseCase
+                .call(params: GetAllUserParam(''));
+            emit(state.copyWith(listUsers: listUsersResult));
             break;
           case _ChangeSearchKey(key: final key):
             emit(state.copyWith(searchKey: key));
@@ -56,9 +56,9 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
             );
             emit(state.copyWith(listTopics: listTopicResult));
 
-            final List<Author> listAuthorsResult = await _getAllAuthorUseCase
-                .call(params: GetAllAuthorParam(state.searchKey ?? ''));
-            emit(state.copyWith(listAuthors: listAuthorsResult));
+            final List<User> listUsersResult = await _getAllUserUseCase
+                .call(params: GetAllUserParam(state.searchKey ?? ''));
+            emit(state.copyWith(listUsers: listUsersResult));
 
             break;
           case _ChangeSaveTopic(topicName: final topicName):
@@ -73,15 +73,15 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
 
             emit(state.copyWith(listTopics: listTopicResult));
             break;
-          case _ChangeFollowAuthor(authorName: final authorName):
-            emit(state.copyWith(followAuthor: !state.followAuthor));
-            await _changeFollowAuthorUseCase.call(
-              params: ChangeFollowAuthorParam(authorName),
+          case _ChangeFollowUser(userName: final userName):
+            emit(state.copyWith(followUser: !state.followUser));
+            await _changeFollowUserUseCase.call(
+              params: ChangeFollowUserParam(userName),
             );
 
-            final List<Author> listAuthorsResult = await _getAllAuthorUseCase
-                .call(params: GetAllAuthorParam(state.searchKey ?? ''));
-            emit(state.copyWith(listAuthors: listAuthorsResult));
+            final List<User> listUsersResult = await _getAllUserUseCase
+                .call(params: GetAllUserParam(state.searchKey ?? ''));
+            emit(state.copyWith(listUsers: listUsersResult));
 
             break;
         }
@@ -93,9 +93,9 @@ class SearchBloc extends BaseBloc<SearchEvent, SearchState> {
 
   final SearchNewsUseCase _searchNewsUseCase;
   final GetAllTopicUseCase _getAllTopicUseCase;
-  final GetAllAuthorUseCase _getAllAuthorUseCase;
+  final GetAllUserUseCase _getAllUserUseCase;
   final ChangeSaveTopicUseCase _changeSaveTopicUseCase;
-  final ChangeFollowAuthorUseCase _changeFollowAuthorUseCase;
+  final ChangeFollowUserUseCase _changeFollowUserUseCase;
 
 
 }

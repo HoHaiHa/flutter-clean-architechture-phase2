@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'author.dart';
+import 'user.dart';
 
 part 'news.g.dart';
 
@@ -10,7 +10,7 @@ class News {
   final String imagePath;
   final String topic;
   final String title;
-  final Author author;
+  final User user;
   final DateTime timePost;
   final String content;
   final List<String> userLikeId;
@@ -20,7 +20,7 @@ class News {
     required this.imagePath,
     required this.topic,
     required this.title,
-    required this.author,
+    required this.user,
     required this.timePost,
     required this.content,
     required this.userLikeId,

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/domain/entities/author.dart';
+import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -329,7 +329,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                             imagePath: '',
                                             topic: '',
                                             title: '',
-                                            author: Author('','', '', 0, false),
+                                            user: User('','', '', 0, false),
                                             timePost: DateTime(2022),
                                             content: '', id: '', userLikeId: [],
                                           ),
@@ -345,7 +345,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                 imagePath: '',
                                                 topic: '',
                                                 title: '',
-                                                author: Author('', '','', 0, false),
+                                                user: User('', '','', 0, false),
                                                 timePost: DateTime(2022),
                                                 content: '', id: '', userLikeId: [],
                                               ),

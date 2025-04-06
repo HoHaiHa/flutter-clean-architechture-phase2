@@ -5,5 +5,5 @@ sealed class DetailEvent with _$DetailEvent {
   const factory DetailEvent.loadData(String newsId) = _LoadData;
   const factory DetailEvent.changeLike() = _ChangeLike;
   const factory DetailEvent.changeSave() = _ChangeSave;
-  const factory DetailEvent.changeFollow(String authorName) = _ChangeFollow;
+  const factory DetailEvent.changeFollow(String userName) = _ChangeFollow;
 }

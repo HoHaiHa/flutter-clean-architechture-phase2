@@ -112,7 +112,7 @@ class NewsWidget extends StatelessWidget {
                                 child: ClipOval(
                                   child: Image.network(
                                     fit: BoxFit.fill,
-                                    news.author.imagePath,
+                                    news.user.imagePath,
                                     loadingBuilder: (context, child, progress) {
                                       if (progress == null) return child;
                                       return CircularProgressIndicator();
@@ -130,7 +130,7 @@ class NewsWidget extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
-                                  news.author.brandName,
+                                  news.user.brandName,
                                   style: textTheme?.textXSmallLink?.copyWith(
                                     color: colorSchema?.grayscaleBodyText,
                                   ),

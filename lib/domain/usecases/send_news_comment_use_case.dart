@@ -10,13 +10,14 @@ class SendNewsCommentUseCase extends UseCase<void, SendNewsCommentParam> {
 
   @override
   Future<bool> call({required SendNewsCommentParam params}) async {
-    return _newsCommentRepository.sendComment(params.replyToId,params.content,params.commentForNewsId);
+    return _newsCommentRepository.sendComment(params.replyToId,params.content,params.commentForNewsId,params.replyToUsername);
   }
 }
 
 class SendNewsCommentParam {
-  SendNewsCommentParam(this.replyToId, this.content, this.commentForNewsId);
+  SendNewsCommentParam(this.replyToId, this.content, this.commentForNewsId, this.replyToUsername);
   final String replyToId;
   final String content;
   final String commentForNewsId;
+  final String replyToUsername;
 }

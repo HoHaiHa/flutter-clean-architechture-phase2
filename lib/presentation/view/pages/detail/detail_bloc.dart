@@ -1,13 +1,13 @@
-import 'package:flutter_clean_architecture/domain/usecases/change_follow_author_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/change_follow_user_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/change_like_news_for_current_user_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/check_like_news_for_current_user_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/count_all_comment_by_news_id_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_news_by_id_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../domain/entities/news.dart';
 import '../../../../shared/common/error_converter.dart';
-import '../../../../shared/utils/logger.dart';
 import '../../../base/base_bloc.dart';
 import '../../../base/base_state.dart';
 import '../../../base/page_status.dart';
@@ -22,7 +22,8 @@ class DetailBloc extends BaseBloc<DetailEvent, DetailState> {
     this._changeLikeNewsForCurrentUserUseCase,
     this._getNewsByIdUseCase,
     this._checkLikeNewsForCurrentUserUseCase,
-    this._changeFollowAuthorUseCase,
+    this._changeFollowUserUseCase,
+    this._countAllCommentByNewsIdUseCase,
   ) : super(const DetailState()) {
     on<DetailEvent>((event, emit) async {
       try {
@@ -32,25 +33,33 @@ class DetailBloc extends BaseBloc<DetailEvent, DetailState> {
             News news = await _getNewsByIdUseCase.call(
               params: GetNewsByIdParam(newsId),
             );
-            emit(state.copyWith(newsDetail: news));
             bool userLike = await _checkLikeNewsForCurrentUserUseCase.call(
               params: CheckLikeNewsForCurrentUserParam(newsId),
             );
-            emit(state.copyWith(likeState: userLike));
-            logger.d(news);
+            emit(state.copyWith(newsDetail: news, likeState: userLike));
+            int countNumberComment = await _countAllCommentByNewsIdUseCase.call(
+              params: CountAllCommentByNewsIdParam(state.newsDetail?.id ?? ''),
+            );
+            emit(state.copyWith(numberComment: countNumberComment));
             break;
-          case _ChangeFollow(authorName: final authorName):
-            bool isFollow = await _changeFollowAuthorUseCase.call(
-              params: ChangeFollowAuthorParam(authorName),
+          case _ChangeFollow(userName: final userName):
+            await _changeFollowUserUseCase.call(
+              params: ChangeFollowUserParam(userName),
             );
             emit(state.copyWith(followState: !state.followState));
           case _ChangeSave():
             emit(state.copyWith(saveState: !state.saveState));
             break;
           case _ChangeLike():
-            await _changeLikeNewsForCurrentUserUseCase.call(params: ChangeLikeNewsForCurrentUserParam(state.newsDetail?.id ?? ''));
+            await _changeLikeNewsForCurrentUserUseCase.call(
+              params: ChangeLikeNewsForCurrentUserParam(
+                state.newsDetail?.id ?? '',
+              ),
+            );
             bool userLike = await _checkLikeNewsForCurrentUserUseCase.call(
-              params: CheckLikeNewsForCurrentUserParam(state.newsDetail?.id ?? ''),
+              params: CheckLikeNewsForCurrentUserParam(
+                state.newsDetail?.id ?? '',
+              ),
             );
             emit(state.copyWith(likeState: userLike));
             break;
@@ -62,6 +71,7 @@ class DetailBloc extends BaseBloc<DetailEvent, DetailState> {
   }
   GetNewsByIdUseCase _getNewsByIdUseCase;
   CheckLikeNewsForCurrentUserUseCase _checkLikeNewsForCurrentUserUseCase;
-  ChangeFollowAuthorUseCase _changeFollowAuthorUseCase;
+  ChangeFollowUserUseCase _changeFollowUserUseCase;
   ChangeLikeNewsForCurrentUserUseCase _changeLikeNewsForCurrentUserUseCase;
+  CountAllCommentByNewsIdUseCase _countAllCommentByNewsIdUseCase;
 }

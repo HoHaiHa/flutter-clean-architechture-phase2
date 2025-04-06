@@ -73,7 +73,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                         height: 50,
                         child: ClipOval(
                           child: Image.network(
-                            state.newsDetail?.author.imagePath ?? '',
+                            state.newsDetail?.user.imagePath ?? '',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -85,7 +85,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              state.newsDetail?.author.brandName ?? '',
+                              state.newsDetail?.user.brandName ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: textTheme?.textMediumLink?.copyWith(
@@ -108,12 +108,12 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                         onTap: () {
                           context.read<DetailBloc>().add(
                             DetailEvent.changeFollow(
-                              state.newsDetail?.author.brandName ?? '',
+                              state.newsDetail?.user.brandName ?? '',
                             ),
                           );
                         },
                         child:
-                            state.newsDetail?.author.isFollow ?? false
+                            state.newsDetail?.user.isFollow ?? false
                                 ? Assets.icons.following.svg()
                                 : Assets.icons.followIcon.svg(),
                       ),
@@ -210,7 +210,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                         Assets.icons.iconCommentTypeOutline.svg(),
                         Gap(4),
                         Text(
-                          '1K',
+                          state.numberComment.getNumberk(),
                           style: textTheme?.textMedium?.copyWith(
                             color: colorSchema?.grayscaleTitleactive,
                           ),

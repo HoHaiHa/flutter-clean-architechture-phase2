@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_clean_architecture/domain/entities/author.dart';
+import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_notification.g.dart';
@@ -8,7 +8,7 @@ part 'app_notification.g.dart';
 class AppNotification {
   String notificationId;
   String imagePath;
-  Author author;
+  User user;
   String message;
   DateTime timeNotify;
   String typeNotification;
@@ -16,7 +16,7 @@ class AppNotification {
   AppNotification(
     this.notificationId,
     this.imagePath,
-    this.author,
+    this.user,
     this.message,
     this.timeNotify,
     this.typeNotification,

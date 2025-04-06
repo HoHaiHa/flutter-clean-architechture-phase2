@@ -1,11 +1,11 @@
 import 'dart:math';
-import 'package:flutter_clean_architecture/data/repositories/author_repository_impl.dart';
+import 'package:flutter_clean_architecture/data/repositories/user_repository_impl.dart';
 import 'package:flutter_clean_architecture/domain/entities/news.dart';
 import 'package:flutter_clean_architecture/shared/common/error_entity/business_error_entity.dart';
 import 'package:flutter_clean_architecture/shared/utils/logger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../domain/entities/author.dart';
+import '../../domain/entities/user.dart';
 import '../../domain/repositories/news_repository.dart';
 
 @Injectable(as: NewsRepository)
@@ -43,10 +43,10 @@ class NewsRepositoryImpl implements NewsRepository {
     return _listNews.firstWhere((news)=> news.id == newsId);
   }
 
-  static Author getRandomAuthor() {
+  static User getRandomUser() {
     Random random = Random();
-    List<Author> _authors= AuthorRepositoryImpl.authors;
-    return _authors[random.nextInt(_authors.length)];
+    List<User> _users= UserRepositoryImpl.users;
+    return _users[random.nextInt(_users.length)];
   }
 
   @override
@@ -95,7 +95,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpUFQmS0nNLbs7btl0hgMW1EwnxUu823faig&s',
       topic: 'Bussiness',
       title: 'Global News: Breaking Stories from Around the World',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(hours: 2)),
       content: content, id: '1', userLikeId: ['1','2','3','4'],
     ),
@@ -103,7 +103,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2025-01/anchor-group-shot-te-250113-96cd90.jpg',
       topic: 'Bussiness',
       title: 'Technology Advances: What to Expect in 2025',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 1)),
       content: content, id: '2', userLikeId: ['1','2','3','4'],
     ),
@@ -112,7 +112,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://static01.nyt.com/images/2023/06/09/multimedia/09HL-01-qhmp/09HL-01-qhmp-superJumbo-v4.jpg',
       topic: 'Bussiness',
       title: 'Economic Growth: Challenges Ahead for the Global Market',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 3)), id: '3', userLikeId: ['1','2','3','4'],
     ),
 
@@ -122,7 +122,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpUFQmS0nNLbs7btl0hgMW1EwnxUu823faig&s',
       topic: 'Sport',
       title: 'Champions League: Top Teams to Watch',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(hours: 5)), id: '4', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -130,7 +130,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2025-01/anchor-group-shot-te-250113-96cd90.jpg',
       topic: 'Sport',
       title: 'Olympic Games: Athletes Who Made History',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 2)), id: '5', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -138,7 +138,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://static01.nyt.com/images/2023/06/09/multimedia/09HL-01-qhmp/09HL-01-qhmp-superJumbo-v4.jpg',
       topic: 'Sport',
       title: 'Formula 1: Latest Race Results and Highlights',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 4)), id: '6', userLikeId: ['1','2','3','4'],
     ),
 
@@ -148,7 +148,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpUFQmS0nNLbs7btl0hgMW1EwnxUu823faig&s',
       topic: 'Politics',
       title: 'Election 2025: Candidates and Key Issues',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(hours: 3)), id: '7', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -156,7 +156,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2025-01/anchor-group-shot-te-250113-96cd90.jpg',
       topic: 'Politics',
       title: 'Global Diplomacy: Nations Unite for Climate Action',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 1)), id: '8', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -164,7 +164,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://static01.nyt.com/images/2023/06/09/multimedia/09HL-01-qhmp/09HL-01-qhmp-superJumbo-v4.jpg',
       topic: 'Politics',
       title: 'Reforms Ahead: Government Plans New Policies',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 5)), id: '9', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -172,7 +172,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpUFQmS0nNLbs7btl0hgMW1EwnxUu823faig&s',
       topic: 'Health',
       title: '5 Bí quyết giữ sức khỏe trong mùa đông',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(hours: 2)), id: '10', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -180,7 +180,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://static01.nyt.com/images/2023/06/09/multimedia/09HL-01-qhmp/09HL-01-qhmp-superJumbo-v4.jpg',
       topic: 'Health',
       title: 'Tập luyện thể dục để giảm stress và cải thiện sức khỏe',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 1)), id: '10', userLikeId: ['1','2','3','4'],
     ),
     News(
@@ -188,7 +188,7 @@ class NewsRepositoryImpl implements NewsRepository {
       imagePath: 'https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2025-01/anchor-group-shot-te-250113-96cd90.jpg',
       topic: 'Health',
       title: 'Dinh dưỡng hợp lý giúp cải thiện sức đề kháng',
-      author: getRandomAuthor(),
+      user: getRandomUser(),
       timePost: DateTime.now().subtract(Duration(days: 3)), id: '11', userLikeId: ['1','2','3','4'],
     ),
 

@@ -10,6 +10,9 @@ class CommentState extends BaseState with _$CommentState {
     this.relyToCommentId = '',
     this.listComments ,
     this.commentInput,
+    this.replyToUsername,
+    this.currentUserid = '',
+    this.currentNewsId = '',
   });
   @override
   final bool likeCommentState;
@@ -21,4 +24,9 @@ class CommentState extends BaseState with _$CommentState {
   final List<NewsComment>? listComments;
   @override
   final String? commentInput;
+  @override
+  final String? replyToUsername;
+  @override
+  final String currentUserid;
+  final String currentNewsId;
 }

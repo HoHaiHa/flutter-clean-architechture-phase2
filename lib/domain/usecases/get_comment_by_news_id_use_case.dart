@@ -11,7 +11,9 @@ class GetCommentByNewsIdUseCase extends UseCase<void, GetCommentByNewsIdParam> {
 
   @override
   Future<List<NewsComment>> call({required GetCommentByNewsIdParam params}) async {
-    return _newsCommentRepository.getCommentByNewsId(params.newsId);
+    List<NewsComment> listComments = await _newsCommentRepository.getCommentByNewsId(params.newsId);
+    listComments.sort((a, b) => a.createAt.compareTo(b.createAt));
+    return listComments;
   }
 }
 
