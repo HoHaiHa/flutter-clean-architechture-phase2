@@ -87,7 +87,6 @@ class NotificationPage
                                     children: [
                                       Container(
                                         width: double.infinity,
-                                        height: 99,
                                         decoration: BoxDecoration(
                                           color:
                                               colorSchema

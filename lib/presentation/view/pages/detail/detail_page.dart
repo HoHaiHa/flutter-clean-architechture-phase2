@@ -62,7 +62,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -162,7 +162,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             height: 78,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colorSchema?.background,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),

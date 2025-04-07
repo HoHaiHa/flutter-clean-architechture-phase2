@@ -114,20 +114,20 @@ abstract class AppTheme {
             header: AppStyles.header,
           ),
           colorSchema: AppColorSchema(
-            primary: AppColors.denim,
-            mainText: AppColors.nightRider,
-            subText: AppColors.atlantis,
-            whiteText: AppColors.white,
-            disableText: AppColors.nobel,
-            border: AppColors.pattensBlue,
-            background: AppColors.white,
-            secondary1: AppColors.pigmentGreen,
-            secondary2: AppColors.sunsetOrange,
-            secondary3: AppColors.supernova,
-            secondary4: AppColors.gorse,
-            barrierColor: AppColors.black80,
-            badgeColor: AppColors.coralRed,
-            title2: AppColors.gray76,
+            // primary: AppColors.denim,
+            // mainText: AppColors.nightRider,
+            // subText: AppColors.atlantis,
+            // whiteText: AppColors.white,
+            // disableText: AppColors.nobel,
+            // border: AppColors.pattensBlue,
+            // background: AppColors.white,
+            // secondary1: AppColors.pigmentGreen,
+            // secondary2: AppColors.sunsetOrange,
+            // secondary3: AppColors.supernova,
+            // secondary4: AppColors.gorse,
+            // barrierColor: AppColors.black80,
+            // badgeColor: AppColors.coralRed,
+            // title2: AppColors.gray76,
 
             successDefault: AppColors.successDefault,
             darkBlack: AppColors.darkBlack,
@@ -159,7 +159,85 @@ abstract class AppTheme {
       );
   }
 
+
   static ThemeData get darkTheme {
-    return lightTheme.copyWith()..addOwn(Brightness.dark, lightTheme.own());
+    return ThemeData(
+      brightness: Brightness.dark, // Đặt chế độ sáng tối
+      fontFamily: FontFamily.poppins,
+      useMaterial3: false,
+      appBarTheme: AppBarTheme(
+        color: AppColors.darkmodeBackground,  // Màu nền của AppBar trong chế độ tối
+        titleTextStyle: AppStyles.title.copyWith(color: AppColors.darkmodeTitle),  // Màu chữ trên AppBar
+        shadowColor: Colors.black.withOpacity(0.2),  // Màu bóng dưới AppBar
+      ),
+      colorScheme: const ColorScheme.dark(
+        background: AppColors.darkmodeBackground,  // Màu nền của background trong chế độ tối
+        primary: AppColors.primaryDefault,  // Màu chính trong chế độ tối
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: _defaultOutlineInputBorder,
+        enabledBorder: _defaultOutlineInputBorder.copyWith(
+          borderSide: const BorderSide(color: AppColors.grayscaleBodyText),  // Màu viền input
+        ),
+        fillColor: AppColors.darkmodeInputBackground,  // Màu nền của input trong chế độ tối
+        hintStyle: AppStyles.primary.copyWith(color: AppColors.darkmodeBody),  // Màu chữ gợi ý trong input
+        labelStyle: AppStyles.primary.copyWith(color: AppColors.darkmodeTitle),  // Màu chữ label trong input
+        errorStyle: AppStyles.primary.copyWith(color: AppColors.errorDarkmode),  // Màu chữ thông báo lỗi
+      ),
+      scaffoldBackgroundColor: AppColors.darkmodeBackground,  // Màu nền chính của scaffold
+      iconTheme: const IconThemeData(color: AppColors.atlantis),  // Giữ nguyên màu của icon
+      primaryIconTheme: const IconThemeData(color: AppColors.atlantis),   // Màu của icon trong chế độ tối
+      dividerTheme: _dividerTheme.copyWith(color: AppColors.grayscaleButtonText),  // Màu divider trong chế độ tối
+      tabBarTheme: TabBarTheme(
+        labelColor: AppColors.primaryDefault,  // Màu nhãn đã chọn trong TabBar
+        unselectedLabelColor: AppColors.grayscalePlaceholder,  // Màu nhãn chưa chọn
+        indicatorColor: AppColors.primaryDefault,  // Màu thanh chỉ thị
+      ),
+    )..addOwn(
+      Brightness.dark,
+      AppThemeData(
+        textTheme: AppTextTheme(
+          textSmall: AppStyles.textSmall,
+          textXSmall: AppStyles.textXSmall,
+          textMedium: AppStyles.textMedium,
+          textLarge: AppStyles.textLarge,
+          textDisplaySmall: AppStyles.textDisplaySmall,
+          textDisplayMedium: AppStyles.textDisplayMedium,
+          textDisplayLarge: AppStyles.textDisplayLarge,
+          textDisplaySmallBold: AppStyles.textDisplaySmallBold,
+          textDisplayMediumBold: AppStyles.textDisplayMediumBold,
+          textDisplayLargeBold: AppStyles.textDisplayLargeBold,
+          textSmallLink: AppStyles.textSmallLink,
+          textXSmallLink: AppStyles.textXSmallLink,
+          textMediumLink: AppStyles.textMediumLink,
+          textLargeLink: AppStyles.textLargeLink,
+
+          h1: AppStyles.h1,
+          h2: AppStyles.h2,
+          h3: AppStyles.h3,
+          primary: AppStyles.primary,
+          medium: AppStyles.medium,
+          small: AppStyles.small,
+          highlightsMedium: AppStyles.highlightsMedium,
+          highlightsBold: AppStyles.highlightsBold,
+          button: AppStyles.button,
+          title: AppStyles.title,
+          header: AppStyles.header,
+        ),
+        colorSchema: AppColorSchema(
+          primary: AppColors.primaryDefault,
+          mainText: AppColors.white,
+          subText: AppColors.grayscalePlaceholder,
+          background: AppColors.darkmodeBackground,
+          title2: AppColors.darkmodeTitle,
+          darkmodeBody: AppColors.darkmodeBody,
+          darkmodeTitle: AppColors.darkmodeTitle,
+          darkmodeInputBackground: AppColors.darkmodeInputBackground,
+        ),
+      ),
+    );
   }
+
+
+
 }

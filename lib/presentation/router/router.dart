@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
+import '../view/pages/edit_profile/edit_profile_page.dart';
+
 import '../view/pages/settings/settings_page.dart';
 
 import '../view/pages/explore/explore_page.dart';
@@ -54,5 +56,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: NotificationRoute.page),
 
     AutoRoute(page: SettingsRoute.page),
+
+    AutoRoute(page: EditProfileRoute.page),
   ];
 }

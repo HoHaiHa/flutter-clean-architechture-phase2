@@ -51,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('currentUserId', '1');
-      await prefs.setString('currentImagePath', currentUser.imagePath ?? '');
+      await prefs.setString('currentImagePath', 'https://cdn-media.sforum.vn/storage/app/media/anh-dep-116.jpg');
       await prefs.setString('currentFullName', currentUser.fullName ?? '');
       await prefs.setString('currentUsername', currentUser.username);
       await prefs.setString('currentEmail', currentUser.email);
@@ -72,14 +72,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<CurrentUser> getCurrentUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? id = await prefs.getString('currentUserId');
-    String? imagePath = await prefs.getString('currentImagePath');
-    String? fullName = await prefs.getString('currentFullName');
-    String? username = await prefs.getString('currentUsername');
-    String? email = await prefs.getString('currentEmail');
-    String? phoneNumber = await prefs.getString('currentPhoneNumber' );
-    String? bio = await prefs.getString('currentBio');
-    String? website = await prefs.getString('currentWebsite');
+    String? id =  prefs.getString('currentUserId');
+    String? imagePath =  'https://cdn-media.sforum.vn/storage/app/media/anh-dep-116.jpg';//prefs.getString('currentImagePath');
+    String? fullName =  prefs.getString('currentFullName');
+    String? username =  prefs.getString('currentUsername');
+    String? email =  prefs.getString('currentEmail');
+    String? phoneNumber =  prefs.getString('currentPhoneNumber' );
+    String? bio =  prefs.getString('currentBio');
+    String? website =  prefs.getString('currentWebsite');
     CurrentUser currentUser = CurrentUser(id??'', fullName, imagePath, username??'', email??'', phoneNumber??'', bio, website);
     return currentUser;
   }

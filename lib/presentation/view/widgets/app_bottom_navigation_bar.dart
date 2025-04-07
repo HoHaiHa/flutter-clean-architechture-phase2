@@ -52,11 +52,11 @@ class AppBottomNavigationBar extends StatelessWidget {
             blurRadius: 20,
           ),
         ],
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: colorSchema?.background,
       ),
       child: SafeArea(
         child: Material(
-          color: context.themeOwn().colorSchema?.whiteText,
+          color: context.themeOwn().colorSchema?.background,
           child: _BottomNavigationTile(
             items: items,
             currentIndex: currentIndex,

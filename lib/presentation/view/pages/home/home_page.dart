@@ -55,7 +55,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                           child: Assets.images.logo.svg(),
                         ),
                         InkWell(
-                          onTap: () => context.pushRoute(const NotificationRoute()),
+                          onTap:
+                              () =>
+                                  context.pushRoute(const NotificationRoute()),
                           child: Container(
                             width: 32,
                             height: 32,
@@ -64,7 +66,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                               borderRadius: BorderRadius.circular(6),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.05),
+                                  color: Colors.black.withOpacity(0.05),
                                   spreadRadius: 2,
                                   blurRadius: 4,
                                 ),
@@ -327,9 +329,11 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                           imagePath: '',
                                           topic: '',
                                           title: '',
-                                          user: User('','', '', 0, false),
+                                          user: User('', '', '', 0, false),
                                           timePost: DateTime(2022),
-                                          content: '', id: '', userLikeId: [],
+                                          content: '',
+                                          id: '',
+                                          userLikeId: [],
                                         ),
                                       ],
                                 ),
@@ -343,9 +347,11 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                               imagePath: '',
                                               topic: '',
                                               title: '',
-                                              user: User('', '','', 0, false),
+                                              user: User('', '', '', 0, false),
                                               timePost: DateTime(2022),
-                                              content: '', id: '', userLikeId: [],
+                                              content: '',
+                                              id: '',
+                                              userLikeId: [],
                                             ),
                                           ],
                                     ),
