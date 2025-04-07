@@ -10,4 +10,5 @@ abstract class NewsCommentRepository {
   );
   Future<bool> changeLikeComment(String CommentId);
   Future<int> countAllCommentByNewsId(String newsId);
+
 }

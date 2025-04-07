@@ -1,5 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 
+import '../view/pages/settings/settings_page.dart';
+
+import '../view/pages/explore/explore_page.dart';
+
+import '../view/pages/bookmark/bookmark_page.dart';
+
+import '../view/pages/bottom_navigation/bottom_navigation_page.dart';
+
 import '../view/pages/profile/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -26,13 +34,25 @@ class AppRouter extends RootStackRouter {
 
   @override
   final List<AutoRoute> routes = [
-    AutoRoute(page: HomeRoute.page, initial: true),
+    //AutoRoute(page: HomeRoute.page),
     AutoRoute(page: LoginRoute.page),
-    AutoRoute(page: HelloRoute.page),
     AutoRoute(page: SearchRoute.page),
-    AutoRoute(page: NotificationRoute.page),
     AutoRoute(page: DetailRoute.page),
     AutoRoute(page: CommentRoute.page),
-    AutoRoute(page: ProfileRoute.page),
+    AutoRoute(page: HelloRoute.page),
+    //AutoRoute(page: ProfileRoute.page),
+    AutoRoute(
+      page: BottomNavigationRoute.page,
+      initial: true,
+      children: [
+        AutoRoute(page: HomeRoute.page),
+        AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: BookmarkRoute.page),
+        AutoRoute(page: ExploreRoute.page),
+      ],
+    ),
+    AutoRoute(page: NotificationRoute.page),
+
+    AutoRoute(page: SettingsRoute.page),
   ];
 }

@@ -72,20 +72,36 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                 ),
               ),
               Gap(16),
-              SizedBox(
-                width: 178,
-                height: 34,
+              Center(
                 child: TabBar(
+                  padding: const EdgeInsets.only(
+                    left: 24,
+                  ),
+                  labelPadding: const EdgeInsets.only(
+                      top: 0,
+                      right: 12,
+                      left: 12,
+                      bottom: 8,
+                  ),
+                  indicatorSize:
+                  TabBarIndicatorSize.label,
+                  isScrollable: true,
+                  indicatorColor:
+                  colorSchema?.primaryDefault,
                   labelStyle: textTheme?.textMedium,
                   labelColor: colorSchema?.darkBlack,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  unselectedLabelStyle: textTheme?.textMedium,
-                  unselectedLabelColor: colorSchema?.grayscaleBodyText,
-                  labelPadding: EdgeInsets.zero,
-                  tabs: const <Widget>[
-                    Tab(text: 'News'),
-                    Tab(text: 'Topic'),
-                    Tab(text: 'Author'),
+                  unselectedLabelStyle: textTheme
+                      ?.textMedium
+                      ?.copyWith(
+                    color:
+                    colorSchema
+                        ?.grayscaleBodyText,
+                  ),
+
+                  tabs: const [
+                    Text('News'),
+                    Text('Topics'),
+                    Text('Author'),
                   ],
                 ),
               ),

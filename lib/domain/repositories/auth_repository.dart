@@ -1,10 +1,16 @@
-import '../entities/user_info.dart';
+import 'package:flutter_clean_architecture/data/remote/models/response/login_info_response.dart';
+
+import '../entities/current_user.dart';
 
 abstract interface class AuthRepository {
-  Future<UserInfo> login(
-      {required String username, required String password});
+  Future<CurrentUser> login(
+      {required String username, required String password,required bool isRemember});
 
-  Future<String> getUserId();
+  Future<CurrentUser> getCurrentUser();
+
+  Future<bool> loginByGoogle();
+
+  Future<LoginInfoResponse> checkRememberPassword();
 
   // Future<Result<String?>> getUsername();
   //

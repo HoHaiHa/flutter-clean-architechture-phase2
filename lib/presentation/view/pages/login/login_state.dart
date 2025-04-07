@@ -15,7 +15,7 @@ class LoginState extends BaseState with _$LoginState {
     this.passwordError,
     this.isRemember = false,
     this.isLoading = false,
-    this.isLoginSuccess ,
+    this.isLoginSuccess =false ,
     this.error ,
   });
 
@@ -32,7 +32,7 @@ class LoginState extends BaseState with _$LoginState {
   @override
   final bool isLoading;
   @override
-  final bool? isLoginSuccess;
+  final bool isLoginSuccess;
   @override
   final String? error;
 }

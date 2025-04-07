@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/presentation/resources/colors.dart';
 import 'package:flutter_clean_architecture/presentation/resources/styles.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 
@@ -36,12 +35,13 @@ class AppBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.themeOwn().textTheme;
+    final colorSchema = context.themeOwn().colorSchema;
     final _unSelectedTextStyle = unSelectedTextStyle ??
-        AppStyles.bottomNavigation.copyWith(color: AppColors.suvaGrey);
+        AppStyles.bottomNavigation.copyWith(color: colorSchema?.grayscaleBodyText);
     final _selectedTextStyle = selectedTextStyle ??
         _unSelectedTextStyle.copyWith(
-          fontWeight: FontWeight.w500,
-          color: context.themeOwn().colorSchema?.primary,
+          color: context.themeOwn().colorSchema?.primaryDefault,
         );
     return Container(
       decoration: BoxDecoration(
@@ -53,12 +53,10 @@ class AppBottomNavigationBar extends StatelessWidget {
           ),
         ],
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: SafeArea(
         child: Material(
           color: context.themeOwn().colorSchema?.whiteText,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
           child: _BottomNavigationTile(
             items: items,
             currentIndex: currentIndex,

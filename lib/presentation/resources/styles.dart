@@ -173,9 +173,9 @@ abstract class AppStyles {
     fontFamily: FontFamily.poppins,
   );
   static const bottomNavigation = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontSize: 11,
-    height: 16 / 11,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    height: 21 / 14,
     fontFamily: FontFamily.poppins,
   );
 }

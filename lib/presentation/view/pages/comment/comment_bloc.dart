@@ -1,7 +1,8 @@
+import 'package:flutter_clean_architecture/domain/entities/current_user.dart';
 import 'package:flutter_clean_architecture/domain/entities/newsComment.dart';
 import 'package:flutter_clean_architecture/domain/usecases/change_like_comment_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_comment_by_news_id_use_case.dart';
-import 'package:flutter_clean_architecture/domain/usecases/get_current_user_id_use_case.dart';
+import 'package:flutter_clean_architecture/domain/usecases/get_current_user_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/send_news_comment_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -21,7 +22,7 @@ class CommentBloc extends BaseBloc<CommentEvent, CommentState> {
     this._getCommentByNewsIdUseCase,
     this._sendNewsCommentUseCase,
     this._changeLikeCommentUseCase,
-    this._getCurrentUserIdUseCase,
+    this._getCurrentUserUseCase,
   ) : super(const CommentState()) {
     on<CommentEvent>((event, emit) async {
       try {
@@ -32,13 +33,13 @@ class CommentBloc extends BaseBloc<CommentEvent, CommentState> {
                 await _getCommentByNewsIdUseCase.call(
                   params: GetCommentByNewsIdParam(newsId),
                 );
-            final String currentUserId = await _getCurrentUserIdUseCase.call(
-              params: GetCurrentUserIdParam(),
+            final CurrentUser currentUser = await _getCurrentUserUseCase.call(
+              params: GetCurrentUserParam(),
             );
             emit(
               state.copyWith(
                 listComments: listComments,
-                currentUserid: currentUserId,
+                currentUserid: currentUser.id,
                 currentNewsId: newsId,
               ),
             );
@@ -98,5 +99,5 @@ class CommentBloc extends BaseBloc<CommentEvent, CommentState> {
   final GetCommentByNewsIdUseCase _getCommentByNewsIdUseCase;
   final SendNewsCommentUseCase _sendNewsCommentUseCase;
   final ChangeLikeCommentUseCase _changeLikeCommentUseCase;
-  final GetCurrentUserIdUseCase _getCurrentUserIdUseCase;
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
 }

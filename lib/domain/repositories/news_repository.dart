@@ -7,4 +7,5 @@ abstract interface class NewsRepository{
   Future<News> getNewsById(String newsId);
   Future<bool> checkLikeForCurrentUser(String newsId);
   Future<bool> changeLikeForCurrentUser(String newsId);
+  Future<List<News>> getNewsOfCurrentUser();
 }

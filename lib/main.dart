@@ -13,48 +13,48 @@ import 'di/di.dart';
 import 'firebase_options.dart';
 
 Future main() async {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    Bloc.observer = AppBlocObserver();
-    EasyLocalization.logger.enableLevels = [
-      LevelMessages.error,
-      LevelMessages.warning,
-    ];
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
-    await configureDependencies();
-    getIt.registerSingleton(AppRouter());
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    await EasyLocalization.ensureInitialized();
-    _startApp();
-  }, (error, stackTrace) {
-    logger.e('$error $stackTrace');
-  });
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      Bloc.observer = AppBlocObserver();
+      EasyLocalization.logger.enableLevels = [
+        LevelMessages.error,
+        LevelMessages.warning,
+      ];
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
+      );
+      await configureDependencies();
+      getIt.registerSingleton(AppRouter());
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      await EasyLocalization.ensureInitialized();
+      _startApp();
+    },
+    (error, stackTrace) {
+      logger.e('$error $stackTrace');
+    },
+  );
 }
 
 Future _startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
       child: const MyApp(),
-      //child:  TestFireBaseApp(),
 
+      //child:  TestFireBaseApp(),
     ),
   );
 }
+
 
 //
 // //testFirebase------------------------------------------------------
