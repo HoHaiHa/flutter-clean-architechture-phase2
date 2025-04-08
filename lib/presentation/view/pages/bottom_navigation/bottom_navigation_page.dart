@@ -29,12 +29,13 @@ class BottomNavigationPage
 
   @override
   Widget builder(BuildContext context) {
-    final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
+
     final List<AppBottomNavigationItem> _bottomNavItems = [
       AppBottomNavigationItem(
         label: 'Home',
-        icon: Assets.icons.iconHomeTypeOutline.svg(),
+        icon: Assets.icons.iconHomeTypeOutline.svg(color: iconColor),
         selectedIcon: Assets.icons.iconHomeTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),
@@ -42,7 +43,7 @@ class BottomNavigationPage
       ),
       AppBottomNavigationItem(
         label: 'Explore',
-        icon: Assets.icons.iconCompassTypeOutline.svg(),
+        icon: Assets.icons.iconCompassTypeOutline.svg(color: iconColor),
         selectedIcon: Assets.icons.iconCompassTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),
@@ -50,7 +51,7 @@ class BottomNavigationPage
       ),
       AppBottomNavigationItem(
         label: 'Bookmark',
-        icon: Assets.icons.iconBookmarkTypeOutline.svg(),
+        icon: Assets.icons.iconBookmarkTypeOutline.svg(color: iconColor),
         selectedIcon: Assets.icons.iconBookmarkTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),
@@ -58,7 +59,7 @@ class BottomNavigationPage
       ),
       AppBottomNavigationItem(
         label: 'Profile',
-        icon: Assets.icons.iconProfileTypeOutline.svg(),
+        icon: Assets.icons.iconProfileTypeOutline.svg(color: iconColor),
         selectedIcon: Assets.icons.iconProfileTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),

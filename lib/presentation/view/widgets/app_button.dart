@@ -13,7 +13,7 @@ class AppButton extends StatelessWidget {
     this.enable = true,
     this.minWidth,
     this.height = 0,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor =  Colors.transparent,
     this.prefixIcon,
     this.suffixIcon,
     this.borderRadius = 6,
@@ -131,7 +131,7 @@ class _AppButtonPrimary extends AppButton {
          ),
          enable: enable,
          height: height ?? 48,
-         backgroundColor: backgroundColor ?? AppColors.denim,
+         backgroundColor: backgroundColor ?? AppColors.grayscaleSecondaryButton,
          minWidth: double.infinity,
          borderRadius: borderRadius,
        );

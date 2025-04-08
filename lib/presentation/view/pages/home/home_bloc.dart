@@ -21,7 +21,7 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
       try {
         switch (event) {
           case _LoadData():
-            emit(state.copyWith(pageStatus: PageStatus.Loaded));
+            //emit(state.copyWith(pageStatus: PageStatus.Loaded));
             final List<Topic> topicResult = await _getListTopicSavedUseCase
                 .call(params: GetListTopicSavedParam());
             final List<News> newsResult = await _getListNewsByTopicUseCase.call(

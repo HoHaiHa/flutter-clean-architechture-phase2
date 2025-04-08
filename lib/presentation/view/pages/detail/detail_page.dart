@@ -26,6 +26,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
     return BlocBuilder<DetailBloc, DetailState>(
       builder: (context, state) {
         return Scaffold(
@@ -33,21 +34,21 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
             shadowColor: Colors.transparent,
             leading: IconButton(
               onPressed: context.pop,
-              icon: Assets.icons.backIcon.svg(),
+              icon: Assets.icons.backIcon.svg(color: iconColor),
             ),
             actions: [
               IconButton(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.zero,
                 onPressed: () {},
-                icon: Assets.icons.iconShareTypeOutline.svg(),
+                icon: Assets.icons.iconShareTypeOutline.svg(color: iconColor),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: PopupMenuButton<String>(
                   padding: EdgeInsets.zero,
                   icon:
-                      Assets.icons.iconMoreVerTypeOutline.svg(), // Icon dấu "..."
+                      Assets.icons.iconMoreVerTypeOutline.svg(color: iconColor), // Icon dấu "..."
                   onSelected: (value) {
                     print("Selected: $value");
                   },
@@ -207,7 +208,7 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                     },
                     child: Row(
                       children: [
-                        Assets.icons.iconCommentTypeOutline.svg(),
+                        Assets.icons.iconCommentTypeOutline.svg(color: iconColor),
                         Gap(4),
                         Text(
                           state.numberComment.getNumberk(),
@@ -227,11 +228,13 @@ class DetailPage extends BasePage<DetailBloc, DetailEvent, DetailState> {
                   },
                   child: SizedBox(
                     width: 70,
+                    height: 70,
                     child: Assets.icons.iconBookmarkTypeFilled.svg(
+                      fit: BoxFit.scaleDown,
                       color:
                           state.saveState
                               ? colorSchema?.primaryDefault
-                              : colorSchema?.grayscaleBodyText,
+                              : iconColor,
                     ),
                   ),
                 ),

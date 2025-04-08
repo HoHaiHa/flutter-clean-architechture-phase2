@@ -86,15 +86,18 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
     final textTheme = context.styleOwn();
     final colorSchema = context.colorOwn();
 
-    final defaultBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(6.0),
-      borderSide: BorderSide(
-        color:
-            widget.decoration?.border?.borderSide.color ??
-            colorSchema?.grayscaleBodyText ??
-            AppColors.grayscaleBodyText, // Border color
-      ),
-    );
+    final defaultBorder =
+        Theme.of(context).brightness == Brightness.light
+            ? OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: BorderSide(
+                color:
+                    widget.decoration?.border?.borderSide.color ??
+                    colorSchema?.grayscaleBodyText ??
+                    AppColors.grayscaleBodyText, // Border color
+              ),
+            )
+            : null;
 
     final errorBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(6.0),
@@ -108,7 +111,9 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
 
     final fillColor =
         widget.decoration?.errorText == null
-            ? Colors.transparent
+            ? (Theme.of(context).brightness == Brightness.light
+                ? Colors.transparent
+                : colorSchema?.darkmodeInputBackground)
             : colorSchema?.errorLight;
 
     return Column(
@@ -123,20 +128,26 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
                 TextSpan(
                   text: widget.label ?? '',
                   style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.grayscaleBodyText,
+                    color:
+                        Theme.of(context).brightness == Brightness.light
+                            ? colorSchema?.grayscaleBodyText
+                            : colorSchema?.darkmodeBody,
                   ),
                 ),
-                if(widget.isRequired)
-                TextSpan(
-                  text: '*',
-                  style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.errorDark,
+                if (widget.isRequired)
+                  TextSpan(
+                    text: '*',
+                    style: textTheme?.textSmall?.copyWith(
+                      color:
+                          Theme.of(context).brightness == Brightness.light
+                              ? colorSchema?.errorDark
+                              : colorSchema?.errorDarkmode,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
-        Gap(4),
+        if (widget.label != null) Gap(4),
         TextFormField(
           obscuringCharacter: '*',
           obscureText: hidePassword,
@@ -176,8 +187,8 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
                 padding: const EdgeInsets.fromLTRB(8, 12, 12, 12),
                 child:
                     hidePassword
-                        ? Assets.icons.hind.svg()
-                        : Icon(Icons.visibility_outlined),
+                        ? Assets.icons.hind.svg(color: Theme.of(context).iconTheme.color)
+                        : Icon(Icons.visibility_outlined,color: Theme.of(context).iconTheme.color),
               ),
             ),
 
@@ -226,13 +237,23 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
             padding: const EdgeInsets.only(top: 8),
             child: Row(
               children: [
-                Assets.icons.warningIcon.svg(),
-                Gap(3.83),
+                Assets.icons.warningIcon.svg(
+                  color:
+                      Theme.of(context).brightness == Brightness.light
+                          ? null
+                          : colorSchema?.errorDarkmode ??
+                              AppColors.errorDarkmode,
+                ),
+                const Gap(4),
                 Text(
                   maxLines: 1,
                   widget.decoration?.errorText ?? '',
                   style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.errorDark,
+                    color:
+                        Theme.of(context).brightness == Brightness.light
+                            ? colorSchema?.errorDark
+                            : colorSchema?.errorDarkmode ??
+                                AppColors.errorDarkmode,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

@@ -26,7 +26,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
-
+    final iconColor =Theme.of(context).iconTheme.color;
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen:
           (previousState, state) =>
@@ -62,7 +62,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                             width: 32,
                             height: 32,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).brightness == Brightness.light ? Colors.white : colorSchema?.darkmodeInputBackground,
                               borderRadius: BorderRadius.circular(6),
                               boxShadow: [
                                 BoxShadow(
@@ -74,8 +74,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                             ),
                             child: Assets.icons.notify.svg(
                               fit: BoxFit.scaleDown,
-                              width: 18,
-                              height: 25,
+                              color: colorSchema?.iconWhite
                             ),
                           ),
                         ),
@@ -101,14 +100,14 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                             left: 10,
                                             right: 10,
                                           ),
-                                          child: Assets.icons.search.svg(),
+                                          child: Assets.icons.search.svg(color: iconColor,),
                                         ),
 
                                         suffixIcon: Padding(
                                           padding: const EdgeInsets.only(
                                             right: 12,
                                           ),
-                                          child: Assets.icons.threeLine.svg(),
+                                          child: Assets.icons.threeLine.svg(color: iconColor,),
                                         ),
                                       ),
                                       onTap:
@@ -192,7 +191,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                         ),
                                                   ),
                                                   const Gap(8),
-                                                  Assets.icons.clock.svg(),
+                                                  Assets.icons.clock.svg(color: iconColor,),
                                                   const Gap(6),
                                                   Text(
                                                     '4h ago',

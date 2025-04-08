@@ -21,7 +21,7 @@ class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
         try {
           switch(event) {
             case _LoadData():
-              emit(state.copyWith(pageStatus: PageStatus.Loaded));
+              //emit(state.copyWith(pageStatus: PageStatus.Loaded));
               final CurrentUser currentUser = await _getCurrentUserUseCase.call(params: GetCurrentUserParam());
               final List<News> listNews = await _getNewsOfCurrentUserUseCase.call(params: GetNewsOfCurrentUserParam());
               emit(state.copyWith(currentUser: currentUser,listNews: listNews));

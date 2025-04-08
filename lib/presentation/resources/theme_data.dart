@@ -116,7 +116,7 @@ class AppColorSchema {
     this.darkmodeBackground,
     this.darkmodeTitle,
     this.darkmodeBody,
-    this.darkmodeInputBackground,
+    this.darkmodeInputBackground, this.iconWhite,
   });
 
   final Color? primary;
@@ -158,4 +158,5 @@ class AppColorSchema {
   final Color? darkmodeTitle;
   final Color? darkmodeBody;
   final Color? darkmodeInputBackground;
+  final Color? iconWhite;
 }

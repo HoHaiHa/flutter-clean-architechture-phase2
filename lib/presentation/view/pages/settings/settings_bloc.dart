@@ -19,7 +19,7 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
         try {
           switch(event) {
             case _LoadData():
-              emit(state.copyWith(pageStatus: PageStatus.Loaded));
+              //emit(state.copyWith(pageStatus: PageStatus.Loaded));
               final ThemeMode themeMode = await _checkCurrentThemeUseCase.call(params: CheckCurrentThemeParam());
               if(themeMode== ThemeMode.dark)
                 emit(state.copyWith(darkMode: true));
@@ -28,6 +28,7 @@ class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
               break;
             case _ChangeDarkMode():
               emit(state.copyWith(darkMode: !state.darkMode));
+
               break;
           }
         } catch(e,s) {

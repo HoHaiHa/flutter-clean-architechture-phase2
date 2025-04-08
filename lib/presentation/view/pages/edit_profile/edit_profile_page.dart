@@ -24,6 +24,7 @@ class EditProfilePage
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -32,7 +33,7 @@ class EditProfilePage
           leading: IconButton(
             padding: EdgeInsets.only(left: 16),
             onPressed: context.pop,
-            icon: Assets.icons.iconCloseTypeOutline.svg(),
+            icon: Assets.icons.iconCloseTypeOutline.svg(color: iconColor),
           ),
           title: Text(
             'Edit Profile',
@@ -43,7 +44,7 @@ class EditProfilePage
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 24),
-              child: Assets.icons.iconCheckTypeOutline.svg(),
+              child: Assets.icons.iconCheckTypeOutline.svg(color: iconColor),
             ),
           ],
         ),

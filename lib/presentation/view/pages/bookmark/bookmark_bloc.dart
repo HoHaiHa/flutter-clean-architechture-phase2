@@ -14,15 +14,15 @@ part 'bookmark_state.dart';
 class BookmarkBloc extends BaseBloc<BookmarkEvent, BookmarkState> {
   BookmarkBloc() : super(const BookmarkState()) {
     on<BookmarkEvent>((event, emit) async {
-        try {
-          switch(event) {
-            case _LoadData():
-              emit(state.copyWith(pageStatus: PageStatus.Loaded));
-              break;
-          }
-        } catch(e,s) {
-            handleError(emit, ErrorConverter.convert(e, s));
+      try {
+        switch(event) {
+          case _LoadData():
+            //emit(state.copyWith(pageStatus: PageStatus.Loaded));
+            break;
         }
+      } catch(e,s) {
+        handleError(emit, ErrorConverter.convert(e, s));
+      }
     });
   }
 }

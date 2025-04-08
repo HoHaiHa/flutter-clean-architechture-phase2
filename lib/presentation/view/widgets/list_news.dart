@@ -5,6 +5,7 @@ import 'package:flutter_clean_architecture/shared/extension/datetime.dart';
 import 'package:gap/gap.dart';
 
 import '../../../domain/entities/news.dart';
+import '../../../gen/assets.gen.dart';
 import '../../router/router.dart';
 
 class ListNews extends StatelessWidget {
@@ -137,7 +138,7 @@ class NewsWidget extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 12),
-                              Icon(Icons.schedule, size: 14),
+                              SizedBox(height:14,width: 14,child: Assets.icons.iconTimeTypeOutline.svg(color: Theme.of(context).iconTheme.color,)),
                               SizedBox(width: 4),
                               Text(
                                 maxLines: 1,

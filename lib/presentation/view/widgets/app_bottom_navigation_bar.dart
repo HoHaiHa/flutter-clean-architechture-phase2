@@ -38,25 +38,26 @@ class AppBottomNavigationBar extends StatelessWidget {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     final _unSelectedTextStyle = unSelectedTextStyle ??
-        AppStyles.bottomNavigation.copyWith(color: colorSchema?.grayscaleBodyText);
+        AppStyles.bottomNavigation.copyWith(color: Theme.of(context).brightness == Brightness.light ? colorSchema?.grayscaleBodyText : colorSchema?.darkmodeBody);
     final _selectedTextStyle = selectedTextStyle ??
         _unSelectedTextStyle.copyWith(
           color: context.themeOwn().colorSchema?.primaryDefault,
         );
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
+      decoration:Theme.of(context).brightness == Brightness.light ? BoxDecoration(
+        boxShadow:
+        [
           BoxShadow(
             offset: const Offset(-5, 5),
             color: const Color(0xFFAEAEC0).withOpacity(0.5),
             blurRadius: 20,
           ),
         ],
-        color: colorSchema?.background,
-      ),
+        color: colorSchema?.grayscaleWhite,
+      ) : null,
       child: SafeArea(
         child: Material(
-          color: context.themeOwn().colorSchema?.background,
+          color:Theme.of(context).colorScheme.background,
           child: _BottomNavigationTile(
             items: items,
             currentIndex: currentIndex,

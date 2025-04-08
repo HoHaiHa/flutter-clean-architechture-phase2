@@ -25,6 +25,7 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -45,7 +46,7 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 24),
-                  child: Assets.icons.settingIcon.svg(),
+                  child: Assets.icons.settingIcon.svg(color: iconColor),
                 ),
               ),
             ],

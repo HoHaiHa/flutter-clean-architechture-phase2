@@ -91,24 +91,23 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                     BlocSelector<
                       LoginBloc,
                       LoginState,
-                      ValidationModel<String>
+                      (ValidationModel<String>, String?)
                     >(
-                      selector: (state) => state.username,
+                      selector:
+                          (state) => (state.username, state.usernameError),
                       builder: (context, state) {
                         return Column(
                           children: [
                             AppFormField(
                               label: 'Username',
                               isRequire: true,
-                              value: state.value,
+                              value: state.$1.value,
                               onChanged: (value) {
                                 context.read<LoginBloc>().add(
                                   LoginEvent.changeUsername(value),
                                 );
                               },
-                              decoration: InputDecoration(
-                                errorText: state.error,
-                              ),
+                              decoration: InputDecoration(errorText: state.$1.error),
                             ),
                           ],
                         );
@@ -118,24 +117,23 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                     BlocSelector<
                       LoginBloc,
                       LoginState,
-                      ValidationModel<String>
+                      (ValidationModel<String>, String?)
                     >(
-                      selector: (state) => state.password,
+                      selector:
+                          (state) => (state.password, state.passwordError),
                       builder: (context, state) {
                         return Column(
                           children: [
                             AppSecureFormField(
                               label: 'Password',
                               isRequired: true,
-                              value: state.value,
+                              value: state.$1.value,
                               onChanged: (value) {
                                 context.read<LoginBloc>().add(
                                   LoginEvent.changePassword(value),
                                 );
                               },
-                              decoration: InputDecoration(
-                                errorText: state.error,
-                              ),
+                              decoration: InputDecoration(errorText: state.$1.error),
                             ),
                           ],
                         );
@@ -251,7 +249,9 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                               color: colorSchema?.grayscaleButtonText,
                             ),
                             onPressed: () {
-                              context.read<LoginBloc>().add(LoginEvent.pressGoogleLogin());
+                              context.read<LoginBloc>().add(
+                                LoginEvent.pressGoogleLogin(),
+                              );
                             },
                             icon: Assets.icons.google.svg(),
                           ),

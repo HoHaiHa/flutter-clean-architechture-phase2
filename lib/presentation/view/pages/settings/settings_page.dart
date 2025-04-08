@@ -25,6 +25,7 @@ class SettingsPage
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -33,7 +34,7 @@ class SettingsPage
           leading: IconButton(
             padding: EdgeInsets.only(left: 16),
             onPressed: context.pop,
-            icon: Assets.icons.backIcon.svg(),
+            icon: Assets.icons.backIcon.svg(color: iconColor),
           ),
           title: Text(
             "Settings",
@@ -49,7 +50,7 @@ class SettingsPage
               children: [
                 Row(
                   children: [
-                    Assets.icons.iconNotificationTypeOutline.svg(),
+                    Assets.icons.iconNotificationTypeOutline.svg(color: colorSchema?.iconWhite),
                     Gap(4),
                     Text(
                       'Notification',
@@ -58,13 +59,13 @@ class SettingsPage
                       ),
                     ),
                     Spacer(),
-                    Assets.icons.iconRightTypeOutline.svg(),
+                    Assets.icons.iconRightTypeOutline.svg(color: colorSchema?.iconWhite),
                   ],
                 ),
                 Gap(48),
                 Row(
                   children: [
-                    Assets.icons.iconLockTypeOutline.svg(),
+                    Assets.icons.iconLockTypeOutline.svg(color: colorSchema?.iconWhite),
                     Gap(4),
                     Text(
                       'Security',
@@ -73,13 +74,13 @@ class SettingsPage
                       ),
                     ),
                     Spacer(),
-                    Assets.icons.iconRightTypeOutline.svg(),
+                    Assets.icons.iconRightTypeOutline.svg(color: colorSchema?.iconWhite),
                   ],
                 ),
                 Gap(48),
                 Row(
                   children: [
-                    Assets.icons.iconQuestionTypeOutline.svg(),
+                    Assets.icons.iconQuestionTypeOutline.svg(color: colorSchema?.iconWhite),
                     Gap(4),
                     Text(
                       'Help',
@@ -88,13 +89,13 @@ class SettingsPage
                       ),
                     ),
                     Spacer(),
-                    Assets.icons.iconRightTypeOutline.svg(),
+                    Assets.icons.iconRightTypeOutline.svg(color: colorSchema?.iconWhite),
                   ],
                 ),
                 Gap(48),
                 Row(
                   children: [
-                    Assets.icons.iconMoonTypeOutline.svg(),
+                    Assets.icons.iconMoonTypeOutline.svg(color: colorSchema?.iconWhite),
                     Gap(4),
                     Text(
                       'Dark Mode',
@@ -114,7 +115,7 @@ class SettingsPage
                               onChanged: (value) {
                                 context.read<SettingsBloc>().add(const SettingsEvent.changeDarkMode());
                                 context.read<ThemeBloc>().add(ThemeEvent.changeThemeMode(value));
-                              },
+                                },
                               activeTrackColor: const Color(0xff667080),
                               thumbColor: CupertinoColors.white,
                             ),
@@ -127,11 +128,11 @@ class SettingsPage
                 Gap(48),
                 InkWell(
                   onTap: (){
-                    context.pushRoute(const LoginRoute());
+                    context.router.replaceAll([const LoginRoute()]);
                   },
                   child: Row(
                     children: [
-                      Assets.icons.iconLogoutTypeOutline.svg(),
+                      Assets.icons.iconLogoutTypeOutline.svg(color: colorSchema?.iconWhite),
                       Gap(4),
                       Text(
                         'Logout',

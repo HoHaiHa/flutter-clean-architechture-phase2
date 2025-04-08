@@ -28,6 +28,7 @@ class CommentPage extends BasePage<CommentBloc, CommentEvent, CommentState> {
 
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
+    final iconColor =Theme.of(context).iconTheme.color;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -36,7 +37,7 @@ class CommentPage extends BasePage<CommentBloc, CommentEvent, CommentState> {
           shadowColor: Colors.transparent,
           leading: IconButton(
             onPressed: context.pop,
-            icon: Assets.icons.backIcon.svg(),
+            icon: Assets.icons.backIcon.svg(color: iconColor),
           ),
           title: Text(
             "Comment",

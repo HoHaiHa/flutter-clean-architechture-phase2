@@ -25,7 +25,7 @@ class NotificationPage
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
-
+    final iconColor =Theme.of(context).iconTheme.color;
     return BlocBuilder<NotificationBloc, NotificationState>(
       builder: (context, state) {
         return Scaffold(
@@ -33,8 +33,13 @@ class NotificationPage
             centerTitle: true,
             shadowColor: Colors.transparent,
             leading: IconButton(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.zero,
               onPressed: context.pop,
-              icon: Assets.icons.backIcon.svg(),
+              icon: Padding(
+                padding: const EdgeInsets.only(left: 24),
+                child: Assets.icons.backIcon.svg(color: iconColor),
+              ),
             ),
             title: Text(
               'Notification',
@@ -46,7 +51,7 @@ class NotificationPage
               Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: PopupMenuButton<String>(
-                  icon: Assets.icons.threedotVertical.svg(),
+                  icon: Assets.icons.threedotVertical.svg(color: iconColor),
                   onSelected: (value) {
                     print("Selected: $value");
                   },
@@ -79,7 +84,7 @@ class NotificationPage
                               color: colorSchema?.darkBlack,
                             ),
                           ),
-                          Gap(16),
+                          const Gap(16),
                           Column(
                             children:
                                 subList.map((notification) {
@@ -88,9 +93,8 @@ class NotificationPage
                                       Container(
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color:
-                                              colorSchema
-                                                  ?.grayscaleSecondaryButton,
+                                          color: Theme.of(context).brightness == Brightness.light ? colorSchema
+                                              ?.grayscaleSecondaryButton : colorSchema?.darkmodeInputBackground,
                                           borderRadius: BorderRadius.circular(
                                             6,
                                           ),

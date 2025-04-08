@@ -29,7 +29,7 @@ class DetailBloc extends BaseBloc<DetailEvent, DetailState> {
       try {
         switch (event) {
           case _LoadData(newsId: final newsId):
-            emit(state.copyWith(pageStatus: PageStatus.Loaded));
+            //emit(state.copyWith(pageStatus: PageStatus.Loaded));
             News news = await _getNewsByIdUseCase.call(
               params: GetNewsByIdParam(newsId),
             );

@@ -6,7 +6,7 @@ import 'use_case.dart';
 @injectable
 class LoginByGoogleUseCase extends UseCase<void, LoginByGoogleParam> {
   LoginByGoogleUseCase(this._authRepository);
-  AuthRepository _authRepository;
+  final AuthRepository _authRepository;
 
   @override
   Future<bool> call({required LoginByGoogleParam params}) async {

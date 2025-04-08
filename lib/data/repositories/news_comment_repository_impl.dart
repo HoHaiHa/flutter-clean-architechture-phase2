@@ -16,30 +16,35 @@ class NewsCommentRepositoryImpl extends NewsCommentRepository {
   @override
   Future<List<NewsComment>> getCommentByNewsId(String newsId) async {
     try {
-      // for (final comment in sampleComments) {
-      //   await _firestore.collection('newsComments').add(comment.toJson());
-      // }
-      final querySnapshot =
-          await _firestore
-              .collection('newsComments')
-              .where('replyToCommentId', isEqualTo: '')
-              .where('commentForNewsId', isEqualTo: newsId)
-              .get();
+      final querySnapshot = await _firestore
+          .collection('newsComments')
+          .where('replyToCommentId', isEqualTo: '')
+          .where('commentForNewsId', isEqualTo: newsId)
+          .get();
 
-      final List<NewsComment> comments =
-          querySnapshot.docs
-              .map((doc) => NewsComment.fromJson(doc.data()))
-              .toList();
-      logger.d('lấy thành công NewsComment firestore $comments---$newsId fds');
+      final List<NewsComment> comments = [];
+
+      for (var doc in querySnapshot.docs) {
+        final data = doc.data();
+
+        try {
+          comments.add(NewsComment.fromJson(data));
+        } catch (e) {
+          logger.d("Lỗi khi parse NewsComment từ document ${doc.id}: $e\nData: $data");
+        }
+      }
+
+      logger.d('Lấy thành công NewsComment firestore: $comments --- $newsId');
       return comments;
     } catch (e) {
-      logger.d('Có lỗi khi lấy dữ liệu NewsComment firestore: $e');
+      logger.d(' Có lỗi khi lấy dữ liệu NewsComment firestore: $e');
       throw BusinessErrorEntityData(
         name: 'Có lỗi khi lấy dữ liệu firestore',
         message: 'Có lỗi khi lấy dữ liệu firestore',
       );
     }
   }
+
 
   @override
   Future<bool> sendComment(

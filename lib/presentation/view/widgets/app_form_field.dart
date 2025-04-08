@@ -97,34 +97,46 @@ class _AppFormFieldState extends State<AppFormField> {
     final textTheme = context.styleOwn();
     final colorSchema = context.colorOwn();
 
-    final defaultBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(6.0),
-      borderSide: BorderSide(
-        color:
-            widget.decoration?.border?.borderSide.color ??
-            colorSchema?.grayscaleBodyText ??
-            AppColors.grayscaleBodyText, // Border color
-      ),
-    );
+    final defaultBorder =
+        Theme.of(context).brightness == Brightness.light
+            ? OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: BorderSide(
+                color:
+                    widget.decoration?.border?.borderSide.color ??
+                    colorSchema?.grayscaleBodyText ??
+                    AppColors.grayscaleBodyText, // Border color
+              ),
+            )
+            : null;
 
     final errorBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(6.0),
       borderSide: BorderSide(
         color:
-            widget.decoration?.errorBorder?.borderSide.color ??
-            colorSchema?.errorDark ??
-            AppColors.errorDark, // Border color
+            Theme.of(context).brightness == Brightness.light
+                ? (widget.decoration?.errorBorder?.borderSide.color ??
+                    colorSchema?.errorDark ??
+                    AppColors.errorDark)
+                : (widget.decoration?.errorBorder?.borderSide.color ??
+                    colorSchema?.errorDarkmode ??
+                    AppColors.errorDarkmode), // Border color
       ),
     );
 
     final fillColor =
         widget.decoration?.errorText == null
-            ? Colors.transparent
+            ? (Theme.of(context).brightness == Brightness.light
+                ? Colors.transparent
+                : colorSchema?.darkmodeInputBackground)
             : colorSchema?.errorLight;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: widget.centerVertical ? MainAxisAlignment.center : MainAxisAlignment.start,
+      mainAxisAlignment:
+          widget.centerVertical
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
       children: [
         if (widget.label != null)
           Text.rich(
@@ -135,21 +147,26 @@ class _AppFormFieldState extends State<AppFormField> {
                 TextSpan(
                   text: widget.label ?? '',
                   style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.grayscaleBodyText,
+                    color:
+                        Theme.of(context).brightness == Brightness.light
+                            ? colorSchema?.grayscaleBodyText
+                            : colorSchema?.darkmodeBody,
                   ),
                 ),
                 if (widget.isRequire)
                   TextSpan(
                     text: '*',
                     style: textTheme?.textSmall?.copyWith(
-                      color: colorSchema?.errorDark,
+                      color:
+                          Theme.of(context).brightness == Brightness.light
+                              ? colorSchema?.errorDark
+                              : colorSchema?.errorDarkmode,
                     ),
                   ),
               ],
             ),
           ),
-        if (widget.label != null)
-        Gap(4),
+        if (widget.label != null) Gap(4),
 
         Container(
           child: TextFormField(
@@ -200,7 +217,12 @@ class _AppFormFieldState extends State<AppFormField> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(right: 12),
-                          child:widget.decoration?.errorText == null ? Assets.icons.closeSearch.svg() :Assets.icons.closeSearchIconError.svg() ,
+                          child:
+                              widget.decoration?.errorText == null
+                                  ? Assets.icons.closeSearch.svg(
+                                    color: Theme.of(context).iconTheme.color,
+                                  )
+                                  : Assets.icons.closeSearchIconError.svg(),
                         ),
                       )
                       : null),
@@ -251,13 +273,23 @@ class _AppFormFieldState extends State<AppFormField> {
             padding: const EdgeInsets.only(top: 8),
             child: Row(
               children: [
-                Assets.icons.warningIcon.svg(),
+                Assets.icons.warningIcon.svg(
+                  color:
+                      Theme.of(context).brightness == Brightness.light
+                          ? null
+                          : colorSchema?.errorDarkmode ??
+                              AppColors.errorDarkmode,
+                ),
                 const Gap(4),
                 Text(
                   maxLines: 1,
                   widget.decoration?.errorText ?? '',
                   style: textTheme?.textSmall?.copyWith(
-                    color: colorSchema?.errorDark,
+                    color:
+                        Theme.of(context).brightness == Brightness.light
+                            ? colorSchema?.errorDark
+                            : colorSchema?.errorDarkmode ??
+                                AppColors.errorDarkmode,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

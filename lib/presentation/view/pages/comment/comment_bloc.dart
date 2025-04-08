@@ -28,7 +28,7 @@ class CommentBloc extends BaseBloc<CommentEvent, CommentState> {
       try {
         switch (event) {
           case _LoadData(newsId: final newsId):
-            emit(state.copyWith(pageStatus: PageStatus.Loaded));
+            //emit(state.copyWith(pageStatus: PageStatus.Loaded));
             final List<NewsComment> listComments =
                 await _getCommentByNewsIdUseCase.call(
                   params: GetCommentByNewsIdParam(newsId),

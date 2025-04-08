@@ -25,9 +25,9 @@ class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
       try {
         switch (event) {
           case _LoadData():
-            emit(state.copyWith(pageStatus: PageStatus.Loaded));
+            //emit(state.copyWith(pageStatus: PageStatus.Loaded));
             final LoginInfoResponse info = await _checkRememberPasswordUseCase.call(params: CheckRememberPasswordParam());
-            emit(state.copyWith(username: state.username.copyWith(info.username) , password: state.username.copyWith(info.password)));
+            emit(state.copyWith(username: state.username.copyWith(info.username) , password: state.password.copyWith(info.password)));
             break;
           case _ChangeUsername(username: final newUsername):
             emit(
@@ -72,15 +72,16 @@ class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
   @override
   void handleError<S>(Emitter<S> emit, Object error) {
     if (error is ValidationErrorEntity) {
+      logger.d(error.key);
       if (error.key == LOGIN_USERNAME) {
         emit(
-          state.copyWith(username: state.username.copyWithError(error.message))
+          state.copyWith(username: state.username.copyWithError(error.message),usernameError:error.message )
               as S,
         );
       }
       if (error.key == LOGIN_PASSWORD) {
         emit(
-          state.copyWith(password: state.password.copyWithError(error.message))
+          state.copyWith(password: state.password.copyWithError(error.message),passwordError: error.message)
               as S,
         );
       }

@@ -34,6 +34,7 @@ class _CommentState extends State<Comment> {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = Theme.of(context).iconTheme.color;
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return Padding(
@@ -104,19 +105,27 @@ class _CommentState extends State<Comment> {
                         ),
                         Gap(12),
                         BlocBuilder<CommentBloc, CommentState>(
-                          buildWhen: (preState, state){
-                            return state.likeCommentState != preState.likeCommentState;
+                          buildWhen: (preState, state) {
+                            return state.likeCommentState !=
+                                preState.likeCommentState;
                           },
                           builder: (context, state) {
                             return InkWell(
-                              onTap: (){
-                                context.read<CommentBloc>().add(CommentEvent.changeLike(widget.newsComment.id));
+                              onTap: () {
+                                context.read<CommentBloc>().add(
+                                  CommentEvent.changeLike(
+                                    widget.newsComment.id,
+                                  ),
+                                );
                               },
                               child: Row(
                                 children: [
-                                  Assets.icons.heartMini.svg(
-                                      color: widget.newsComment.checkUserLike(state.currentUserid) ? null : colorSchema?.grayscaleBodyText,
-                                  ),
+                                  if (widget.newsComment.checkUserLike(
+                                    state.currentUserid,
+                                  ))
+                                    Assets.icons.iconHeartMiniLike.svg()
+                                  else
+                                    Assets.icons.iconHeartMiniDontLike.svg(color: iconColor),
                                   const Gap(3),
                                   Text(
                                     softWrap: true,
@@ -144,7 +153,7 @@ class _CommentState extends State<Comment> {
                           },
                           child: Row(
                             children: [
-                              Assets.icons.iconsReplyMini.svg(),
+                              Assets.icons.iconsReplyMini.svg(color: iconColor),
                               const Gap(3),
                               Text(
                                 softWrap: true,

@@ -28,5 +28,6 @@ class CommentState extends BaseState with _$CommentState {
   final String? replyToUsername;
   @override
   final String currentUserid;
+  @override
   final String currentNewsId;
 }

@@ -17,7 +17,7 @@ class ExploreBloc extends BaseBloc<ExploreEvent, ExploreState> {
         try {
           switch(event) {
             case _LoadData():
-              emit(state.copyWith(pageStatus: PageStatus.Loaded));
+              //emit(state.copyWith(pageStatus: PageStatus.Loaded));
               break;
           }
         } catch(e,s) {
