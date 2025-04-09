@@ -265,6 +265,7 @@ class _AppFormFieldState extends State<AppFormField> {
                   widget.decoration?.errorText != null
                       ? const SizedBox()
                       : null,
+              errorStyle: Theme.of(context).brightness == Brightness.light ? colorSchema?.darkBlack : colorSchema?.darkBlack ?? c;
             ),
           ),
         ),

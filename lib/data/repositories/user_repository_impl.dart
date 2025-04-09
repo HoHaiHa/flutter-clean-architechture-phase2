@@ -1,3 +1,4 @@
+import 'package:flutter_clean_architecture/data/remote/models/Request/edit_profile_request.dart';
 import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/repositories/user_repository.dart';
@@ -48,6 +49,12 @@ class UserRepositoryImpl extends UserRepository {
     User('36',"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI9geBuUIxBMywN0xsF2fXoHfyRyB7laeuOQ&s", "Political Views", 8600, true),
     User('37',"https://play-lh.googleusercontent.com/375NW5yL8owK_hW9igW9sh-YJbda9ZcygpDXuVvK_R7l-yJp-fuhb4qvUw_FE4XW4ms=w240-h480-rw", "History Buffs", 2500, false),
   ];
+
+  @override
+  Future<bool> editProfile(EditProfileRequest request) {
+    // TODO: implement editProfile
+    throw UnimplementedError();
+  }
 
 
 

@@ -1,6 +1,9 @@
 {
   "error": {
     "message": "Error!!!",
-    "field_is_required": "Field is required"
+    "field_is_required": "Field is required",
+    "not_a_valid_e_phone_number": "invalid phonenumber",
+    "not_a_valid_e_mail_address": "Email is invalid",
+    "not_a_valid_e_link": "link is Invalid"
   }
 }

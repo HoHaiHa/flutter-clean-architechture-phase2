@@ -107,7 +107,9 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                                   LoginEvent.changeUsername(value),
                                 );
                               },
-                              decoration: InputDecoration(errorText: state.$1.error),
+                              decoration: InputDecoration(
+                                errorText: state.$1.error,
+                              ),
                             ),
                           ],
                         );
@@ -133,7 +135,9 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                                   LoginEvent.changePassword(value),
                                 );
                               },
-                              decoration: InputDecoration(errorText: state.$1.error),
+                              decoration: InputDecoration(
+                                errorText: state.$1.error,
+                              ),
                             ),
                           ],
                         );
@@ -179,12 +183,10 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                             ],
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Forgot the password ?',
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 21 / 14,
-                            color: Color(0xFF5890FF),
+                          style: textTheme?.textSmall?.copyWith(
+                            color: colorSchema?.primaryDefault,
                           ),
                         ),
                       ],
