@@ -5,5 +5,26 @@
     "not_a_valid_e_phone_number": "Invalid phone number",
     "not_a_valid_e_mail_address": "Email is invalid",
     "not_a_valid_e_link": "link is Invalid"
+  },
+  "login": {
+    "login_hello": "Hello",
+    "login_again": "Again!",
+    "login_title": "Welcome back you’ve\nbeen missed",
+    "login_label_username": "Username",
+    "login_label_password": "Password",
+    "login_checkbox_remember": "Remember me",
+    "login_forgot_password": "Forgot the password ?",
+    "login_login_button": "Login",
+    "login_facebook_button": "Facebook",
+    "login_google_button": "Google",
+    "login_continue_with_label": "or continue with",
+    "login_don't_have_account_label": "don’t have an account ? ",
+    "login_sign_up": "Sign Up"
+  },
+  "home": {
+    "home_search_hint": "Search",
+    "home_trending": "Trending",
+    "home_see_all" : "See all",
+    "home_latest" : "Latest"
   }
 }

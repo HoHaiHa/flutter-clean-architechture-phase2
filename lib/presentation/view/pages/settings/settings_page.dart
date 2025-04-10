@@ -116,6 +116,7 @@ class SettingsPage
                               context.read<ThemeBloc>().add(ThemeEvent.changeThemeMode(value));
                               },
                             activeTrackColor: const Color(0xff667080),
+                            inactiveTrackColor: colorSchema?.grayscaleButtonText,
                             thumbColor: CupertinoColors.white,
                           ),
                         );

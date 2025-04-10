@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/gen/assets.gen.dart';
+import 'package:flutter_clean_architecture/presentation/resources/locale_keys.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_button.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_checkbox.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
@@ -69,19 +70,19 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hello',
+                      LocaleKeys.login_hello.tr(),
                       style: textTheme?.textDisplayLargeBold?.copyWith(
                         color: colorSchema?.grayscaleTitleactive,
                       ),
                     ),
                     Text(
-                      'Again!',
+                      LocaleKeys.login_again.tr(),
                       style: textTheme?.textDisplayLargeBold?.copyWith(
                         color: colorSchema?.primaryDefault,
                       ),
                     ),
                     Text(
-                      'Welcome back you’ve \nbeen missed',
+                      LocaleKeys.login_title.tr(),
                       style: textTheme?.textLarge?.copyWith(
                         color:Theme.of(context).brightness == Brightness.light ? colorSchema?.grayscaleBodyText : const Color(0xffB0B3B8),
                       ),
@@ -99,7 +100,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                         return Column(
                           children: [
                             AppFormField(
-                              label: 'Username',
+                              label: LocaleKeys.login_label_username.tr(),
                               isRequire: true,
                               value: state.$1.value,
                               onChanged: (value) {
@@ -127,7 +128,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                         return Column(
                           children: [
                             AppSecureFormField(
-                              label: 'Password',
+                              label: LocaleKeys.login_label_password.tr(),
                               isRequired: true,
                               value: state.$1.value,
                               onChanged: (value) {
@@ -175,7 +176,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                               ),
                               const SizedBox(width: 1.5),
                               Text(
-                                'Remember me',
+                                LocaleKeys.login_checkbox_remember.tr(),
                                 style: textTheme?.textSmall?.copyWith(
                                   color: colorSchema?.grayscaleBodyText,
                                 ),
@@ -184,7 +185,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                           ),
                         ),
                         Text(
-                          'Forgot the password ?',
+                          LocaleKeys.login_forgot_password.tr(),
                           style: textTheme?.textSmall?.copyWith(
                             color: colorSchema?.primaryDefault,
                           ),
@@ -204,7 +205,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                       child: AppButton.primary(
                         height: 50,
                         backgroundColor: colorSchema?.primaryDefault,
-                        title: 'Login',
+                        title: LocaleKeys.login_login_button.tr(),
                         titleStyle: textTheme?.textMediumLink,
                         onPressed:
                             () => {
@@ -233,9 +234,9 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                             height: 48,
                             backgroundColor:
                                 colorSchema?.grayscaleSecondaryButton,
-                            title: 'Facebook',
+                            title: LocaleKeys.login_facebook_button.tr(),
                             titleStyle: textTheme?.textMediumLink?.copyWith(
-                              color: colorSchema?.grayscaleButtonText,
+                              color: const Color(0xff667080),
                             ),
                             onPressed: () {},
                             icon: Assets.icons.facebook.svg(),
@@ -246,9 +247,9 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                           child: AppButton.primary(
                             backgroundColor:
                                 colorSchema?.grayscaleSecondaryButton,
-                            title: 'Google',
+                            title: LocaleKeys.login_google_button.tr(),
                             titleStyle: textTheme?.textMediumLink?.copyWith(
-                              color:colorSchema?.grayscaleButtonText,
+                              color:const Color(0xff667080),
                             ),
                             onPressed: () {
                               context.read<LoginBloc>().add(
@@ -271,7 +272,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                           ),
                         ),
                         Text(
-                          'Sign Up',
+                          LocaleKeys.login_sign_up.tr(),
                           style: textTheme?.textSmallLink?.copyWith(
                             color: colorSchema?.primaryDefault,
                           ),

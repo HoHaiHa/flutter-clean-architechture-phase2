@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/domain/entities/user.dart';
+import 'package:flutter_clean_architecture/presentation/resources/locale_keys.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
@@ -66,9 +68,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                               borderRadius: BorderRadius.circular(6),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withOpacity(0.03),
                                   spreadRadius: 2,
-                                  blurRadius: 4,
+                                  blurRadius: 3,
                                 ),
                               ],
                             ),
@@ -94,14 +96,8 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                     AppFormField(
                                       readOnly: true,
                                       decoration: InputDecoration(
-                                        hintText: 'Search',
-                                        prefixIcon: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                          ),
-                                          child: Assets.icons.search.svg(color: iconColor,),
-                                        ),
+                                        hintText: LocaleKeys.home_home_search_hint.tr(),
+                                        prefixIcon: Assets.icons.search.svg(fit:BoxFit.scaleDown,color: iconColor,),
 
                                         suffixIcon: Padding(
                                           padding: const EdgeInsets.only(
@@ -120,7 +116,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Trending',
+                                          LocaleKeys.home_home_trending.tr(),
                                           style: textTheme?.textMediumLink
                                               ?.copyWith(
                                                 color: colorSchema?.darkBlack,

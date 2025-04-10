@@ -206,7 +206,7 @@ class _AppFormFieldState extends State<AppFormField> {
             ),
             decoration: InputDecoration(
               counterText: '',
-              suffixIconConstraints: BoxConstraints.tight(const Size(40, 44)),
+              suffixIconConstraints: BoxConstraints.tight(const Size(36, 48)),
               suffixIcon:
                   widget.decoration?.suffixIcon ??
                   (!hideClearWordBtn
@@ -229,7 +229,7 @@ class _AppFormFieldState extends State<AppFormField> {
               prefixIcon:
                   (widget.decoration?.prefixIcon != null)
                       ? Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+                        padding: const EdgeInsets.only(top: 12,bottom: 12,left: 10),
                         child: widget.decoration?.prefixIcon,
                       )
                       : null,

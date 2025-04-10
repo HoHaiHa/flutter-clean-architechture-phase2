@@ -47,10 +47,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                           value: state.searchKey,
                           decoration: InputDecoration(
                             hintText: 'Search',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 10),
-                              child: Assets.icons.search.svg(color: iconColor),
-                            ),
+                            prefixIcon: Assets.icons.search.svg(color: iconColor),
                             suffixIcon: InkWell(
                               onTap: () => context.pop(),
                               child:Padding(
@@ -74,6 +71,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
               Gap(16),
               Center(
                 child: TabBar(
+                  indicatorWeight: 4.0,
                   padding: const EdgeInsets.only(
                     left: 24,
                   ),
