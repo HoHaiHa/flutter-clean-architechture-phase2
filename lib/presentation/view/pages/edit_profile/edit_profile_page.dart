@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_form_field.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
@@ -34,7 +37,7 @@ class EditProfilePage
           centerTitle: true,
           shadowColor: Colors.transparent,
           leading: IconButton(
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             onPressed: context.pop,
             icon: Assets.icons.iconCloseTypeOutline.svg(color: iconColor),
           ),
@@ -45,15 +48,25 @@ class EditProfilePage
             ),
           ),
           actions: [
-            InkWell(
-              onTap: () {
-                context.read<EditProfileBloc>().add(
-                  const EditProfileEvent.pressSave(),
-                );
+            BlocListener<EditProfileBloc, EditProfileState>(
+              listenWhen: (preState, state) {
+                return !state.hasError;
               },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: Assets.icons.iconCheckTypeOutline.svg(color: iconColor),
+              listener: (context, state) {
+                context.pushRoute(const ProfileRoute());
+              },
+              child: InkWell(
+                onTap: () {
+                  context.read<EditProfileBloc>().add(
+                    const EditProfileEvent.pressSave(),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: Assets.icons.iconCheckTypeOutline.svg(
+                    color: iconColor,
+                  ),
+                ),
               ),
             ),
           ],
@@ -73,10 +86,53 @@ class EditProfilePage
                             width: 140,
                             height: 140,
                             child: ClipOval(
-                              child: Image.network(
-                                'https://cdn-media.sforum.vn/storage/app/media/anh-dep-116.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                              child:
+                                  (state.imagePicker?.path ?? '') != ''
+                                      ? Image.file(
+                                        File(state.imagePicker?.path ?? ''),
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (
+                                          context,
+                                          error,
+                                          stackTrace,
+                                        ) {
+                                          return Image.asset(
+                                            'assets/images/default_img_user.jpg',
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      )
+                                      : ((state.imagePath ?? '').startsWith(
+                                            'http',
+                                          )
+                                          ? Image.network(
+                                            state.imagePath ?? '',
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (
+                                              context,
+                                              error,
+                                              stackTrace,
+                                            ) {
+                                              return Image.asset(
+                                                'assets/images/default_img_user.jpg',
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          )
+                                          : Image.file(
+                                            File(state.imagePath ?? ''),
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (
+                                              context,
+                                              error,
+                                              stackTrace,
+                                            ) {
+                                              return Image.asset(
+                                                'assets/images/default_img_user.jpg',
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          )),
                             ),
                           ),
                           Positioned(
@@ -84,14 +140,15 @@ class EditProfilePage
                             right: 16,
                             child: InkWell(
                               onTap: () async {
-                                final image = await imagePicker.pickImage(
-                                  source: ImageSource.gallery,
-                                );
-                                context.read<EditProfileBloc>().add(
-                                  EditProfileEvent.pressAddImage(
-                                    image?.path ?? '',
-                                  ),
-                                );
+                                final XFile? image = await imagePicker
+                                    .pickImage(source: ImageSource.gallery);
+                                if ((image?.path ?? '').isNotEmpty)
+                                  context.read<EditProfileBloc>().add(
+                                    EditProfileEvent.pressAddImage(
+                                      image?.path ?? '',
+                                      image,
+                                    ),
+                                  );
                               },
                               child: Assets.icons.iconUploadImg.svg(),
                             ),
@@ -140,7 +197,9 @@ class EditProfilePage
                     Gap(16),
                     AppFormField(
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9+\-() ]')),
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9+\-() ]'),
+                        ),
                       ],
                       label: 'Phone number',
                       isRequire: true,
@@ -148,7 +207,6 @@ class EditProfilePage
                       decoration: InputDecoration(
                         errorText: state.phone.error,
                         suffixIcon: SizedBox.shrink(),
-
                       ),
                       onChanged: (value) {
                         context.read<EditProfileBloc>().add(

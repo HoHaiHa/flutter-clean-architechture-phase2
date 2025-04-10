@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +23,14 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
     super.onInitState(context);
   }
 
+
+
   @override
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     final iconColor =Theme.of(context).iconTheme.color;
+
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -71,9 +76,28 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
                                     width: 100,
                                     height: 100,
                                     child: ClipOval(
-                                      child: Image.network(
+                                      child: (state.currentUser?.imagePath ?? '').startsWith(
+                                        'http',
+                                      )
+                                          ? Image.network(
                                         state.currentUser?.imagePath ?? '',
                                         fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/default_img_user.jpg',
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      )
+                                          : Image.file(
+                                        File(state.currentUser?.imagePath ?? ''),
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/default_img_user.jpg',
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
@@ -155,7 +179,7 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
                               ),
                               Gap(16),
                               Text(
-                                state.currentUser?.username ?? '',
+                                state.currentUser?.fullName ?? '',
                                 style: textTheme?.textMediumLink?.copyWith(
                                   color: colorSchema?.darkBlack,
                                 ),

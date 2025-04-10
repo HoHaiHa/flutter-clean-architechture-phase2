@@ -100,7 +100,7 @@ class AppCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _checkedWidget = checkedWidget ?? Assets.icons.icCheck.svg();
+    final _checkedWidget = checkedWidget ?? Assets.icons.icCheck.svg(color: Theme.of(context).brightness == Brightness.light ? null :AppColors.darkmodeBackground);
     final _checkedColor = checkedColor ??
         context.themeOwn().colorSchema?.primary ??
         AppColors.denim;

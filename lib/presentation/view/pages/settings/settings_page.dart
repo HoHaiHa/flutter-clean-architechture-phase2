@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/presentation/router/router.dart';
+import 'package:flutter_clean_architecture/presentation/view/widgets/app_switch.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
 import '../../../../gen/assets.gen.dart';
@@ -108,17 +109,14 @@ class SettingsPage
                       builder: (context, state) {
                         return SizedBox(
                           width: 36,
-                          child: Transform.scale(
-                            scale: 0.5,
-                            child: CupertinoSwitch(
-                              value: state.darkMode,
-                              onChanged: (value) {
-                                context.read<SettingsBloc>().add(const SettingsEvent.changeDarkMode());
-                                context.read<ThemeBloc>().add(ThemeEvent.changeThemeMode(value));
-                                },
-                              activeTrackColor: const Color(0xff667080),
-                              thumbColor: CupertinoColors.white,
-                            ),
+                          child: AppCupertinoSwitch(
+                            value: state.darkMode,
+                            onChanged: (value) {
+                              context.read<SettingsBloc>().add(const SettingsEvent.changeDarkMode());
+                              context.read<ThemeBloc>().add(ThemeEvent.changeThemeMode(value));
+                              },
+                            activeTrackColor: const Color(0xff667080),
+                            thumbColor: CupertinoColors.white,
                           ),
                         );
                       },

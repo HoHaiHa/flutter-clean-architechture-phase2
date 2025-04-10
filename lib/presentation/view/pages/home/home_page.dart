@@ -137,7 +137,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                     ),
                                     const Gap(16),
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.only(top: 8,right: 8,left: 8),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -211,7 +211,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                         ],
                                       ),
                                     ),
-                                    const Gap(4),
+                                    //const Gap(4),
                                   ],
                                 ),
                               ),
@@ -221,7 +221,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                               toolbarHeight: 0,
                               elevation: 0,
                               bottom: PreferredSize(
-                                preferredSize: const Size.fromHeight(90),
+                                preferredSize: const Size.fromHeight(74),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -253,56 +253,60 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                         ],
                                       ),
                                     ),
-                                    Gap(16),
+                                    Gap(8),
                                     BlocBuilder<HomeBloc, HomeState>(
                                       buildWhen: (previousState, state) {
                                         return previousState.listTopics !=
                                             state.listTopics;
                                       },
                                       builder: (context, state) {
-                                        return TabBar(
-                                          padding: const EdgeInsets.only(
-                                            left: 24,
-                                          ),
-                                          labelPadding: const EdgeInsets.only(
-                                            right: 10,
-                                          ),
-                                          indicatorSize:
-                                              TabBarIndicatorSize.label,
-                                          isScrollable: true,
-                                          indicatorColor:
-                                              colorSchema?.primaryDefault,
-                                          labelStyle: textTheme?.textMedium,
-                                          labelColor: colorSchema?.darkBlack,
-                                          unselectedLabelStyle: textTheme
-                                              ?.textMedium
-                                              ?.copyWith(
-                                                color:
-                                                    colorSchema
-                                                        ?.grayscaleBodyText,
-                                              ),
+                                        return SizedBox(
+                                          height: 42,
+                                          child: TabBar(
+                                            padding: const EdgeInsets.only(
+                                              left: 24,
+                                            ),
+                                            labelPadding: const EdgeInsets.only(
+                                              right: 10,
+                                              bottom:0,
+                                            ),
+                                            indicatorSize:
+                                                TabBarIndicatorSize.label,
+                                            isScrollable: true,
+                                            indicatorColor:
+                                                colorSchema?.primaryDefault,
+                                            labelStyle: textTheme?.textMedium,
+                                            labelColor: colorSchema?.darkBlack,
+                                            unselectedLabelStyle: textTheme
+                                                ?.textMedium
+                                                ?.copyWith(
+                                                  color:
+                                                      colorSchema
+                                                          ?.grayscaleBodyText,
+                                                ),
 
-                                          tabs: [
-                                            const Tab(child: Text('All')),
-                                            ...?state.listTopics?.map((topics) {
-                                              return Tab(
-                                                child: Text(topics.topicName),
+                                            tabs: [
+                                              const Tab(child: Text('All')),
+                                              ...?state.listTopics?.map((topics) {
+                                                return Tab(
+                                                  child: Text(topics.topicName),
+                                                );
+                                              }).toList(),
+                                            ],
+                                            onTap: (index) {
+                                              context.read<HomeBloc>().add(
+                                                index != 0
+                                                    ? HomeEvent.changeTab(
+                                                      state
+                                                          .listTopics![index - 1]
+                                                          .topicName,
+                                                    )
+                                                    : const HomeEvent.changeTab(
+                                                      '',
+                                                    ),
                                               );
-                                            }).toList(),
-                                          ],
-                                          onTap: (index) {
-                                            context.read<HomeBloc>().add(
-                                              index != 0
-                                                  ? HomeEvent.changeTab(
-                                                    state
-                                                        .listTopics![index - 1]
-                                                        .topicName,
-                                                  )
-                                                  : const HomeEvent.changeTab(
-                                                    '',
-                                                  ),
-                                            );
-                                          },
+                                            },
+                                          ),
                                         );
                                       },
                                     ),

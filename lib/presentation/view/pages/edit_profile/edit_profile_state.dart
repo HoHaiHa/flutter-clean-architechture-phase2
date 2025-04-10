@@ -10,7 +10,7 @@ const EDIT_WEBSITE = 'website';
 
 @freezed
 class EditProfileState extends BaseState with _$EditProfileState {
-  const EditProfileState( {
+  const EditProfileState(  {
     super.pageStatus = PageStatus.Loaded,
     super.pageErrorMessage,
     this.username='',
@@ -20,6 +20,8 @@ class EditProfileState extends BaseState with _$EditProfileState {
     this.bio = const ValidationModel(EDIT_BIO),
     this.website = const ValidationModel(EDIT_WEBSITE),
     this.imagePath,
+    this.imagePicker,
+    this.hasError = true,
   });
 
 
@@ -37,6 +39,10 @@ class EditProfileState extends BaseState with _$EditProfileState {
   final ValidationModel<String> website;
   @override
   final String? imagePath;
+  @override
+  final XFile? imagePicker;
+  @override
+  final bool hasError;
 }
 
 

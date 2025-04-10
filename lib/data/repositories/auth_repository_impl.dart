@@ -73,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<CurrentUser> getCurrentUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id =  prefs.getString('currentUserId');
-    String? imagePath =  'https://cdn-media.sforum.vn/storage/app/media/anh-dep-116.jpg';//prefs.getString('currentImagePath');
+    String? imagePath =  prefs.getString('currentImagePath');
     String? fullName =  prefs.getString('currentFullName');
     String? username =  prefs.getString('currentUsername');
     String? email =  prefs.getString('currentEmail');

@@ -199,10 +199,10 @@ class _AppFormFieldState extends State<AppFormField> {
             controller: _controller,
             enabled: widget.enabled,
             style: textTheme?.textSmall?.copyWith(
-              color:
-                  widget.enabled
+              color: widget.decoration?.errorText == null ?
+                  (widget.enabled
                       ? colorSchema?.grayscaleTitleactive
-                      : widget.disableTextColor,
+                      : widget.disableTextColor) : Colors.black,
             ),
             decoration: InputDecoration(
               counterText: '',
@@ -265,7 +265,6 @@ class _AppFormFieldState extends State<AppFormField> {
                   widget.decoration?.errorText != null
                       ? const SizedBox()
                       : null,
-              errorStyle: Theme.of(context).brightness == Brightness.light ? colorSchema?.darkBlack : colorSchema?.darkBlack ?? c;
             ),
           ),
         ),

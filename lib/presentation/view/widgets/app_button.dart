@@ -152,8 +152,8 @@ class _AppButtonPrimaryChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themOwn = context.themeOwn();
-    final _titleStyle = themOwn.textTheme?.highlightsBold
-        ?.copyWith(color: themOwn.colorSchema?.whiteText)
+    final _titleStyle = themOwn.textTheme?.textMediumLink
+        ?.copyWith(color: themOwn.colorSchema?.grayscaleWhite)
         .merge(titleStyle);
     return Row(
       children: [

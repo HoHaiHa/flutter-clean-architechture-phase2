@@ -21,7 +21,7 @@ class BookmarkPage extends BasePage<BookmarkBloc, BookmarkEvent, BookmarkState> 
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return Center(
-      child: Text('BookMark',style: textTheme?.textLargeLink,),
+      child: Text('BookMark',style: textTheme?.textLargeLink?.copyWith(color: colorSchema?.grayscaleBodyText),),
     );
   }
 }

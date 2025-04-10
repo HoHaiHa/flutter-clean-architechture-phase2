@@ -169,10 +169,10 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
           controller: _controller,
           enabled: widget.enabled,
           style: textTheme?.textSmall?.copyWith(
-            color:
-                widget.enabled
-                    ? colorSchema?.grayscaleTitleactive
-                    : widget.disableTextColor,
+            color: widget.decoration?.errorText == null ?
+            (widget.enabled
+                ? colorSchema?.grayscaleTitleactive
+                : widget.disableTextColor) : Colors.black,
           ),
           decoration: InputDecoration(
             counterText: '',

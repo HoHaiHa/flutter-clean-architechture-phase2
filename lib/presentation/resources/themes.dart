@@ -152,7 +152,7 @@ abstract class AppTheme {
             grayscaleBodyText: AppColors.grayscaleBodyText,
             grayscalePlaceholder: AppColors.grayscalePlaceholder,
             grayscaleSecondaryButton: AppColors.grayscaleSecondaryButton,
-            grayscaleButtonText: AppColors.grayscaleButtonText,
+
 
 
           ),
@@ -200,20 +200,20 @@ abstract class AppTheme {
       Brightness.dark,
       AppThemeData(
         textTheme: AppTextTheme(
-          textSmall: AppStyles.textSmall,
-          textXSmall: AppStyles.textXSmall,
-          textMedium: AppStyles.textMedium,
-          textLarge: AppStyles.textLarge,
+          textSmall: AppStyles.textSmall.copyWith(color: AppColors.darkmodeBody),
+          textXSmall: AppStyles.textXSmall.copyWith(color: AppColors.darkmodeBody),
+          textMedium: AppStyles.textMedium.copyWith(color: AppColors.darkmodeTitle),
+          textLarge: AppStyles.textLarge.copyWith(color: AppColors.darkmodeTitle),
           textDisplaySmall: AppStyles.textDisplaySmall,
           textDisplayMedium: AppStyles.textDisplayMedium,
           textDisplayLarge: AppStyles.textDisplayLarge,
           textDisplaySmallBold: AppStyles.textDisplaySmallBold,
           textDisplayMediumBold: AppStyles.textDisplayMediumBold,
-          textDisplayLargeBold: AppStyles.textDisplayLargeBold,
-          textSmallLink: AppStyles.textSmallLink,
-          textXSmallLink: AppStyles.textXSmallLink,
-          textMediumLink: AppStyles.textMediumLink,
-          textLargeLink: AppStyles.textLargeLink,
+          textDisplayLargeBold: AppStyles.textDisplayLargeBold.copyWith(color: const Color(0xffE4E6EB)),
+          textSmallLink: AppStyles.textSmallLink.copyWith(color: AppColors.darkmodeBody),
+          textXSmallLink: AppStyles.textXSmallLink.copyWith(color: AppColors.darkmodeBody),
+          textMediumLink: AppStyles.textMediumLink.copyWith(color: AppColors.darkmodeTitle),
+          textLargeLink: AppStyles.textLargeLink.copyWith(color: AppColors.darkmodeBody),
 
         ),
         colorSchema: AppColorSchema(
@@ -228,6 +228,21 @@ abstract class AppTheme {
           successDarkmode: AppColors.successDarkmode,
           primaryDefault: AppColors.primaryDefault,
           errorLight: AppColors.errorLight,
+          grayscaleButtonText: AppColors.grayscaleButtonText,
+          // primary: AppColors.denim,
+          // mainText: AppColors.nightRider,
+          // subText: AppColors.atlantis,
+          // whiteText: AppColors.white,
+          // disableText: AppColors.nobel,
+          // border: AppColors.pattensBlue,
+          // background: AppColors.white,
+          // secondary1: AppColors.pigmentGreen,
+          // secondary2: AppColors.sunsetOrange,
+          // secondary3: AppColors.supernova,
+          // secondary4: AppColors.gorse,
+          // barrierColor: AppColors.black80,
+          // badgeColor: AppColors.coralRed,
+          // title2: AppColors.gray76,
         )
       ),
     );

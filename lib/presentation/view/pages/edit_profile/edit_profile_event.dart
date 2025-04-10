@@ -9,6 +9,6 @@ sealed class EditProfileEvent with _$EditProfileEvent {
   const factory EditProfileEvent.changePhone(String phone) = _ChangePhone;
   const factory EditProfileEvent.changeBio(String bio) = _ChangeBio;
   const factory EditProfileEvent.changeWebsite(String website) = _ChangeWebsite;
-  const factory EditProfileEvent.pressAddImage(String imagePath) = _PressAddImage;
+  const factory EditProfileEvent.pressAddImage(String imagePath,XFile? image) = _PressAddImage;
   const factory EditProfileEvent.pressSave() = _PressSave;
 }

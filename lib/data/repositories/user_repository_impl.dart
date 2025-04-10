@@ -1,7 +1,9 @@
 import 'package:flutter_clean_architecture/data/remote/models/Request/edit_profile_request.dart';
 import 'package:flutter_clean_architecture/domain/entities/user.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/repositories/user_repository.dart';
+import '../../shared/utils/logger.dart';
 
 @Injectable(as: UserRepository)
 class UserRepositoryImpl extends UserRepository {
@@ -51,9 +53,21 @@ class UserRepositoryImpl extends UserRepository {
   ];
 
   @override
-  Future<bool> editProfile(EditProfileRequest request) {
-    // TODO: implement editProfile
-    throw UnimplementedError();
+  Future<bool> editProfile(EditProfileRequest request) async {
+    try{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('currentImagePath', request.imagePath ?? '');
+      await prefs.setString('currentFullName', request.fullname ?? '');
+      await prefs.setString('currentEmail', request.email);
+      await prefs.setString('currentPhoneNumber', request.phone);
+      await prefs.setString('currentBio', request.bio ??'' );
+      await prefs.setString('currentWebsite', request.website ?? '');
+      return true;
+    }
+    catch(e){
+      logger.d('lỗi khi lưu editprofile');
+      return false;
+    }
   }
 
 

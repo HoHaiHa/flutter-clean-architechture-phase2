@@ -21,7 +21,7 @@ class ExplorePage extends BasePage<ExploreBloc, ExploreEvent, ExploreState> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return Center(
-      child: Text('Explore',style: textTheme?.textLargeLink,),
+      child: Text('Explore',style: textTheme?.textLargeLink?.copyWith(color: colorSchema?.grayscaleBodyText),),
     );
   }
 }

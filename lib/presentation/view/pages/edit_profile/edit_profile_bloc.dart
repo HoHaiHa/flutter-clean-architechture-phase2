@@ -3,6 +3,7 @@ import 'package:flutter_clean_architecture/domain/entities/current_user.dart';
 import 'package:flutter_clean_architecture/domain/usecases/edit_profile_use_case.dart';
 import 'package:flutter_clean_architecture/domain/usecases/get_current_user_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 
@@ -22,7 +23,7 @@ part 'edit_profile_state.dart';
 
 @injectable
 class EditProfileBloc extends BaseBloc<EditProfileEvent, EditProfileState> {
-  EditProfileBloc(this._getCurrentUserUseCase, this._editProfileUseCase) : super(const EditProfileState()) {
+  EditProfileBloc(this._getCurrentUserUseCase, this._editProfileUseCase) : super( EditProfileState()) {
     on<EditProfileEvent>((event, emit) async {
       try {
         switch(event) {
@@ -46,15 +47,17 @@ class EditProfileBloc extends BaseBloc<EditProfileEvent, EditProfileState> {
           case _ChangeWebsite(website:final newWebsite):
             emit(state.copyWith(website: state.website.copyWith(newWebsite)));
             break;
-          case _PressAddImage(imagePath:final newsImagePath):
-            emit(state.copyWith(imagePath: newsImagePath));
+          case _PressAddImage(imagePath:final newsImagePath,image: final newImage):
+            emit(state.copyWith(imagePath: newsImagePath,imagePicker: newImage));
             break;
           case _PressSave():
           //logger.d(state.fullname);
             await _editProfileUseCase.call(params: EditProfileParam(state.fullname, state.email, state.phone, state.bio, state.website, state.imagePath??''));
+            emit(state.copyWith(hasError: false));
             break;
         }
       } catch(e,s) {
+        emit(state.copyWith(hasError: true));
         handleError(emit, ErrorConverter.convert(e, s));
       }
     });

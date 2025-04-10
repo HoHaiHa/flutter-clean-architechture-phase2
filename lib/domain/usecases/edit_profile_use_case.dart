@@ -2,7 +2,6 @@ import 'package:flutter_clean_architecture/data/remote/models/Request/edit_profi
 import 'package:flutter_clean_architecture/domain/repositories/user_repository.dart';
 import 'package:flutter_clean_architecture/shared/common/error_entity/error_entity.dart';
 import 'package:flutter_clean_architecture/shared/common/validation_model.dart';
-import 'package:flutter_clean_architecture/shared/utils/logger.dart';
 import 'package:injectable/injectable.dart';
 
 import 'use_case.dart';
@@ -22,7 +21,6 @@ class EditProfileUseCase extends UseCase<void, EditProfileParam> {
     errorEntity ??= params.phone.checkInputIsRequired();
     errorEntity ??= params.bio.checkInputIsValidLink();
     errorEntity ??= params.website.checkInputIsValidLink();
-    logger.d(errorEntity?.message);
     if(errorEntity != null) {
       throw errorEntity;
     }

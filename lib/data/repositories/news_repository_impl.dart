@@ -199,6 +199,8 @@ class NewsRepositoryImpl implements NewsRepository {
     return _listNewsOfCurrentUser;
   }
 
+
+
    List<News> _listNewsOfCurrentUser = [
     // All
     News(

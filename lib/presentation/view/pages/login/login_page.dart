@@ -83,7 +83,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                     Text(
                       'Welcome back you’ve \nbeen missed',
                       style: textTheme?.textLarge?.copyWith(
-                        color: colorSchema?.grayscaleBodyText,
+                        color:Theme.of(context).brightness == Brightness.light ? colorSchema?.grayscaleBodyText : const Color(0xffB0B3B8),
                       ),
                     ),
                     const SizedBox(height: 48),
@@ -161,7 +161,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                                 selector: (state) => state.isRemember,
                                 builder: (context, isRemember) {
                                   return AppCheckBox(
-                                    borderColor: colorSchema?.grayscaleBodyText,
+                                    borderColor: Theme.of(context).brightness == Brightness.light ? colorSchema?.grayscaleBodyText : colorSchema?.darkmodeBody,
                                     size: CheckBoxSize.normal,
                                     value: isRemember,
                                     checkedColor: colorSchema?.primaryDefault,
@@ -248,7 +248,7 @@ class LoginPage extends BasePage<LoginBloc, LoginEvent, LoginState> {
                                 colorSchema?.grayscaleSecondaryButton,
                             title: 'Google',
                             titleStyle: textTheme?.textMediumLink?.copyWith(
-                              color: colorSchema?.grayscaleButtonText,
+                              color:colorSchema?.grayscaleButtonText,
                             ),
                             onPressed: () {
                               context.read<LoginBloc>().add(
