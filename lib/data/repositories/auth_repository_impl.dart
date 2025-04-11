@@ -114,7 +114,7 @@ class AuthRepositoryImpl implements AuthRepository {
         userCredential.user?.uid ?? '',
         userCredential.user?.displayName,
         userCredential.user?.photoURL,
-        userCredential.user?.displayName ?? '',
+        userCredential.user?.email?.split('@').first ?? '',
         userCredential.user?.email ?? '',
         userCredential.user?.phoneNumber ?? '',
         '',

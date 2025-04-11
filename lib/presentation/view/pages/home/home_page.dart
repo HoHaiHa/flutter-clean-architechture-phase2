@@ -28,7 +28,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
   Widget builder(BuildContext context) {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
-    final iconColor =Theme.of(context).iconTheme.color;
+    final iconColor = Theme.of(context).iconTheme.color;
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen:
           (previousState, state) =>
@@ -58,13 +58,18 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                         ),
                         InkWell(
                           onTap:
-                              () =>
-                                  context.pushRoute(const NotificationRoute()),
+                              () => AutoRouter.of(
+                                context,
+                              ).push(const NotificationRoute()),
                           child: Container(
                             width: 32,
                             height: 32,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).brightness == Brightness.light ? Colors.white : colorSchema?.darkmodeInputBackground,
+                              color:
+                                  Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : colorSchema?.darkmodeInputBackground,
                               borderRadius: BorderRadius.circular(6),
                               boxShadow: [
                                 BoxShadow(
@@ -76,7 +81,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                             ),
                             child: Assets.icons.notify.svg(
                               fit: BoxFit.scaleDown,
-                              color: colorSchema?.iconWhite
+                              color: colorSchema?.iconWhite,
                             ),
                           ),
                         ),
@@ -90,20 +95,30 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                           (context, innerBoxIsScrolled) => [
                             SliverToBoxAdapter(
                               child: Padding(
-                                padding: EdgeInsets.only(right: 24, left: 24),
+                                padding: const EdgeInsets.only(
+                                  right: 24,
+                                  left: 24,
+                                ),
                                 child: Column(
                                   children: [
                                     AppFormField(
                                       readOnly: true,
                                       decoration: InputDecoration(
-                                        hintText: LocaleKeys.home_home_search_hint.tr(),
-                                        prefixIcon: Assets.icons.search.svg(fit:BoxFit.scaleDown,color: iconColor,),
+                                        hintText:
+                                            LocaleKeys.home_home_search_hint
+                                                .tr(),
+                                        prefixIcon: Assets.icons.search.svg(
+                                          fit: BoxFit.scaleDown,
+                                          color: iconColor,
+                                        ),
 
                                         suffixIcon: Padding(
                                           padding: const EdgeInsets.only(
                                             right: 12,
                                           ),
-                                          child: Assets.icons.threeLine.svg(color: iconColor,),
+                                          child: Assets.icons.threeLine.svg(
+                                            color: iconColor,
+                                          ),
                                         ),
                                       ),
                                       onTap:
@@ -133,7 +148,11 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                     ),
                                     const Gap(16),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 8,right: 8,left: 8),
+                                      padding: const EdgeInsets.only(
+                                        top: 8,
+                                        right: 8,
+                                        left: 8,
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -187,7 +206,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                         ),
                                                   ),
                                                   const Gap(8),
-                                                  Assets.icons.clock.svg(color: iconColor,),
+                                                  Assets.icons.clock.svg(
+                                                    color: iconColor,
+                                                  ),
                                                   const Gap(6),
                                                   Text(
                                                     '4h ago',
@@ -264,7 +285,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                             ),
                                             labelPadding: const EdgeInsets.only(
                                               right: 10,
-                                              bottom:0,
+                                              bottom: 0,
                                             ),
                                             indicatorSize:
                                                 TabBarIndicatorSize.label,
@@ -283,7 +304,9 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
 
                                             tabs: [
                                               const Tab(child: Text('All')),
-                                              ...?state.listTopics?.map((topics) {
+                                              ...?state.listTopics?.map((
+                                                topics,
+                                              ) {
                                                 return Tab(
                                                   child: Text(topics.topicName),
                                                 );
@@ -294,7 +317,8 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                                 index != 0
                                                     ? HomeEvent.changeTab(
                                                       state
-                                                          .listTopics![index - 1]
+                                                          .listTopics![index -
+                                                              1]
                                                           .topicName,
                                                     )
                                                     : const HomeEvent.changeTab(

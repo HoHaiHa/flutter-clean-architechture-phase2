@@ -6,18 +6,18 @@ import '../../../base/base_bloc.dart';
 import '../../../base/base_state.dart';
 import '../../../base/page_status.dart';
 
-part 'bottom_navigation_bloc.freezed.dart';
-part 'bottom_navigation_event.dart';
-part 'bottom_navigation_state.dart';
+part 'wrap_home_group_bloc.freezed.dart';
+part 'wrap_home_group_event.dart';
+part 'wrap_home_group_state.dart';
 
 @injectable
-class BottomNavigationBloc extends BaseBloc<BottomNavigationEvent, BottomNavigationState> {
-  BottomNavigationBloc() : super(const BottomNavigationState()) {
-    on<BottomNavigationEvent>((event, emit) async {
+class WrapHomeGroupBloc extends BaseBloc<WrapHomeGroupEvent, WrapHomeGroupState> {
+  WrapHomeGroupBloc() : super(const WrapHomeGroupState()) {
+    on<WrapHomeGroupEvent>((event, emit) async {
         try {
           switch(event) {
             case _LoadData():
-              //emit(state.copyWith(pageStatus: PageStatus.Loaded));
+              emit(state.copyWith(pageStatus: PageStatus.Loaded));
               break;
           }
         } catch(e,s) {

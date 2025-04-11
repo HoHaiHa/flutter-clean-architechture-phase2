@@ -7,23 +7,15 @@ import '../../../../gen/assets.gen.dart';
 import '../../../base/base_page.dart';
 import '../../../router/router.dart';
 import '../../widgets/app_bottom_navigation_bar.dart';
-import 'bottom_navigation_bloc.dart';
+import 'main_wrapper_page_bloc.dart';
 
 @RoutePage()
-class BottomNavigationPage
-    extends
-        BasePage<
-          BottomNavigationBloc,
-          BottomNavigationEvent,
-          BottomNavigationState
-        > {
-  const BottomNavigationPage({Key? key}) : super(key: key);
+class MainWrapperPagePage extends BasePage<MainWrapperPageBloc, MainWrapperPageEvent, MainWrapperPageState> {
+  const MainWrapperPagePage({Key? key}) : super(key: key);
 
   @override
   void onInitState(BuildContext context) {
-    context.read<BottomNavigationBloc>().add(
-      const BottomNavigationEvent.loadData(),
-    );
+    context.read<MainWrapperPageBloc>().add(const MainWrapperPageEvent.loadData());
     super.onInitState(context);
   }
 
@@ -39,7 +31,7 @@ class BottomNavigationPage
         selectedIcon: Assets.icons.iconHomeTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),
-        page: const HomeRoute(),
+        page: const WrapHomeGroupRoute(),
       ),
       AppBottomNavigationItem(
         label: 'Explore',
@@ -66,7 +58,6 @@ class BottomNavigationPage
         page: const ProfileRoute(),
       ),
     ];
-
     return AutoTabsRouter.tabBar(
       routes: _bottomNavItems.map((e) => e.page).toList(),
       builder: (context, child, controller) {
@@ -74,9 +65,20 @@ class BottomNavigationPage
         return Scaffold(
           body: child,
           bottomNavigationBar: AppBottomNavigationBar(
+            onTap: (index) {
+              if (tabsRouter.activeIndex == index) {
+                if (index == 0) {
+                  tabsRouter
+                      .innerRouterOf('WrapHomeGroupRoute')
+                      ?.navigate(const HomeRoute());
+                }
+              } else {
+                tabsRouter.setActiveIndex(index);
+              }
+            },
             items: _bottomNavItems,
             currentIndex: tabsRouter.activeIndex,
-            onTap: (index) => tabsRouter.setActiveIndex(index),
+            //onTap: (index) => tabsRouter.setActiveIndex(index),
           ),
         );
       },

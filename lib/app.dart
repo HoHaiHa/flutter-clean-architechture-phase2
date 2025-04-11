@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   late AppRouter appRouter;
 
+
   @override
   void initState() {
     appRouter = getIt<AppRouter>();
