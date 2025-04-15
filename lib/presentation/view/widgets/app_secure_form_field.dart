@@ -187,8 +187,8 @@ class _AppSecureFormFieldState extends State<AppSecureFormField> {
                 padding: const EdgeInsets.fromLTRB(8, 12, 12, 12),
                 child:
                     hidePassword
-                        ? Assets.icons.hind.svg(color: Theme.of(context).iconTheme.color)
-                        : Icon(Icons.visibility_outlined,color: Theme.of(context).iconTheme.color),
+                        ? Assets.icons.hind.svg(color:(widget.decoration?.errorText??'').isEmpty ? Theme.of(context).iconTheme.color : const Color(0xffC30052))
+                        : Icon(Icons.visibility_outlined,color:(widget.decoration?.errorText??'').isEmpty ? Theme.of(context).iconTheme.color : colorSchema?.errorDark),
               ),
             ),
 

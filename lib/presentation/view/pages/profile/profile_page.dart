@@ -227,8 +227,9 @@ class ProfilePage extends BasePage<ProfileBloc, ProfileEvent, ProfileState> {
                                   indicatorSize: TabBarIndicatorSize.label,
                                   isScrollable: true,
                                   indicatorColor: colorSchema?.primaryDefault,
+                                  indicatorWeight: 4,
                                   labelStyle: textTheme?.textMedium,
-                                  labelColor: colorSchema?.darkBlack,
+                                  labelColor:Theme.of(context).brightness == Brightness.light ? colorSchema?.darkBlack : colorSchema?.darkmodeTitle,
                                   unselectedLabelStyle: textTheme?.textMedium
                                       ?.copyWith(
                                         color: colorSchema?.grayscaleBodyText,

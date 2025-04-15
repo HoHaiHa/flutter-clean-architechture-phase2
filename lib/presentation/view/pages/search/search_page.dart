@@ -87,7 +87,7 @@ class SearchPage extends BasePage<SearchBloc, SearchEvent, SearchState> {
                   indicatorColor:
                   colorSchema?.primaryDefault,
                   labelStyle: textTheme?.textMedium,
-                  labelColor: colorSchema?.darkBlack,
+                  labelColor:Theme.of(context).brightness == Brightness.light ? colorSchema?.darkBlack : colorSchema?.darkmodeTitle,
                   unselectedLabelStyle: textTheme
                       ?.textMedium
                       ?.copyWith(

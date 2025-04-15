@@ -22,7 +22,7 @@ class _TopicListState extends State<TopicList> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return ListView.builder(
-      padding: EdgeInsets.only(top: 16,right: 24,left: 24),
+      padding: EdgeInsets.only(right: 24,left: 24),
       itemCount: widget.listTopic.length,
       itemBuilder: (context, index) {
         return Column(

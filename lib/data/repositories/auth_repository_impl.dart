@@ -87,7 +87,6 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<bool> loginByGoogle() async {
     try {
-      await GoogleSignIn().signOut();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       //logger.d(googleUser);
 

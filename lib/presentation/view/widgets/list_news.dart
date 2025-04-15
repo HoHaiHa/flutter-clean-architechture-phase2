@@ -78,6 +78,7 @@ class NewsWidget extends StatelessWidget {
                   Gap(4),
                   Expanded(
                     child: Container(
+                      height: 96,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

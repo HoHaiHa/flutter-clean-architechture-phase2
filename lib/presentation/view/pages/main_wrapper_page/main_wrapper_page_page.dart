@@ -31,7 +31,7 @@ class MainWrapperPagePage extends BasePage<MainWrapperPageBloc, MainWrapperPageE
         selectedIcon: Assets.icons.iconHomeTypeFilled.svg(
           color: colorSchema?.primaryDefault,
         ),
-        page: const WrapHomeGroupRoute(),
+        page: const HomeRoute(),
       ),
       AppBottomNavigationItem(
         label: 'Explore',
@@ -65,20 +65,9 @@ class MainWrapperPagePage extends BasePage<MainWrapperPageBloc, MainWrapperPageE
         return Scaffold(
           body: child,
           bottomNavigationBar: AppBottomNavigationBar(
-            onTap: (index) {
-              if (tabsRouter.activeIndex == index) {
-                if (index == 0) {
-                  tabsRouter
-                      .innerRouterOf('WrapHomeGroupRoute')
-                      ?.navigate(const HomeRoute());
-                }
-              } else {
-                tabsRouter.setActiveIndex(index);
-              }
-            },
             items: _bottomNavItems,
             currentIndex: tabsRouter.activeIndex,
-            //onTap: (index) => tabsRouter.setActiveIndex(index),
+            onTap: (index) => tabsRouter.setActiveIndex(index),
           ),
         );
       },
