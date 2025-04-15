@@ -157,10 +157,18 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Image.asset(
-                                            'assets/images/ship.png',
-                                            fit: BoxFit.fitHeight,
+                                          Container(
+                                            height: 183,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Image.asset(
+                                              'assets/images/ship.png',
+                                              fit: BoxFit.fitHeight,
+                                            ),
                                           ),
+
                                           SizedBox(height: 8),
                                           Text(
                                             'Europe',
@@ -293,7 +301,7 @@ class HomePage extends BasePage<HomeBloc, HomeEvent, HomeState> {
                                             indicatorColor:
                                                 colorSchema?.primaryDefault,
                                             labelStyle: textTheme?.textMedium,
-                                            labelColor: colorSchema?.darkBlack,
+                                            labelColor:Theme.of(context).brightness == Brightness.light ? colorSchema?.darkBlack : colorSchema?.darkmodeTitle,
                                             unselectedLabelStyle: textTheme
                                                 ?.textMedium
                                                 ?.copyWith(

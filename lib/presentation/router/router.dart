@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 
-import '../view/pages/wrap_home_group/wrap_home_group_page.dart';
-
 import '../view/pages/main_wrapper_page/main_wrapper_page_page.dart';
 
 import '../view/pages/edit_profile/edit_profile_page.dart';
@@ -48,18 +46,16 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       page: MainWrapperRouteRoute.page,
       children: [
-        AutoRoute(page: WrapHomeGroupRoute.page,children: [
-          AutoRoute(page: HomeRoute.page),
-          AutoRoute(page: NotificationRoute.page),
-        ]),
+        AutoRoute(page: HomeRoute.page),
+
         AutoRoute(page: ProfileRoute.page),
         AutoRoute(page: BookmarkRoute.page),
 
         AutoRoute(page: ExploreRoute.page),
       ],
     ),
+    AutoRoute(page: NotificationRoute.page),
     AutoRoute(page: SettingsRoute.page),
     AutoRoute(page: EditProfileRoute.page),
-
   ];
 }

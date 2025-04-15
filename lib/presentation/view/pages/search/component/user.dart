@@ -22,7 +22,7 @@ class _UserListState extends State<UserList> {
     final textTheme = context.themeOwn().textTheme;
     final colorSchema = context.themeOwn().colorSchema;
     return ListView.builder(
-      padding: EdgeInsets.only(top: 16,right: 24,left: 24),
+      padding: EdgeInsets.only(right: 24,left: 24),
       itemCount: widget.listUser.length,
       itemBuilder: (context, index) {
         return Column(

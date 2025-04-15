@@ -15,12 +15,12 @@ part 'settings_state.dart';
 @injectable
 class SettingsBloc extends BaseBloc<SettingsEvent, SettingsState> {
   SettingsBloc(this._checkCurrentThemeUseCase) : super(const SettingsState()) {
-    on<SettingsEvent>((event, emit) async {
+    on<SettingsEvent>((event, emit)  async {
         try {
           switch(event) {
             case _LoadData():
-              //emit(state.copyWith(pageStatus: PageStatus.Loaded));
-              final ThemeMode themeMode = await _checkCurrentThemeUseCase.call(params: CheckCurrentThemeParam());
+              emit(state.copyWith(pageStatus: PageStatus.Loaded));
+              final ThemeMode themeMode =  await _checkCurrentThemeUseCase.call(params: CheckCurrentThemeParam());
               if(themeMode== ThemeMode.dark)
                 emit(state.copyWith(darkMode: true));
               else

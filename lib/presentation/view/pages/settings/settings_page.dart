@@ -6,6 +6,7 @@ import 'package:flutter_clean_architecture/presentation/router/router.dart';
 import 'package:flutter_clean_architecture/presentation/view/widgets/app_switch.dart';
 import 'package:flutter_clean_architecture/shared/extension/context.dart';
 import 'package:gap/gap.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../base/base_page.dart';
 import '../../../bloc/theme/theme_bloc.dart';
@@ -126,8 +127,9 @@ class SettingsPage
                 ),
                 Gap(48),
                 InkWell(
-                  onTap: (){
+                  onTap: () async {
                     context.router.replaceAll([const LoginRoute()]);
+                    await GoogleSignIn().signOut();
                   },
                   child: Row(
                     children: [
